@@ -1084,8 +1084,9 @@ footer a.tel{
             <label for="f-msg">How can we help?</label>
             <textarea id="f-msg" name="message" required placeholder="Describe the problem or the service you need"></textarea>
           </div>
+          <input type="text" id="f-hp" name="website" autocomplete="off" tabindex="-1" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true">
           <button class="btn-primary" type="submit">Submit Message</button>
-          <p class="form-note" id="form-note" hidden>Thank you! Your message is ready to send — your email app just opened. You can also call us anytime.</p>
+          <p class="form-note" id="form-note" data-i18n="form.success" hidden>Thank you! We've received your request and will reach out shortly.</p>
         </form>
       </div>
     </div>
@@ -1172,7 +1173,7 @@ const translations = {
     "form.contact":"Phone or email","form.contactPh":"So we can reach you back",
     "form.message":"How can we help?","form.messagePh":"Describe the problem or the service you need",
     "form.send":"Submit Message",
-    "form.success":"Thank you! Your message is ready to send — your email app just opened. You can also call us anytime.",
+    "form.success":"Thank you! We've received your request and will reach out shortly.",
     "cta.title":"Got a plumbing <em>problem?</em>",
     "cta.sub":"Call us now and we'll get someone to you fast.",
     "cta.btn":"Book a Plumber",
@@ -1221,7 +1222,7 @@ const translations = {
     "form.contact":"Teléfono o correo","form.contactPh":"Para poder responderle",
     "form.message":"¿Cómo podemos ayudarle?","form.messagePh":"Describa el problema o el servicio que necesita",
     "form.send":"Enviar mensaje",
-    "form.success":"¡Gracias! Su mensaje está listo para enviar — se abrió su aplicación de correo. También puede llamarnos cuando quiera.",
+    "form.success":"¡Gracias! Hemos recibido su solicitud y nos comunicaremos con usted pronto.",
     "cta.title":"¿Tiene un <em>problema</em> de plomería?",
     "cta.sub":"Llámenos ahora y le enviamos a alguien rápido.",
     "cta.btn":"Reservar un plomero",
@@ -1232,6 +1233,10 @@ const translations = {
 
 let currentLang = 'en';
 let currentSection = 'why';
+
+// The OTTO Plumbing CRM (github.com/ejnburrows-rgb/otto) that this site's
+// leads should land in. Update if the CRM's production URL changes.
+const CRM_API_BASE = "https://otto-kohl.vercel.app";
 
 function setLang(lang){
   currentLang = lang;
@@ -1257,15 +1262,37 @@ function toggleTheme(){
   try { localStorage.setItem("otto-theme", newTheme); } catch(e) {}
 }
 
-function submitForm(e){
+async function submitForm(e){
   e.preventDefault();
+  const form = e.target;
   const name = document.getElementById("f-name").value.trim();
   const contact = document.getElementById("f-contact").value.trim();
   const msg = document.getElementById("f-msg").value.trim();
-  const subject = encodeURIComponent((currentLang === "es" ? "Solicitud desde el sitio web de " : "Website request from ") + name);
-  const body = encodeURIComponent(msg + "\n\n" + (currentLang === "es" ? "Contacto: " : "Contact: ") + contact + "\n" + (currentLang === "es" ? "Nombre: " : "Name: ") + name);
-  window.location.href = "mailto:hernandezotto77@gmail.com?subject=" + subject + "&body=" + body;
-  document.getElementById("form-note").hidden = false;
+  const hp = document.getElementById("f-hp").value;
+  const btn = form.querySelector('button[type="submit"]');
+  if (btn) btn.disabled = true;
+
+  function mailtoFallback(){
+    const subject = encodeURIComponent((currentLang === "es" ? "Solicitud desde el sitio web de " : "Website request from ") + name);
+    const body = encodeURIComponent(msg + "\n\n" + (currentLang === "es" ? "Contacto: " : "Contact: ") + contact + "\n" + (currentLang === "es" ? "Nombre: " : "Name: ") + name);
+    window.location.href = "mailto:hernandezotto77@gmail.com?subject=" + subject + "&body=" + body;
+  }
+
+  try {
+    const r = await fetch(CRM_API_BASE + "/api/website-lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, contact, message: msg, lang: currentLang, hp }),
+    });
+    if (!r.ok) throw new Error("bad_status_" + r.status);
+    form.reset();
+  } catch (err) {
+    // CRM intake unreachable/not configured — never lose the lead, fall back to email.
+    mailtoFallback();
+  } finally {
+    document.getElementById("form-note").hidden = false;
+    if (btn) btn.disabled = false;
+  }
   return false;
 }
 
