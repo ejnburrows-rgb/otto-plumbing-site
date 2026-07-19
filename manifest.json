@@ -4,8 +4,8 @@
   "description": "South Florida's Most Trusted Plumbers",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0E8A87",
-  "theme_color": "#0E8A87",
+  "background_color": "#0C2D48",
+  "theme_color": "#0C2D48",
   "icons": [
     {
       "src": "favicon.svg",
