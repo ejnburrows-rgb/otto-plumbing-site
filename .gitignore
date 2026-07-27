@@ -1,0 +1,20 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Dependencies / tooling
+node_modules/
+*.log
+
+# Env & deploy
+.env
+.env.*
+.vercel/
+
+# Temp
+tmp/
+*.tmp
