@@ -1049,6 +1049,9 @@ footer a.tel:hover{color:#fff;}
 </footer>
 
 <script>
+// IMPORTANT: Paste your Formspree Endpoint URL here.
+const FORMSPREE_ENDPOINT = "";
+
 const translations = {
   en: {
     "nav.services":"Services",
@@ -1190,8 +1193,15 @@ async function submitForm(e){
   btn.disabled = true;
   btn.innerText = currentLang === "es" ? "Enviando..." : "Sending...";
 
+  if (!FORMSPREE_ENDPOINT) {
+    alert(currentLang === "es" ? "Hubo un error al enviar el mensaje." : "There was an error sending your message.");
+    btn.disabled = false;
+    btn.innerText = originalText;
+    return;
+  }
+
   try {
-    const res = await fetch("https://formspree.io/f/YOUR_FORMSPREE_ID", {
+    const res = await fetch(FORMSPREE_ENDPOINT, {
       method: "POST",
       body: new FormData(form),
       headers: { 'Accept': 'application/json' }
