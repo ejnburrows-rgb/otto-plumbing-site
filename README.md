@@ -30,6 +30,15 @@ Pushes to `main` deploy automatically via the connected hosting (Vercel/GitHub i
 
 The form posts to Formspree when `window.OTTO_FORM_ENDPOINT` (or the `FORMSPREE_ENDPOINT` constant at the top of the script in `index.html`) is set to a real `https://formspree.io/f/...` URL. Until then it shows an honest on-screen error and offers call/email — it never fakes success.
 
+**No endpoint is configured yet** — see `TODO(owner)` above `FORMSPREE_ENDPOINT` in `index.html`. Every submission therefore lands on the failure state today.
+
+There are exactly two visible outcomes and no third one:
+
+| Outcome | When | What the customer sees |
+| --- | --- | --- |
+| Sent | endpoint set **and** Formspree answers 2xx | green confirmation, form cleared |
+| Not sent | no endpoint, non-2xx, offline, or an unexpected error | red panel saying it was not sent, tappable `(786) 344-2837`, a `mailto:` link pre-filled with what they typed, and their text left in the fields |
+
 ## Brand facts (do not invent)
 
 - OTTO Plumbing Inc. (caps)
