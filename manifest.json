@@ -1,6 +1,6 @@
 {
-  "name": "Otto Plumbing Inc.",
-  "short_name": "Otto Plumbing",
+  "name": "OTTO Plumbing Inc.",
+  "short_name": "OTTO Plumbing",
   "description": "South Florida's Most Trusted Plumbers",
   "start_url": "/",
   "display": "standalone",
@@ -9,27 +9,33 @@
   "icons": [
     {
       "src": "favicon.svg",
-      "sizes": "any",
+      "sizes": "512x512",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "icon-512.png",
+      "src": "icon-512.svg",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     },
     {
       "src": "apple-touch-icon.svg",
       "sizes": "180x180",
       "type": "image/svg+xml",
-      "purpose": "apple touch icon"
+      "purpose": "monochrome"
     }
   ]
 }
