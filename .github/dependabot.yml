@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+# OTTO website is a static HTML site with no runtime dependency manifest.
+# If a package-lock.json or similar is added later, add a second entry here.
