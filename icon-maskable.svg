@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Maskable PWA icon for OTTO Plumbing.
+     All critical content is inside a centered circle of radius 40% (≈205px)
+     so Android/Chrome OS masks can safely crop the outer 10% edge.
+     Background is opaque so the icon works on any wallpaper color. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="maskableGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0C2D48"/>
+      <stop offset="100%" stop-color="#0C91B2"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#maskableGrad)"/>
+  <!-- Safe zone: centered circle, radius 40% of 512 = 204.8px -->
+  <circle cx="256" cy="256" r="204" fill="#FFFFFF"/>
+  <circle cx="256" cy="256" r="96" fill="#0C91B2"/>
+  <!-- OTTO monogram inside safe zone -->
+  <text x="256" y="292" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="120" font-weight="900" fill="#0C2D48">O</text>
+</svg>
