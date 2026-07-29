@@ -1,4 +1,7 @@
-# AGENTS.md — mandatory, every session, no exceptions
+# AGENTS.md — OTTO Plumbing Inc. website
+
+**Read this fully before doing anything. Mandatory, every session, no exceptions.
+`CLAUDE.md` is a one-line pointer back to this file.**
 
 You are EJN's development team. EJN is the owner and the client, not the
 project manager — work out what needs doing and do it. Never wait to be asked.
@@ -20,7 +23,8 @@ because a tool is missing.
 ## WHAT THIS REPO IS
 
 Static single-page marketing site for **OTTO Plumbing Inc.** (always OTTO in
-caps). Plain HTML/CSS/JS — no build step. Live site deploys from `main`.
+caps). Plain HTML/CSS/JS — no build step. Live site deploys from `main` to
+https://otto-plumbing-site.vercel.app on every push.
 
 Canonical brand facts (do not invent alternatives):
 - Name: OTTO Plumbing Inc.
@@ -31,6 +35,25 @@ Canonical brand facts (do not invent alternatives):
 - Service area: South Florida
 - Form email fallback: hernandezotto77@gmail.com
 
+Current status is tracked in
+`dev-firm-compass/projects/otto-plumbing-site/STATUS.md`.
+
+---
+
+## HARD RULES
+
+- **Never commit to `main`.** All changes go on a branch as a pull request.
+- **Client name is always written OTTO** (all caps).
+- **No mascots or cartoon creative.** This is a business/trades site; keep
+  deliverables professional.
+- **No secrets in code.** No API keys, tokens, or passwords in the source. Use
+  environment variables if the site ever needs them.
+- **One agent per repo at a time.** Read the project's `STATUS.md` in
+  `dev-firm-compass` before starting, and update it before ending.
+- **Cross-agent review:** the agent that authored a PR never approves it. A
+  different agent reviews and posts a plain-English verdict + a 3-item "what
+  E N should personally check" list before the PR is presented to E N.
+
 ---
 
 ## REPLIES
@@ -38,19 +61,25 @@ Canonical brand facts (do not invent alternatives):
 Short and plain-language. Define any technical term in one phrase the first
 time it appears.
 
+Report in the format: Found → Needed → Did/Propose → In plain terms.
+End every report with: done · blocked (on what) · single next action + owner.
+
 ---
 
 ## BEFORE WRITING CODE
 
 - Vague request → ask clarifying questions until the spec is clear.
+- Inspect the actual files before claiming anything about the site's condition.
 - Re-read any file immediately before editing it.
-- Smallest high-quality change. Never rewrite the whole file when a targeted
-  edit does the job — `index.html` is large; surgical edits only.
+- Smallest high-quality change. This is a static site; do not over-engineer.
+  Never rewrite the whole file when a targeted edit does the job —
+  `index.html` is large; surgical edits only.
 
 ## BEFORE SAYING "DONE"
 
 1. Verify with real evidence. Never claim something works without checking it.
-2. UI changes → open the real page and capture proof.
+2. UI changes → open the real page and capture proof (screenshot or live
+   preview) before declaring done.
 3. No output = not done. Never fabricate results.
 
 ---

@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate HTML
+        uses: anishathalye/proof-html@v1
+        with:
+          directory: '.'
+
+      - name: Check manifest.json is valid JSON
+        run: python3 -c "import json; json.load(open('manifest.json'))"
+
+      - name: Check SVG files are well-formed
+        run: |
+          for f in *.svg; do
+            echo "Checking $f"
+            python3 -c "import xml.etree.ElementTree as ET; ET.parse('$f')"
+          done
+
+  secret-scan:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # gitleaks is free for repos under personal accounts (no license needed).
+      - name: Run gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
