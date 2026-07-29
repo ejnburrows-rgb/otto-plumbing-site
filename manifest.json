@@ -1,0 +1,22 @@
+{
+  "name": "Otto Plumbing Inc.",
+  "short_name": "Otto",
+  "description": "South Florida's most trusted plumbers. Licensed, insured, and bilingual service.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0C91B2",
+  "icons": [
+    {
+      "src": "/favicon-miami-luxe.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/apple-touch-icon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml"
+    }
+  ],
+  "lang": "en"
+}

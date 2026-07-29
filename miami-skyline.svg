@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" fill="none">
+  <defs>
+    <linearGradient id="sky-gradient" x1="0%" y1="0%" x2="0%">
+      <stop offset="0%" stop-color="#0E2027"/>
+      <stop offset="30%" stop-color="#0C4A6E"/>
+      <stop offset="60%" stop-color="#0C91B2"/>
+      <stop offset="100%" stop-color="#FFD94D"/>
+    </linearGradient>
+    <linearGradient id="water-gradient" x1="0%" y1="0%" x2="0%">
+      <stop offset="0%" stop-color="#0C4A6E"/>
+      <stop stop-color="#0C2D48"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky-gradient)"/>
+  <path d="M0 720 C 320 680, 480 700, 800 650 C 960 620, 1120 680, 1440 650 C 1520 640, 1760 680, 1920 720 L1920 1080 L0 1080 Z" fill="url(#water-gradient)" opacity="0.3"/>
+  <g opacity="0.15">
+    <circle cx="200" cy="600" r="40" fill="white"/>
+    <circle cx="350" cy="580" r="30" fill="white"/>
+    <circle cx="500" cy="620" r="35" fill="white"/>
+    <circle cx="650" cy="590" r="25" fill="white"/>
+    <circle cx="800" cy="610" r="30" fill="white"/>
+    <circle cx="950" cy="580" r="20" fill="white"/>
+    <circle cx="1100" cy="600" r="25" fill="white"/>
+    <circle cx="1250" cy="590" r="30" fill="white"/>
+    <circle cx="1400" cy="610" r="35" fill="white"/>
+    <circle cx="1550" cy="580" r="25" fill="white"/>
+    <circle cx="1700" cy="600" r="30" fill="white"/>
+  </g>
+</svg>
