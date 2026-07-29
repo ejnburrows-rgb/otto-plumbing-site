@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate HTML
+        uses: anishathalye/proof-html@v1
+        with:
+          directory: '.'
+          url_ignore: |
+            /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
+          # Ignore external URLs; focus on internal markup validity.
+
+      - name: Check manifest.json is valid JSON
+        run: python3 -c "import json; json.load(open('manifest.json'))"
+
+      - name: Check SVG files are well-formed
+        run: |
+          for f in *.svg; do
+            echo "Checking $f"
+            python3 -c "import xml.etree.ElementTree as ET; ET.parse('$f')"
+          done
