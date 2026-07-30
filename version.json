@@ -2,6 +2,8 @@
   "project": "OTTO Plumbing website",
   "repository": "ejnburrows-rgb/otto-plumbing-site",
   "sourceBranch": "main",
+  "baselineCommit": "53d1ec373f34efa52fa6593f52d17d647c1cae6d",
   "version": "v1-production-readiness",
-  "generatedAt": "2026-07-30T10:30:00Z"
+  "generatedAt": "2026-07-30T13:40:00Z",
+  "note": "Refresh baselineCommit when cutting a release. scripts/check-deployed-version.mjs compares this against the served site."
 }
