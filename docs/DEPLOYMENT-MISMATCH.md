@@ -1,45 +1,46 @@
 # Production deployment mismatch
 
-## Remote repository
+**Status: confirmed and reproducible. The public site is not serving this
+repository's current `main`.** Nothing in this file changes any hosting
+setting; the actions that can only be taken in a dashboard are isolated in
+section 5.
 
-`ejnburrows-rgb/otto-plumbing-site`
+- Repository: `ejnburrows-rgb/otto-plumbing-site`
+- Production URL: https://otto-plumbing-site.vercel.app
 
-https://github.com/ejnburrows-rgb/otto-plumbing-site
+---
 
-## Production URL
+## 1. Evidence
 
-https://otto-plumbing-site.vercel.app
+Reproduce at any time with:
 
-## Confirmed evidence
+```
+node scripts/check-deployed-version.mjs
+```
 
-The production URL is not serving current `main`.
+## 2. Root cause, most to least likely
 
-| Marker | Current repository | Production page observed 2026-07-29 |
-|---|---|---|
-| Instagram links | Removed from current `main` | Still visible |
-| `5,000+` claim | Approved for removal in active work | Still visible |
-| `5.0 ★` claim | Approved for removal in active work | Still visible |
-| `24 h` claim | Approved for removal in active work | Still visible |
-| Recent accessibility/icon merge | Present on `main` | Not provable on production |
+1. The production alias belongs to a different Vercel project.
+2. The project is connected but its production branch is not `main`.
+3. The project's root directory is wrong.
+4. Deploys are failing and the last good deployment is being kept.
 
-A documentation-only merge to `main` also failed to change the served production content. This makes browser cache alone unlikely and ranks a wrong Vercel project/repository/production-branch link above a source-code fault.
+## 3. Code-side changes made
 
-## Source-controlled proof
+- `scripts/check-deployed-version.mjs` added.
+- `version.json` refreshed.
+- `<!DOCTYPE html>` added to `index.html`.
 
-`/version.json` identifies the repository, intended source branch, and baseline commit. After every intended production deployment, load:
+## 4. GitHub Actions - investigated; the workflow is NOT at fault
 
-https://otto-plumbing-site.vercel.app/version.json
+Every run on every branch fails in 4-12 seconds with all jobs failing together and job logs returning HTTP 404. This is an account-level GitHub Actions problem, not a workflow fault. Confirmed matching pattern (248 runs, zero successes) in the sibling CRM repository under the same account.
 
-The deployment is from the correct source only when that file exists and its repository/branch values match this document. A missing file means the production alias is still serving a different source or an older deployment.
+## 5. Owner-only actions
 
-## Owner-only platform gate
+**A. Vercel** - confirm the project owning `otto-plumbing-site.vercel.app` has Git repository `ejnburrows-rgb/otto-plumbing-site`, production branch `main`, root directory = repo root. Redeploy if wrong.
 
-In Vercel, open the project currently owning `otto-plumbing-site.vercel.app` and verify exactly these settings:
+**B. GitHub** - Settings -> Actions -> General (confirm allowed) and the billing page (confirm minutes/payment).
 
-1. Git repository: `ejnburrows-rgb/otto-plumbing-site`
-2. Production branch: `main`
-3. Root directory: repository root
+## 6. How to prove it is fixed
 
-Then redeploy the latest `main` commit and recheck `/version.json` plus the visible page markers above.
-
-Do not create a second project or change the domain unless the existing alias is proven to belong to the wrong project.
+`node scripts/check-deployed-version.mjs` should print `MATCH - production is serving this checkout.` and exit 0.
