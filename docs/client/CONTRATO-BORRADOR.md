@@ -54,12 +54,17 @@ El sitio solo publica hechos que el propietario ha confirmado:
 
 **Compromiso de exactitud.** No se publican cifras, promesas, reseñas,
 calificaciones ni plazos que no puedan sustentarse. Tres afirmaciones previas
-fueron **retiradas por no ser verificables** y **no fueron sustituidas por
-otras cifras**:
+fueron **retiradas del código por no ser verificables**, con la regla de que
+**no se sustituyen por otras cifras**:
 
 - «5,000+» trabajos completados
 - «5.0 ★» de calificación promedio
 - «24 h» para agendar la mayoría de los trabajos
+
+**Estado exacto:** la retirada existe en una rama todavía sin fusionar (PR
+#24); `main` — y por tanto el sitio público — sigue mostrando las tres
+mientras esa rama no se fusione. Véase `docs/client/PROGRESO-Y-REVISION.md`
+para el detalle verificado.
 
 - **Cualquier cifra futura que el propietario desee publicar, con su respaldo
   documental:** `[PENDIENTE DE CONFIRMACIÓN]`
@@ -90,9 +95,13 @@ aprobó y permanecen tal como están.**
 El sitio incluye un formulario de contacto que **hoy no entrega mensajes**,
 porque no hay ningún servicio de envío configurado.
 
-Mientras siga así, el formulario **nunca debe decir que el mensaje fue
-enviado**. Muestra un aviso honesto indicando que no se envió y dirige a la
-persona al teléfono. La vía real de contacto es la llamada.
+**Requisito contractual, mientras siga así:** el formulario **nunca debe
+decir que el mensaje fue enviado**, y debe mostrar un aviso honesto que
+dirija a la persona al teléfono. **Este requisito todavía no se cumple en
+`main`** — hoy, al fallar el envío, solo aparece una alerta genérica sin
+número de teléfono. La versión que sí lo cumple existe, probada, en una rama
+pendiente de fusión (PR #24 del repositorio). La vía real de contacto,
+mientras tanto, es la llamada telefónica.
 
 - **Decisión sobre conectar un servicio de entrega o retirar el formulario:**
   `[PENDIENTE DE CONFIRMACIÓN]`

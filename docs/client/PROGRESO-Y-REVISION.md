@@ -10,38 +10,53 @@
 
 ## 1. Qué está listo en el código
 
+**Importante — leer antes de la tabla:** "listo" aquí significa que el
+trabajo existe, revisado y probado, en una rama todavía no fusionada a
+`main` (la rama de entrega consolidada, PR #24). **`main` — y por lo tanto el
+sitio público, incluso el día en que sirva el código correcto — no tiene
+nada de esto todavía.** Los apartados 2 y 3 detallan la diferencia exacta.
+
 | Área | Estado |
 |---|---|
-| Estructura del sitio | Servicios, por qué OTTO, portafolio, maestría y contacto |
-| Inglés y español | Cobertura completa; sin texto en inglés en modo español |
-| Modo claro y oscuro | Funcionando en ambos idiomas |
+| Estructura del sitio | Servicios, por qué OTTO, portafolio, maestría y contacto — en `main` |
+| Inglés y español | Cobertura completa — en la rama pendiente, no en `main` |
+| Modo claro y oscuro | Funcionando en ambos idiomas — en `main` |
 | Teléfono y escritorio | Comprobado a 390 px y en escritorio |
 | Datos del negocio | Teléfono, licencia, horario y zona de servicio, todos confirmados |
 | Imágenes generadas con IA | Aprobadas por el propietario; se mantienen |
 
-## 2. Afirmaciones retiradas
+## 2. Afirmaciones que deben retirarse — todavía visibles en `main`
 
-Tres afirmaciones no verificables fueron eliminadas del código, cada una
-aparecía dos veces. **No se sustituyeron por otras cifras.**
+Tres afirmaciones no verificables **siguen en `main` ahora mismo**, cada una
+dos veces (seis apariciones en total). La retirada existe, probada, en la
+rama pendiente (PR #24) — **no se ha fusionado**, así que hoy el sitio
+público, si sirviera el código correcto, seguiría mostrándolas:
 
 - «5,000+» trabajos completados
 - «5.0 ★» de calificación promedio
 - «24 h» para agendar la mayoría de los trabajos
 
-Una comprobación automática impide que vuelvan a aparecer.
+Cuando el propietario fusione esa rama, no se sustituirán por otras cifras.
+Una comprobación automática en esa rama impide que vuelvan a aparecer una vez
+fusionada.
 
-## 3. Cobertura en español
+## 3. Cobertura en español — pendiente, no completada
 
-Quedaban partes visibles en inglés incluso con el sitio en español: los enlaces
-de Portafolio y Maestría en ambos menús, las secciones completas de Portafolio
-y Maestría, el texto bajo el nombre de la marca, la descripción para buscadores
-y los nombres hablados de los botones con solo un icono. **Todo eso ya está en
-español.**
+**Hoy, en `main`, el sitio en español sigue mostrando texto en inglés.**
+Comprobado directamente contra el código: la sección de Portafolio y
+Maestría no tiene ninguna clave de traducción. Lo que falta, específicamente:
+los enlaces de Portafolio y Maestría en ambos menús, las secciones completas
+de Portafolio y Maestría, el texto bajo el nombre de la marca, la descripción
+para buscadores y los nombres hablados de los botones con solo un icono.
 
 Ese último punto importa para accesibilidad: un lector de pantalla en español
-anunciaba los controles en inglés.
+sigue anunciando esos controles en inglés, hoy.
 
-- **Revisión del tono y las palabras por parte del propietario:**
+La cobertura completa existe, escrita y probada, en la rama pendiente de
+fusión (PR #24) — no en `main`. Este documento no debe leerse como
+confirmación de que el sitio ya es bilingüe; no lo es todavía.
+
+- **Aprobación de la rama pendiente y de los textos en español:**
   `[PENDIENTE DE CONFIRMACIÓN]`
 
 ## 4. Dos asuntos que requieren al propietario
@@ -71,8 +86,12 @@ se adjuntan a cada entrega.
 ## 5. Formulario de contacto
 
 El formulario **no entrega mensajes**; no hay servicio de envío configurado.
-Antes decía «su mensaje ha sido enviado», lo cual era falso. Ahora muestra un
-aviso honesto y dirige al teléfono.
+
+**En `main` ahora mismo,** al fallar el envío solo aparece una alerta genérica
+("Hubo un error al enviar el mensaje") — no hay aviso en la página ni se
+dirige a la persona al teléfono. La corrección con un aviso honesto en
+pantalla y el teléfono visible **existe en la rama pendiente (PR #24)**, no
+en `main`.
 
 - **Conectar un servicio de entrega o retirar el formulario:**
   `[PENDIENTE DE CONFIRMACIÓN]`
@@ -95,9 +114,12 @@ Es un arreglo pequeño y aparte.
 
 ## 8. Próximos pasos propuestos
 
-1. Corregir el proyecto de Vercel para que la dirección pública sirva `main`.
-2. Revisar las comprobaciones automáticas en la cuenta de GitHub.
-3. Aprobar los textos en español.
-4. Decidir sobre el formulario de contacto.
+1. **Fusionar la rama pendiente (PR #24)** a `main` — sin este paso, nada de
+   lo descrito en los apartados 2, 3 y 5 llega siquiera a `main`, y mucho
+   menos al público.
+2. Corregir el proyecto de Vercel para que la dirección pública sirva `main`.
+3. Revisar las comprobaciones automáticas en la cuenta de GitHub.
+4. Aprobar los textos en español de la rama pendiente.
+5. Decidir sobre el formulario de contacto.
 
 - **Orden de prioridad acordado:** `[PENDIENTE DE CONFIRMACIÓN]`

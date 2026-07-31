@@ -19,18 +19,30 @@
   estos documentos de cliente.
 - **Comprobaciones automáticas**: verificación de textos, traducciones y
   formato (`scripts/check-site.mjs`) y verificación de versión desplegada
-  (`scripts/check-deployed-version.mjs`).
+  (`scripts/check-deployed-version.mjs`). **Estos dos archivos existen en la
+  rama de entrega pendiente (PR #24), todavía no fusionada a `main`** — no se
+  puede ejecutar ninguno de los dos contra el repositorio tal como está hoy.
 
-## 2. Condición de entrega: la página pública aún no coincide con el código
+## 2. Condición de entrega: nada de esto está en `main` todavía
 
-**No se puede certificar esta entrega todavía.** El sitio que ve el público en
-`https://otto-plumbing-site.vercel.app` **no corresponde al código actual del
+**No se puede certificar esta entrega todavía, por dos motivos independientes,
+no uno.**
+
+**Primero:** las tres afirmaciones retiradas y la cobertura completa en
+español **no están en `main`**. Existen, escritas y probadas, en la rama de
+entrega pendiente (PR #24), que el propietario todavía no ha fusionado.
+Hasta que eso ocurra, `main` sigue teniendo las tres afirmaciones y el
+español incompleto, exactamente como estaban antes de este trabajo.
+
+**Segundo,** e independiente del primero: incluso el día en que esa rama se
+fusione, el sitio que ve el público en
+`https://otto-plumbing-site.vercel.app` **no corresponde al código del
 repositorio** — está probado con nueve marcadores, ocho no coinciden, y el
-detalle completo está en `docs/DEPLOYMENT-MISMATCH.md`.
+detalle completo está en `docs/DEPLOYMENT-MISMATCH.md`. Fusionar la rama
+pendiente no resuelve esto por sí solo.
 
-Esto significa que, aunque el código incluya las tres afirmaciones retiradas y
-el español completo, **el público todavía no lo ve**. La firma del apartado 7
-no debe ocurrir hasta que esto se corrija y se vuelva a comprobar.
+La firma del apartado 7 no debe ocurrir hasta que ambos se resuelvan y se
+vuelvan a comprobar.
 
 ## 3. Accesos y credenciales a transferir
 
@@ -57,23 +69,30 @@ Ninguna clave se guarda en el repositorio.
 
 ## 5. Limitaciones conocidas en el momento de la entrega
 
-1. **La página pública no sirve el código actual** (apartado 2). Bloqueante
+1. **La rama con las correcciones (afirmaciones retiradas, español completo,
+   aviso honesto del formulario) no está fusionada a `main`** (apartado 2).
+   Bloqueante para la firma.
+2. **Aparte de lo anterior, la página pública tampoco sirve el código del
+   repositorio**, sea cual sea la rama (apartado 2). Bloqueante independiente
    para la firma.
-2. **El formulario de contacto no entrega mensajes.** Muestra un aviso honesto
-   y dirige al teléfono; no hay ningún servicio de envío conectado.
-3. **Las comprobaciones automáticas de GitHub no se ejecutan** por un problema
+3. **El formulario de contacto no entrega mensajes** en ningún caso; no hay
+   ningún servicio de envío conectado. En `main` hoy, al fallar solo muestra
+   una alerta genérica; el aviso honesto con el teléfono visible está en la
+   rama pendiente.
+4. **Las comprobaciones automáticas de GitHub no se ejecutan** por un problema
    de la cuenta, no del código. Las comprobaciones se corrieron de forma local
    y sus resultados están en cada entrega de trabajo.
-4. **Existe una pequeña superposición horizontal** en la barra superior en
+5. **Existe una pequeña superposición horizontal** en la barra superior en
    pantallas de teléfono (unos 5 píxeles). Ya existía antes de este trabajo;
    pendiente de una corrección aparte y sencilla.
-5. **Las imágenes son generadas con inteligencia artificial**, ya aprobadas por
+6. **Las imágenes son generadas con inteligencia artificial**, ya aprobadas por
    el propietario.
 
 ## 6. Lista de verificación previa a la firma
 
 La firma del apartado 7 solo procede cuando todo lo siguiente esté marcado.
 
+- [ ] La rama pendiente (PR #24) fue revisada y fusionada a `main`
 - [ ] La página pública sirve el código actual del repositorio (`/version.json` coincide)
 - [ ] Las tres afirmaciones retiradas ya no aparecen en la página pública
 - [ ] El sitio en español no muestra ningún texto en inglés, comprobado por el propietario
