@@ -1,101 +1,109 @@
-# AGENTS.md — permanent repository rules
+# AGENTS.md — OTTO Plumbing Inc. website
 
-You are EJN's development team. EJN is the owner and client, not the project manager. The repository must brief you so he does not have to repeat the project story.
+**Read this fully before doing anything. Mandatory, every session, no exceptions.
+`CLAUDE.md` is a one-line pointer back to this file.**
 
-## Read first, in this order
+You are EJN's development team. EJN is the owner and the client, not the
+project manager — work out what needs doing and do it. Never wait to be asked.
 
-1. `AGENTS.md` — permanent safety and working rules.
-2. `docs/REPO-CONTROL.md` — current objective, priorities, and decision rights.
-3. `docs/STATUS.md` — verified site state and known blockers.
-4. `docs/DECISIONS.md` — why major choices were made.
+---
 
-Old task queues, outside-repository status files, branch reports, PR descriptions, and tool-specific prompts are reference material only unless `docs/REPO-CONTROL.md` explicitly activates them.
+## ANY TOOL MAY DO ANY WORK
 
-## Communication
+Claude, Antigravity, Kilo, Gemini, Jules, or anything else. No lane is
+reserved for a particular tool and no tool is banned. **These rules apply to
+the work, never to which tool is doing it.**
 
-- Be direct and use plain language.
-- Give the owner the problem, why it matters, what will be done, and the evidence.
-- Do not drip-feed work that can be completed and reported in one pass.
-- Ask only questions whose answers materially change the work.
+Everything below is a **behaviour, not a tool.** Use named skills if your
+environment has them; otherwise do the same thing by hand. Never skip a step
+because a tool is missing.
 
-## Product facts that must not be invented
+---
 
+## WHAT THIS REPO IS
+
+Static single-page marketing site for **OTTO Plumbing Inc.** (always OTTO in
+caps). Plain HTML/CSS/JS — no build step. Live site deploys from `main` to
+https://otto-plumbing-site.vercel.app on every push.
+
+Canonical brand facts (do not invent alternatives):
 - Name: OTTO Plumbing Inc.
-- Phone: (786) 344-2837 / `tel:+17863442837`
-- Experience: 30+ years; founded 1996
+- Phone: (786) 344-2837 / tel:+17863442837
+- Experience: 30+ years, founded 1996
 - Licence: #CFC1429613
-- Hours: Mon–Sat, 7 AM–7 PM
+- Hours: Mon–Sat 7 AM – 7 PM
 - Service area: South Florida
-- Email fallback: hernandezotto77@gmail.com
+- Form email fallback: hernandezotto77@gmail.com
 
-Never invent testimonials, certifications, awards, locations, social accounts, prices, response times, guarantees, or service claims.
+Current status is tracked in
+`dev-firm-compass/projects/otto-plumbing-site/STATUS.md`.
 
-## Before changing anything
+---
 
-- Confirm the exact repository, branch, remote, and current commit.
-- Read the current control and status documents.
-- Re-read each file immediately before editing it.
-- Preserve working behavior and use the smallest high-quality change.
-- This is a static site; do not introduce a framework, build system, database, or paid service without director approval.
+## HARD RULES
 
-## Safety
+- **Never commit to `main`.** All changes go on a branch as a pull request.
+- **Client name is always written OTTO** (all caps).
+- **No mascots or cartoon creative.** This is a business/trades site; keep
+  deliverables professional.
+- **No secrets in code.** No API keys, tokens, or passwords in the source. Use
+  environment variables if the site ever needs them.
+- **One agent per repo at a time.** Read the project's `STATUS.md` in
+  `dev-firm-compass` before starting, and update it before ending.
+- **Cross-agent review:** the agent that authored a PR never approves it. A
+  different agent reviews and posts a plain-English verdict + a 3-item "what
+  E N should personally check" list before the PR is presented to E N.
 
-- Never commit secrets, tokens, passwords, private customer data, or fallback credentials.
-- Never fake contact-form success. Submit to a verified endpoint or show an honest fallback.
-- Never invent test results, screenshots, deployment claims, links, or file paths.
-- Never force-push or rewrite shared history.
-- Never deploy client-visible changes, add paid services, publish new claims, or make irreversible cleanup without director approval.
-- Say exactly what will be removed before destructive work.
+---
 
-## Git and pull requests
+## REPLIES
 
-- Never commit directly to `main`.
-- Start from current `main` on a focused branch.
-- Open one clear pull request with acceptance criteria.
-- Do not merge while required checks or direct verification are failing, missing, or unknown.
-- Never include an AI or tool name in commit authors, messages, co-author lines, or PR text.
-- Commit as `EJN <ejnburrows@gmail.com>`.
-- Do not bulk-delete branches using an old report; verify against current GitHub state.
+Short and plain-language. Define any technical term in one phrase the first
+time it appears.
 
-## Design and content
+Report in the format: Found → Needed → Did/Propose → In plain terms.
+End every report with: done · blocked (on what) · single next action + owner.
 
-- The site must remain professional, bilingual, responsive, and accessible.
-- OTTO is always written in capital letters.
-- No mascots or cartoon creative unless the director explicitly approves it.
-- Approved design references are specifications, not suggestions. Match them closely and prove the result visually.
-- Commit real assets and reference them locally. Do not paste generation prompts or temporary remote asset URLs into the site.
-- Preserve English and Spanish parity; changing visible copy requires checking both languages.
+---
 
-## Definition of done
+## BEFORE WRITING CODE
 
-A change is not done until all applicable evidence exists:
+- Vague request → ask clarifying questions until the spec is clear.
+- Inspect the actual files before claiming anything about the site's condition.
+- Re-read any file immediately before editing it.
+- Smallest high-quality change. This is a static site; do not over-engineer.
+  Never rewrite the whole file when a targeted edit does the job —
+  `index.html` is large; surgical edits only.
 
-1. The site opens successfully from the changed source.
-2. The real page is exercised in a browser at phone and desktop widths.
-3. JavaScript errors, broken images, dead controls, and unintended horizontal scrolling are zero.
-4. English and Spanish behavior is checked when visible content changes.
-5. Accessibility and contrast are checked when UI changes.
-6. The visible result is captured with screenshots or equivalent direct evidence.
-7. The deployment source and live version are verified when claiming production readiness.
-8. The diff is reviewed against the approved objective.
-9. `docs/STATUS.md` receives one factual dated update.
+## BEFORE SAYING "DONE"
 
-## Reporting
+1. Verify with real evidence. Never claim something works without checking it.
+2. UI changes → open the real page and capture proof (screenshot or live
+   preview) before declaring done.
+3. No output = not done. Never fabricate results.
 
-Every report must state:
+---
 
-- **Works** — verified with evidence.
-- **Broken** — confirmed fault and impact.
-- **Blocked** — exact dependency and who controls it.
-- **Changed** — files and visible behavior changed.
-- **Not done yet** — remaining work.
+## GIT
 
-No evidence means not done.
+- **Never commit to `main`.** Branch + pull request with a plain-language
+  description.
+- Never force-push. Never rewrite shared history.
+- Every commit authored `EJN <ejnburrows@gmail.com>`.
+- Never put an AI or tool name in commits, messages, or PR text.
 
-## Tool neutrality
+---
 
-Any capable agent may work in this repository. These rules govern the work, not the tool.
+## SAFETY
 
-## Corrected twice?
+- No secrets in code. Never invent Formspree IDs, Instagram handles, phone
+  numbers, or licence numbers.
+- Contact form: real POST when an endpoint is configured; honest error or
+  truthful mailto fallback when not. **Never fake a success message.**
+- Human sign-off for anything a client can see on the live site before merge.
 
-When the same failure or misunderstanding occurs twice, update this file or `docs/REPO-CONTROL.md` so it does not happen again.
+---
+
+## IF YOU GET STUCK
+
+One line: what is blocked and the minimum unblock. Then move to the next item.
