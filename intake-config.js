@@ -1,6 +1,6 @@
 /* OTTO Plumbing Inc. - customer intake delivery configuration.
- * No secrets belong here. The Formspree endpoint and confirmed office email
- * are intentionally left empty until the client setup visit.
+ * Final review candidate. No secrets belong here. The Formspree endpoint and
+ * confirmed office email stay empty until the client setup visit.
  */
 window.OTTO_INTAKE_CONFIG = {
   endpoint: '',
