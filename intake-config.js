@@ -38,10 +38,40 @@ window.OTTO_INTAKE_CONFIG = {
     document.body.appendChild(tag);
   }
 
+  function protectUnconfiguredHandoff() {
+    var config = window.OTTO_INTAKE_CONFIG || {};
+    if (config.endpoint || config.fallbackEmail) return;
+    var status = document.getElementById('intakeStatus');
+    if (!status) return;
+
+    var enOld = 'Nothing has been sent yet. Use the pre-filled email below, or call or text (786) 344-2837.';
+    var esOld = 'Todavia no se ha enviado nada. Use el correo ya completado de abajo, o llame o escriba al (786) 344-2837.';
+    var enSafe = 'This request has not been sent. Please call or text (786) 344-2837.';
+    var esSafe = 'Esta solicitud no se ha enviado. Llame o escriba al (786) 344-2837.';
+
+    function normalize() {
+      var value = status.textContent || '';
+      if (value === enOld) status.textContent = enSafe;
+      else if (value === esOld) status.textContent = esSafe;
+    }
+
+    normalize();
+    if (window.MutationObserver) {
+      var busy = false;
+      new MutationObserver(function () {
+        if (busy) return;
+        busy = true;
+        normalize();
+        busy = false;
+      }).observe(status, { childList: true, characterData: true, subtree: true });
+    }
+  }
+
   stylesheet('shell.css');
   stylesheet('facelift.css');
 
   function start() {
+    protectUnconfiguredHandoff();
     script('facelift.js', function () {
       script('shell.js');
     });
