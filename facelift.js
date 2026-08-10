@@ -23,7 +23,7 @@
       fact1Label: 'Experience',
       fact2Label: 'Hours',
       fact3Label: 'License',
-      badge: 'Licensed • Local • Established',
+      badge: 'Licensed • Since 1996 • South Florida',
       info1Title: '30+ years of experience',
       info1Body: 'Established in 1996 and serving plumbing needs across South Florida.',
       info2Title: 'Licensed plumbing service',
@@ -72,7 +72,7 @@
       fact1Label: 'Experiencia',
       fact2Label: 'Horario',
       fact3Label: 'Licencia',
-      badge: 'Con licencia • Local • Establecida',
+      badge: 'Con licencia • Desde 1996 • Sur de Florida',
       info1Title: 'Más de 30 años de experiencia',
       info1Body: 'Establecida en 1996 y atendiendo necesidades de plomería en el sur de Florida.',
       info2Title: 'Servicio de plomería con licencia',
@@ -107,6 +107,11 @@
       ctaText: 'Escribir a la línea del negocio',
       footerRight: 'Sur de Florida · Lic. #CFC1429613 · ' + PHONE
     }
+  };
+
+  var HERO_VALUES = {
+    en: ['30+ years', 'Mon–Sat · 7 AM–7 PM', 'CFC1429613'],
+    es: ['Más de 30 años', 'Lun–sáb · 7 AM–7 PM', 'CFC1429613']
   };
 
   var BUSINESS_VALUES = {
@@ -156,13 +161,10 @@
   };
 
   var SPANISH_TEXT_FIXES = {
-    'Obligatorio.': 'Obligatorio.',
     'Escriba un telefono de 10 digitos.': 'Escriba un teléfono de 10 dígitos.',
     'Escriba un correo valido o dejelo vacio.': 'Escriba un correo válido o déjelo vacío.',
-    'Elija uno de los servicios de la lista.': 'Elija uno de los servicios de la lista.',
     'Agregue un poco mas de detalle para poder ayudarle.': 'Agregue un poco más de detalle para poder ayudarle.',
     'Todavia no se ha enviado nada. Use el correo ya completado de abajo, o llame o escriba al (786) 344-2837.': 'Todavía no se ha enviado nada. Use el correo ya completado de abajo, o llame o escriba al (786) 344-2837.',
-    'Faltan datos obligatorios o hay algo incorrecto. No se ha enviado nada.': 'Faltan datos obligatorios o hay algo incorrecto. No se ha enviado nada.',
     'No se pudo verificar el envio, por lo que no se envio. Por favor llame o escriba al (786) 344-2837.': 'No se pudo verificar el envío, por lo que no se envió. Por favor llame o escriba al (786) 344-2837.',
     'Esta misma solicitud ya se envio. La oficina la tiene, no hace falta enviarla otra vez.': 'Esta misma solicitud ya se envió. La oficina la tiene; no hace falta enviarla otra vez.',
     'Enviando su solicitud...': 'Enviando su solicitud…',
@@ -184,6 +186,12 @@
       }
       if (typeof setLang === 'function') setLang(currentLang());
     } catch (ignored) {}
+  }
+
+  function applyHeroValues() {
+    var values = HERO_VALUES[currentLang()];
+    var nodes = document.querySelectorAll('.hero-facts .fact-value');
+    for (var i = 0; i < nodes.length && i < values.length; i += 1) nodes[i].textContent = values[i];
   }
 
   function applyBusinessValues() {
@@ -252,6 +260,7 @@
 
   function applyAll() {
     applyTranslationLayer();
+    applyHeroValues();
     applyBusinessValues();
     fixActions();
     fixMeta();
