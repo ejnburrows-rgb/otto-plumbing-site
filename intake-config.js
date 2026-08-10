@@ -69,11 +69,14 @@ window.OTTO_INTAKE_CONFIG = {
 
   stylesheet('shell.css');
   stylesheet('facelift.css');
+  stylesheet('prestige.css');
 
   function start() {
     protectUnconfiguredHandoff();
     script('facelift.js', function () {
-      script('shell.js');
+      script('prestige.js', function () {
+        script('shell.js');
+      });
     });
   }
 
