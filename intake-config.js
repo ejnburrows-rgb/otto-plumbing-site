@@ -70,6 +70,7 @@ window.OTTO_INTAKE_CONFIG = {
   stylesheet('shell.css');
   stylesheet('facelift.css');
   stylesheet('prestige.css');
+  stylesheet('prestige-polish.css');
 
   function start() {
     protectUnconfiguredHandoff();
