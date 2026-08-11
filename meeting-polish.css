@@ -1,0 +1,147 @@
+/* OTTO Plumbing Inc. — client-meeting polish.
+ * Deliberately visual only: strengthens hierarchy and trade credibility without
+ * changing verified copy, intake logic, navigation behavior, or business facts.
+ */
+
+/* Make the hero read as one premium contractor banner rather than two cards. */
+.hero-shell {
+  border-radius: 12px;
+  border-color: #bed6e7;
+  box-shadow: 0 22px 54px rgba(10, 77, 128, .16);
+}
+.hero-side {
+  position: relative;
+  border-left: 5px solid var(--gold);
+}
+.hero-side .badge {
+  background: #fff7dc;
+  color: #6f5200;
+  border: 1px solid #f1d77b;
+  padding: 8px 11px;
+  font-size: .68rem;
+}
+.hero-side .info-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 1.04rem;
+}
+.hero-side .info-card h3::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 22px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--blue);
+}
+
+/* Services get a stronger visual system and are easier to scan at a glance. */
+.service-grid .tile {
+  border-top: 4px solid var(--blue);
+  padding-top: 21px;
+}
+.service-grid .tile h3 {
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: -.015em;
+}
+.service-grid .tile p {
+  max-width: 34ch;
+}
+
+/* Credentials should feel like proof, not another generic card grid. */
+#business .tile {
+  position: relative;
+  padding-left: 27px;
+}
+#business .tile::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 16px;
+  bottom: 16px;
+  width: 4px;
+  border-radius: 999px;
+  background: var(--blue);
+}
+#business .tile h3 {
+  font-weight: 800;
+  letter-spacing: .015em;
+  text-transform: uppercase;
+  font-size: .76rem;
+}
+#business .tile p {
+  color: #405a70;
+  font-size: .96rem;
+  font-weight: 650;
+}
+
+/* Make direct-contact actions unmistakable to a customer. */
+.contact-grid .call-btn {
+  min-height: 48px;
+  justify-content: center;
+  font-size: .94rem;
+}
+#contact .contact-grid > .contact-card:nth-child(2) {
+  padding: 30px;
+  border: 1px solid #cddfeb;
+  border-radius: 8px;
+  background: #f7fbfe;
+}
+#contact .contact-grid > .contact-card:nth-child(2) .call-btn {
+  width: 100%;
+  margin-top: 9px;
+}
+
+/* Give the request form a professional service-desk appearance. */
+.intake-wrap .contact-card {
+  border-top: 5px solid var(--blue);
+  box-shadow: 0 16px 42px rgba(18, 58, 99, .09);
+}
+.intake-field label {
+  color: #48647c;
+  font-weight: 800;
+}
+.intake-submit {
+  min-width: 190px;
+}
+
+/* Closing call-to-action gets a subtle trade accent without turning decorative. */
+.cta-card {
+  position: relative;
+  overflow: hidden;
+}
+.cta-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: var(--gold);
+}
+
+@media (max-width: 980px) {
+  .hero-side {
+    border-left: 0;
+    border-top: 5px solid var(--gold);
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-shell {
+    border-radius: 7px;
+  }
+  .hero-side .info-card h3::before {
+    width: 17px;
+  }
+  .service-grid .tile {
+    border-top-width: 3px;
+  }
+  #contact .contact-grid > .contact-card:nth-child(2) {
+    padding: 22px 18px;
+  }
+  .intake-submit {
+    min-width: 0;
+  }
+}
