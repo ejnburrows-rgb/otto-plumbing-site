@@ -35,10 +35,34 @@
   background: var(--blue);
 }
 
+/* Give every major section a restrained editorial hierarchy. */
+.section-card > h2,
+.contact-card > h2 {
+  position: relative;
+  padding-bottom: 13px;
+}
+.section-card > h2::after,
+.contact-card > h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 54px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--blue);
+}
+.section-lead,
+.contact-lead {
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
 /* Services get a stronger visual system and are easier to scan at a glance. */
 .service-grid .tile {
   border-top: 4px solid var(--blue);
   padding-top: 21px;
+  min-height: 150px;
 }
 .service-grid .tile h3 {
   font-size: 1.08rem;
@@ -92,6 +116,9 @@
   width: 100%;
   margin-top: 9px;
 }
+.contact-row {
+  border-radius: 12px;
+}
 
 /* Give the request form a professional service-desk appearance. */
 .intake-wrap .contact-card {
@@ -129,14 +156,72 @@
 }
 
 @media (max-width: 720px) {
+  /* Keep the phone header compact so the customer sees the service immediately. */
+  .nav-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 12px;
+    justify-content: stretch;
+    padding: 10px 0;
+  }
+  .brand {
+    min-width: 0;
+  }
+  .brand img {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+  }
+  .brand-title {
+    font-size: 1.05rem;
+  }
+  .brand-sub {
+    font-size: .7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-actions {
+    width: auto;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    gap: 7px;
+  }
+  .toggle-group button {
+    padding: 8px 9px;
+    font-size: .75rem;
+  }
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+  }
+  .nav-actions > .call-btn {
+    grid-column: 1 / -1;
+    min-height: 44px;
+    width: 100%;
+  }
+  .hero {
+    padding-top: 28px;
+  }
   .hero-shell {
     border-radius: 7px;
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 13vw, 3.3rem);
+  }
+  .hero-cta > a {
+    width: 100%;
   }
   .hero-side .info-card h3::before {
     width: 17px;
   }
+  .section-card > h2::after,
+  .contact-card > h2::after {
+    width: 44px;
+  }
   .service-grid .tile {
     border-top-width: 3px;
+    min-height: 0;
   }
   #contact .contact-grid > .contact-card:nth-child(2) {
     padding: 22px 18px;
