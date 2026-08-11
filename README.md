@@ -1,44 +1,16 @@
-# OTTO Plumbing — Website
+# OTTO Plumbing Inc. website
 
-Static single-page marketing site for **OTTO Plumbing Inc.**, served as plain HTML/CSS/JS with PWA assets (`manifest.json` + icons).
+Current release candidate: `feat/final-site-facelift` / PR #32.
 
-## Files
+## Final visual direction
 
-```
-index.html            # The entire site (markup, styles, scripts)
-manifest.json         # PWA manifest
-AGENTS.md             # Rules for every coding tool
-favicon.svg           # Favicon
-apple-touch-icon.svg  # iOS home-screen icon
-icon-192.png          # PWA icon (192×192)
-icon-512.png          # PWA icon (512×512 slot)
-```
+The public website uses OTTO's own logo, copy, verified business details, bilingual behavior, and intake workflow with a clean national-service presentation inspired by leading U.S. plumbing brands: white navigation and content surfaces, confident medium-blue hero/CTA areas, strong contact actions, simple service cards, restrained borders/shadows, and mobile-first conversion hierarchy.
 
-## Local development
+The visual reference is structural only; no third-party plumbing brand logos, photos, wording, trademarks, or proprietary assets are copied into OTTO.
 
-No build step. Open `index.html` directly in a browser, or run a tiny local server:
+## Release safeguards
 
-```bash
-npx serve .
-```
-
-## Deployment
-
-Pushes to `main` deploy automatically via the connected hosting (Vercel/GitHub integration). No manual deploy step.
-
-## Contact form
-
-The form posts to Formspree when `window.OTTO_FORM_ENDPOINT` (or the `FORMSPREE_ENDPOINT` constant at the top of the script in `index.html`) is set to a real `https://formspree.io/f/...` URL. Until then it shows an honest on-screen error and offers call/email — it never fakes success.
-
-## Brand facts (do not invent)
-
-- OTTO Plumbing Inc. (caps)
-- (786) 344-2837
-- 30+ years / founded 1996
-- Licence #CFC1429613
-- Mon–Sat 7 AM – 7 PM · South Florida
-
-## Maintenance notes
-
-- `icon-512.png` has historically been the same bytes as `icon-192.png`. For crisp install icons, regenerate a true 512×512 export and replace it (safe swap — same filename, no code changes needed).
-- Instagram links stay off the page until a real handle is confirmed.
+- English / Spanish remains available on desktop and mobile.
+- Customer request delivery remains fail-safe until the verified client Formspree endpoint is configured.
+- Existing interaction shell behavior is preserved.
+- Production should only be updated after owner visual approval and final client-email delivery test.
