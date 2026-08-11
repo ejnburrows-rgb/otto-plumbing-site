@@ -3,7 +3,7 @@
   'use strict';
 
   var PHONE = '(786) 344-2837';
-  var CRM_LOGO = 'https://raw.githubusercontent.com/ejnburrows-rgb/otto/main/logo.jpg';
+  var CRM_LOGO = 'logo.jpg';
 
   var COPY = {
     en: {
