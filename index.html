@@ -559,6 +559,7 @@ html[data-theme="dark"] .intake-field [aria-invalid="true"] { border-color: #ff9
         <div class="hero-eyebrow" data-i18n="eyebrow">Licensed • Insured • English / Spanish</div>
         <h1 data-i18n="heroTitle">Professional plumbing service with verified business information.</h1>
         <p class="lead" data-i18n="heroLead">Call or text OTTO Plumbing Inc. directly at (786) 344-2837. This site shows only confirmed public details for immediate customer delivery.</p>
+        <blockquote class="brand-quote" data-i18n="brandQuote">“Integrity is what keeps the waters of trust flowing.”</blockquote>
         <div class="hero-cta">
           <a class="btn-primary" href="tel:+17863442837" data-i18n="primaryCta">Call (786) 344-2837</a>
           <a class="btn-secondary" href="#contact" data-i18n="secondaryCta">See contact options</a>
@@ -616,15 +617,27 @@ html[data-theme="dark"] .intake-field [aria-invalid="true"] { border-color: #ff9
   <section class="section" id="business">
     <div class="wrap">
       <div class="section-card">
-        <h2 data-i18n="businessTitle">Business information</h2>
-        <p class="section-lead" data-i18n="businessLead">Only confirmed facts appear here. Unknown public details are intentionally left out instead of guessed.</p>
-        <div class="reason-grid">
-          <div class="tile"><h3 data-i18n="biz1Title">Legal name</h3><p>OTTO Plumbing Inc.</p></div>
-          <div class="tile"><h3 data-i18n="biz2Title">Confirmed phone</h3><p>(786) 344-2837</p></div>
-          <div class="tile"><h3 data-i18n="biz3Title">Confirmed license</h3><p>CFC1429613</p></div>
-          <div class="tile"><h3 data-i18n="biz4Title">Email</h3><p data-i18n="biz4Body">Not shown until confirmed.</p></div>
-          <div class="tile"><h3 data-i18n="biz5Title">Website claims</h3><p data-i18n="biz5Body">Unsupported ratings, customer counts, and response-time promises are removed.</p></div>
-          <div class="tile"><h3 data-i18n="biz6Title">Contact method</h3><p data-i18n="biz6Body">Call or text is the live customer path right now.</p></div>
+        <h2 data-i18n="businessTitle">Credentials you can verify.</h2>
+        <p class="section-lead" data-i18n="businessLead">Independent public records support the company’s license, business rating, and permitted project history.</p>
+        <div class="credential-grid">
+          <a class="credential-card" href="https://www.myfloridalicense.com/wl11.asp?mode=0&amp;search=LicNbr&amp;licnbr=CFC1429613" target="_blank" rel="noopener noreferrer">
+            <span class="credential-kicker" data-i18n="credential1Kicker">Florida DBPR</span>
+            <strong>CFC1429613</strong>
+            <p data-i18n="credential1Body">Florida Certified Plumbing Contractor license. Verify its current status directly with the state.</p>
+            <span class="credential-link" data-i18n="verifySource">Verify source ↗</span>
+          </a>
+          <a class="credential-card" href="https://www.bbb.org/us/fl/miami/profile/plumber/otto-plumbing-inc-0633-92081152" target="_blank" rel="noopener noreferrer">
+            <span class="credential-kicker" data-i18n="credential2Kicker">Better Business Bureau</span>
+            <strong data-i18n="credential2Value">A+ rating</strong>
+            <p data-i18n="credential2Body">BBB business rating. OTTO Plumbing Inc. is not BBB accredited.</p>
+            <span class="credential-link" data-i18n="verifySource">Verify source ↗</span>
+          </a>
+          <a class="credential-card" href="https://www.buildzoom.com/contractor/otto-plumbing-inc" target="_blank" rel="noopener noreferrer">
+            <span class="credential-kicker">BuildZoom</span>
+            <strong data-i18n="credential3Value">Score 110 · Top 4%</strong>
+            <p data-i18n="credential3Body">Permit-based contractor profile reporting 175 permitted projects and a July 2026 license verification.</p>
+            <span class="credential-link" data-i18n="verifySource">Verify source ↗</span>
+          </a>
         </div>
       </div>
     </div>
@@ -655,7 +668,24 @@ html[data-theme="dark"] .intake-field [aria-invalid="true"] { border-color: #ff9
         <p class="contact-lead" data-i18n="contactCardLead">Use the direct line above. The site is intentionally simplified so there is one obvious next step and no misleading submission state.</p>
         <div class="contact-stack">
           <a class="call-btn" href="tel:+17863442837" style="width:100%;" data-i18n="contactButton1">Call now</a>
-          <a class="call-btn" href="tel:+17863442837" style="width:100%; background: var(--blue-2);" data-i18n="contactButton2">Text now</a>
+          <a class="call-btn" href="sms:+17863442837" style="width:100%; background: var(--blue-2);" data-i18n="contactButton2">Text now</a>
+          <div class="whatsapp-contact" data-whatsapp-contact>
+            <div class="whatsapp-heading">
+              <div>
+                <small>WhatsApp</small>
+                <strong data-i18n="whatsappTitle">Prepare a WhatsApp message</strong>
+              </div>
+              <span class="whatsapp-status" data-i18n="whatsappStatus">You press Send in WhatsApp</span>
+            </div>
+            <p data-i18n="whatsappLead">Choose the language for the prepared message.</p>
+            <div class="whatsapp-languages" role="group" aria-label="WhatsApp message language">
+              <button type="button" class="is-on" data-whatsapp-language="en" aria-pressed="true">English</button>
+              <button type="button" data-whatsapp-language="es" aria-pressed="false">Español</button>
+            </div>
+            <a class="whatsapp-button" data-whatsapp-link target="_blank" rel="noopener noreferrer" hidden>Open WhatsApp</a>
+            <p class="whatsapp-missing" data-whatsapp-missing role="status"></p>
+            <p class="whatsapp-disclosure" data-i18n="whatsappDisclosure">The website prepares the message. WhatsApp opens and asks you to press Send.</p>
+          </div>
           <div class="contact-row">
             <small data-i18n="contactWhyLabel">Why this is safer</small>
             <div class="contact-note" data-i18n="contactWhyBody">The verified phone line always works, and the request form only reports success when the office actually receives it.</div>
