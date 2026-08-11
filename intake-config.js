@@ -5,8 +5,15 @@
 window.OTTO_INTAKE_CONFIG = {
   endpoint: '',
   fallbackEmail: '',
+  // Confirm the WhatsApp-enabled business number before setting this value.
+  // Required format: country code plus business number, digits only.
+  whatsappNumber: '',
   timeoutMs: 15000
 };
+
+/* Publish no testimonial until the owner supplies a source that can be
+ * checked. Supported fields: name, rating, platform, excerpt, and url. */
+window.OTTO_VERIFIED_REVIEWS = [];
 
 /* Final-candidate asset bootstrap.
  * The intake branch owns the page markup; this loads the already-approved
@@ -72,12 +79,15 @@ window.OTTO_INTAKE_CONFIG = {
   stylesheet('prestige.css');
   stylesheet('prestige-polish.css');
   stylesheet('meeting-polish.css');
+  stylesheet('production-polish.css');
 
   function start() {
     protectUnconfiguredHandoff();
     script('facelift.js', function () {
-      script('prestige.js', function () {
-        script('shell.js');
+      script('whatsapp.js', function () {
+        script('prestige.js', function () {
+          script('shell.js');
+        });
       });
     });
   }
