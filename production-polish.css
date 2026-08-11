@@ -35,14 +35,13 @@
   max-width: 680px;
   margin: 23px 0 0;
   padding: 0 0 0 18px;
-  border-left: 2px solid var(--blue);
-  color: var(--navy);
+  border-left: 2px solid rgba(255, 255, 255, .7);
+  color: rgba(255, 255, 255, .92);
   font-family: 'Newsreader', Georgia, serif;
   font-size: clamp(1.08rem, 1.8vw, 1.3rem);
   font-style: italic;
   line-height: 1.45;
 }
-html[data-theme="dark"] .brand-quote { color: var(--ink); }
 
 /* Evidence-backed credibility */
 .credential-grid {
