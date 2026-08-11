@@ -445,6 +445,81 @@ html[data-theme="dark"] .badge { background: rgba(137,171,255,0.14); color: #cdd
   html { scroll-behavior: auto; }
   * { transition: none !important; animation: none !important; }
 }
+.intake-wrap { margin-top: 16px; }
+.intake-form { display: grid; gap: 16px; }
+.intake-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.intake-field { display: grid; gap: 6px; align-content: start; }
+.intake-field.is-wide { grid-column: 1 / -1; }
+.intake-field label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: var(--muted);
+}
+.intake-field input,
+.intake-field select,
+.intake-field textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--card-solid);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.intake-field textarea { min-height: 128px; resize: vertical; }
+.intake-field [aria-invalid="true"] { border-color: #b42318; }
+.intake-error {
+  margin: 0;
+  min-height: 1.1em;
+  font-size: 0.85rem;
+  color: #b42318;
+}
+.intake-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.intake-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.intake-submit {
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.intake-submit:hover { background: var(--navy-2); }
+.intake-submit[disabled] { opacity: 0.65; cursor: progress; }
+.intake-status { margin: 0; font-size: 0.95rem; color: var(--muted); }
+.intake-status.is-error { color: #b42318; font-weight: 600; }
+.intake-status.is-ok { color: var(--teal); font-weight: 600; }
+.intake-fallback { display: none; gap: 10px; }
+.intake-fallback.is-on { display: grid; }
+.intake-fallback [hidden] { display: none; }
+html[data-theme="dark"] .intake-error,
+html[data-theme="dark"] .intake-status.is-error { color: #ff9c92; }
+html[data-theme="dark"] .intake-field [aria-invalid="true"] { border-color: #ff9c92; }
+@media (max-width: 720px) {
+  .intake-grid { grid-template-columns: 1fr; }
+  .intake-actions > * { width: 100%; }
+}
 </style>
 </head>
 <body>
@@ -557,7 +632,7 @@ html[data-theme="dark"] .badge { background: rgba(137,171,255,0.14); color: #cdd
     <div class="wrap contact-grid">
       <div class="contact-card">
         <h2 data-i18n="contactTitle">Contact OTTO Plumbing</h2>
-        <p class="contact-lead" data-i18n="contactLead">For immediate delivery, the website uses the verified phone line as the customer path instead of a placeholder web form.</p>
+        <p class="contact-lead" data-i18n="contactLead">Call or text the verified phone line for the fastest response, or send a service request with the form below.</p>
         <div class="contact-stack">
           <div class="contact-row">
             <small data-i18n="contactPhoneLabel">Call or text</small>
@@ -581,9 +656,86 @@ html[data-theme="dark"] .badge { background: rgba(137,171,255,0.14); color: #cdd
           <a class="call-btn" href="tel:+17863442837" style="width:100%; background: var(--blue-2);" data-i18n="contactButton2">Text now</a>
           <div class="contact-row">
             <small data-i18n="contactWhyLabel">Why this is safer</small>
-            <div class="contact-note" data-i18n="contactWhyBody">A broken form or placeholder social link loses leads. A verified phone path does not.</div>
+            <div class="contact-note" data-i18n="contactWhyBody">The verified phone line always works, and the request form only reports success when the office actually receives it.</div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="wrap intake-wrap" id="request">
+      <div class="contact-card">
+        <h2 data-otto-i18n="formTitle">Request service online</h2>
+        <p class="contact-lead" data-otto-i18n="formLead">Send the job details and the office will follow up. Nothing is reported as sent unless the receiving system confirms it. To reach OTTO Plumbing right now, call or text (786) 344-2837.</p>
+        <form class="intake-form" id="intakeForm" novalidate>
+          <div class="intake-grid">
+            <div class="intake-field">
+              <label for="intakeName" data-otto-i18n="labelName">Name</label>
+              <input id="intakeName" name="name" type="text" autocomplete="name" maxlength="80" data-otto-i18n-ph="phName" placeholder="First and last name" required>
+              <p class="intake-error" data-otto-error-for="name"></p>
+            </div>
+            <div class="intake-field">
+              <label for="intakePhone" data-otto-i18n="labelPhone">Phone</label>
+              <input id="intakePhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="32" data-otto-i18n-ph="phPhone" placeholder="(786) 344-2837" required>
+              <p class="intake-error" data-otto-error-for="phone"></p>
+            </div>
+            <div class="intake-field">
+              <label for="intakeEmail" data-otto-i18n="labelEmail">Email (optional)</label>
+              <input id="intakeEmail" name="email" type="email" autocomplete="email" maxlength="120" data-otto-i18n-ph="phEmail" placeholder="you@example.com">
+              <p class="intake-error" data-otto-error-for="email"></p>
+            </div>
+            <div class="intake-field">
+              <label for="intakeService" data-otto-i18n="labelService">Service needed</label>
+              <select id="intakeService" name="service" required>
+                <option value="" data-otto-i18n="optService">Choose a service</option>
+                <option value="leak" data-otto-i18n="svcLeak">Leak repair</option>
+                <option value="drain" data-otto-i18n="svcDrain">Drain and sewer</option>
+                <option value="heater" data-otto-i18n="svcHeater">Water heaters</option>
+                <option value="general" data-otto-i18n="svcGeneral">General plumbing</option>
+                <option value="fixtures" data-otto-i18n="svcFixtures">Fixture updates</option>
+                <option value="remodel" data-otto-i18n="svcRemodel">Remodel support</option>
+                <option value="other" data-otto-i18n="svcOther">Other plumbing work</option>
+              </select>
+              <p class="intake-error" data-otto-error-for="service"></p>
+            </div>
+            <div class="intake-field">
+              <label for="intakeLocation" data-otto-i18n="labelLocation">City or address (optional)</label>
+              <input id="intakeLocation" name="location" type="text" autocomplete="street-address" maxlength="140" data-otto-i18n-ph="phLocation" placeholder="Neighborhood, city, or street address">
+              <p class="intake-error" data-otto-error-for="location"></p>
+            </div>
+            <div class="intake-field">
+              <label for="intakeContact" data-otto-i18n="labelContact">Preferred contact (optional)</label>
+              <select id="intakeContact" name="contactPreference">
+                <option value="" data-otto-i18n="prefNone">No preference</option>
+                <option value="call" data-otto-i18n="prefCall">Phone call</option>
+                <option value="text" data-otto-i18n="prefText">Text message</option>
+                <option value="email" data-otto-i18n="prefEmail">Email</option>
+              </select>
+              <p class="intake-error" data-otto-error-for="contactPreference"></p>
+            </div>
+            <div class="intake-field is-wide">
+              <label for="intakeDetails" data-otto-i18n="labelDetails">What is happening?</label>
+              <textarea id="intakeDetails" name="details" rows="4" maxlength="1200" data-otto-i18n-ph="phDetails" placeholder="Describe the problem, the fixture involved, and when it started." required></textarea>
+              <p class="intake-error" data-otto-error-for="details"></p>
+            </div>
+          </div>
+          <div class="intake-hp">
+            <label for="intakeCompany">Company</label>
+            <input id="intakeCompany" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+          </div>
+          <div class="intake-actions">
+            <button class="intake-submit" type="submit" id="intakeSubmit" data-otto-i18n="submitIdle">Send request</button>
+            <a class="call-btn" href="tel:+17863442837" data-otto-i18n="callInstead">Call (786) 344-2837</a>
+          </div>
+          <p class="intake-status" id="intakeStatus" role="status" aria-live="polite"></p>
+          <div class="intake-fallback" id="intakeFallback">
+            <div class="contact-row">
+              <small data-otto-i18n="fallbackLabel">Reach the office directly</small>
+              <div class="contact-note" data-otto-i18n="fallbackBody">Your details are still in the form. Nothing has been sent to the office yet.</div>
+            </div>
+            <a class="call-btn" href="tel:+17863442837" data-otto-i18n="fallbackCall">Call (786) 344-2837</a>
+            <a class="call-btn" href="sms:+17863442837" data-otto-i18n="fallbackText">Text (786) 344-2837</a>
+            <a class="call-btn" id="intakeMailto" href="tel:+17863442837" data-otto-i18n="fallbackEmail">Open a pre-filled email</a>
+          </div>
+        </form>
       </div>
     </div>
   </section>
@@ -657,7 +809,7 @@ const translations = {
     biz6Title: 'Contact method',
     biz6Body: 'Call or text is the live customer path right now.',
     contactTitle: 'Contact OTTO Plumbing',
-    contactLead: 'For immediate delivery, the website uses the verified phone line as the customer path instead of a placeholder web form.',
+    contactLead: 'Call or text the verified phone line for the fastest response, or send a service request with the form below.',
     contactPhoneLabel: 'Call or text',
     contactLicenseLabel: 'License',
     contactNotesLabel: 'Notes',
@@ -667,7 +819,7 @@ const translations = {
     contactButton1: 'Call now',
     contactButton2: 'Text now',
     contactWhyLabel: 'Why this is safer',
-    contactWhyBody: 'A broken form or placeholder social link loses leads. A verified phone path does not.',
+    contactWhyBody: 'The verified phone line always works, and the request form only reports success when the office actually receives it.',
     ctaTitle: 'Need plumbing help?',
     ctaLead: 'Call or text the verified OTTO Plumbing Inc. number.',
     ctaCall: 'Call (786) 344-2837',
@@ -722,7 +874,7 @@ const translations = {
     biz6Title: 'Método de contacto',
     biz6Body: 'Llamar o escribir es la vía activa para clientes ahora mismo.',
     contactTitle: 'Contactar a OTTO Plumbing',
-    contactLead: 'Para la entrega inmediata, el sitio usa la línea telefónica verificada como camino del cliente en lugar de un formulario placeholder.',
+    contactLead: 'Llame o escriba a la línea verificada para la respuesta más rápida, o envíe su solicitud de servicio con el formulario de abajo.',
     contactPhoneLabel: 'Llamar o escribir',
     contactLicenseLabel: 'Licencia',
     contactNotesLabel: 'Notas',
@@ -732,7 +884,7 @@ const translations = {
     contactButton1: 'Llamar ahora',
     contactButton2: 'Escribir ahora',
     contactWhyLabel: 'Por qué esto es más seguro',
-    contactWhyBody: 'Un formulario roto o una red social placeholder pierde leads. Una línea verificada no.',
+    contactWhyBody: 'La línea telefónica verificada siempre funciona, y el formulario solo confirma el envío cuando la oficina realmente lo recibe.',
     ctaTitle: '¿Necesita ayuda de plomería?',
     ctaLead: 'Llame o escriba al número verificado de OTTO Plumbing Inc.',
     ctaCall: 'Llamar al (786) 344-2837',
@@ -772,5 +924,8 @@ const savedTheme = localStorage.getItem('otto-site-theme') || (window.matchMedia
 setLang(savedLang === 'es' ? 'es' : 'en');
 setTheme(savedTheme === 'dark' ? 'dark' : 'light');
 </script>
+<script src="intake-config.js"></script>
+<script src="intake-core.js"></script>
+<script src="intake.js"></script>
 </body>
 </html>

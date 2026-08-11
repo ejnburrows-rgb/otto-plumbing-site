@@ -1,0 +1,446 @@
+/* OTTO Plumbing Inc. — client-meeting polish.
+ * Deliberately visual only: strengthens hierarchy and trade credibility without
+ * changing verified copy, intake logic, navigation behavior, or business facts.
+ */
+
+/* Make the hero read as one premium contractor banner rather than two cards. */
+.hero-shell {
+  border-radius: 12px;
+  border-color: #bed6e7;
+  box-shadow: 0 22px 54px rgba(10, 77, 128, .16);
+}
+.hero-side {
+  position: relative;
+  border-left: 5px solid var(--gold);
+}
+.hero-side .badge {
+  background: #fff7dc;
+  color: #6f5200;
+  border: 1px solid #f1d77b;
+  padding: 8px 11px;
+  font-size: .68rem;
+}
+.hero-side .info-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 1.04rem;
+}
+.hero-side .info-card h3::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 22px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--blue);
+}
+
+/* Give every major section a restrained editorial hierarchy. */
+.section-card > h2,
+.contact-card > h2 {
+  position: relative;
+  padding-bottom: 13px;
+}
+.section-card > h2::after,
+.contact-card > h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 54px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--blue);
+}
+.section-lead,
+.contact-lead {
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+/* Services get a stronger visual system and are easier to scan at a glance. */
+.service-grid .tile {
+  border-top: 4px solid var(--blue);
+  padding-top: 21px;
+  min-height: 150px;
+}
+.service-grid .tile h3 {
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: -.015em;
+}
+.service-grid .tile p {
+  max-width: 34ch;
+}
+
+/* Credentials should feel like proof, not another generic card grid. */
+#business .tile {
+  position: relative;
+  padding-left: 27px;
+}
+#business .tile::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 16px;
+  bottom: 16px;
+  width: 4px;
+  border-radius: 999px;
+  background: var(--blue);
+}
+#business .tile h3 {
+  font-weight: 800;
+  letter-spacing: .015em;
+  text-transform: uppercase;
+  font-size: .76rem;
+}
+#business .tile p {
+  color: #405a70;
+  font-size: .96rem;
+  font-weight: 650;
+}
+
+/* Make direct-contact actions unmistakable to a customer. */
+.contact-grid .call-btn {
+  min-height: 48px;
+  justify-content: center;
+  font-size: .94rem;
+}
+#contact .contact-grid > .contact-card:nth-child(2) {
+  padding: 30px;
+  border: 1px solid #cddfeb;
+  border-radius: 8px;
+  background: #f7fbfe;
+}
+#contact .contact-grid > .contact-card:nth-child(2) .call-btn {
+  width: 100%;
+  margin-top: 9px;
+}
+.contact-row {
+  border-radius: 12px;
+}
+
+/* Give the request form a professional service-desk appearance. */
+.intake-wrap .contact-card {
+  border-top: 5px solid var(--blue);
+  box-shadow: 0 16px 42px rgba(18, 58, 99, .09);
+}
+.intake-field label {
+  color: #48647c;
+  font-weight: 800;
+}
+.intake-submit {
+  min-width: 190px;
+}
+
+/* Closing call-to-action gets a subtle trade accent without turning decorative. */
+.cta-card {
+  position: relative;
+  overflow: hidden;
+}
+.cta-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: var(--gold);
+}
+
+/* Desktop pass: build stronger rhythm without changing any copy or behavior. */
+@media (min-width: 981px) {
+  .hero {
+    padding-top: 42px;
+    padding-bottom: 34px;
+  }
+  .hero-shell {
+    grid-template-columns: minmax(0, 1.32fr) minmax(310px, .68fr);
+    gap: 0;
+    overflow: hidden;
+    background: var(--card-solid);
+  }
+  .hero-main,
+  .hero-side {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .hero-main {
+    padding: 52px 50px 44px;
+  }
+  .hero h1 {
+    max-width: 11ch;
+    font-size: clamp(3.4rem, 5.2vw, 5.2rem);
+    line-height: .94;
+  }
+  .hero p.lead {
+    max-width: 38rem;
+    font-size: 1.08rem;
+    line-height: 1.7;
+  }
+  .hero-cta {
+    margin-top: 30px;
+  }
+  .hero-cta .btn-primary,
+  .hero-cta .btn-secondary {
+    min-height: 52px;
+    padding-inline: 24px;
+  }
+  .hero-facts {
+    margin-top: 36px;
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,.16);
+  }
+  .hero-facts .fact {
+    padding: 18px 16px 4px 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .hero-facts .fact + .fact {
+    padding-left: 20px;
+    border-left: 1px solid rgba(255,255,255,.16);
+  }
+  .hero-side {
+    padding: 34px 30px;
+    align-content: center;
+    background: linear-gradient(180deg, #fafdff 0%, #f1f7fb 100%);
+  }
+  .hero-side .info-card {
+    padding: 19px 0;
+    border: 0;
+    border-bottom: 1px solid #d7e5ee;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .hero-side .info-card:last-child {
+    border-bottom: 0;
+  }
+  .section {
+    padding-top: 22px;
+    padding-bottom: 34px;
+  }
+  .section-card,
+  .contact-card {
+    border-radius: 14px;
+  }
+  #services .section-card {
+    padding: 38px 40px 42px;
+  }
+  .service-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+  .service-grid .tile {
+    min-height: 164px;
+    padding: 25px 24px;
+    border: 0;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    border-top: 4px solid transparent;
+    border-radius: 0;
+    box-shadow: none;
+    transition: background .18s ease, border-top-color .18s ease;
+  }
+  .service-grid .tile:hover {
+    border-top-color: var(--blue);
+    background: var(--soft-blue);
+  }
+  #business .reason-grid {
+    gap: 10px;
+  }
+  #contact .contact-grid {
+    grid-template-columns: minmax(0, 1.18fr) minmax(320px, .82fr);
+    gap: 18px;
+    align-items: stretch;
+  }
+  #contact .contact-grid > .contact-card:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 38px 34px;
+  }
+  .contact-stack {
+    gap: 10px;
+  }
+  .contact-row {
+    padding: 16px 18px;
+    background: var(--card-solid);
+  }
+  .cta-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 30px;
+    padding: 34px 40px;
+    border-radius: 14px;
+  }
+  .cta-actions {
+    margin-top: 0;
+    justify-content: flex-end;
+  }
+}
+
+html[data-theme="dark"] .hero-side {
+  background: linear-gradient(180deg, #0f2138 0%, #0a1727 100%);
+}
+html[data-theme="dark"] .hero-side .info-card {
+  border-bottom-color: #263b55;
+}
+html[data-theme="dark"] #business .tile p,
+html[data-theme="dark"] .intake-field label {
+  color: var(--muted);
+}
+html[data-theme="dark"] #contact .contact-grid > .contact-card:nth-child(2) {
+  background: #0e1c2d;
+  border-color: #28405a;
+}
+
+@media (max-width: 980px) {
+  .hero-side {
+    border-left: 0;
+    border-top: 5px solid var(--gold);
+  }
+}
+
+/* Tablet pass: avoid the unfinished single-column service wall on common
+ * iPad/small-laptop widths while keeping contact and hero comfortably stacked. */
+@media (min-width: 721px) and (max-width: 980px) {
+  .hero {
+    padding-top: 38px;
+  }
+  .hero-shell {
+    gap: 16px;
+  }
+  .hero-main,
+  .hero-side,
+  .section-card,
+  .contact-card {
+    border-radius: 14px;
+  }
+  #services .service-grid,
+  #business .reason-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .service-grid .tile {
+    min-height: 142px;
+  }
+  #contact .contact-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, .72fr);
+    align-items: stretch;
+  }
+  .cta-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 22px;
+  }
+  .cta-actions {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  /* Keep the phone header compact so the customer sees the service immediately. */
+  .nav-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 12px;
+    justify-content: stretch;
+    padding: 10px 0;
+  }
+  .brand {
+    min-width: 0;
+  }
+  .brand img {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+  }
+  .brand-title {
+    font-size: 1.05rem;
+  }
+  .brand-sub {
+    font-size: .7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-actions {
+    width: auto;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    gap: 7px;
+  }
+  .toggle-group button {
+    padding: 8px 9px;
+    font-size: .75rem;
+  }
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+  }
+  .nav-actions > .call-btn {
+    grid-column: 1 / -1;
+    min-height: 44px;
+    width: 100%;
+  }
+  .hero {
+    padding-top: 28px;
+  }
+  .hero-shell {
+    border-radius: 7px;
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 13vw, 3.3rem);
+  }
+  .hero-cta > a {
+    width: 100%;
+  }
+  /* Turn proof points into a compact credential rail instead of three chunky cards. */
+  .hero-facts {
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,.16);
+    border-bottom: 1px solid rgba(255,255,255,.16);
+  }
+  .hero-facts .fact {
+    padding: 13px 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .hero-facts .fact + .fact {
+    border-top: 1px solid rgba(255,255,255,.12);
+  }
+  .hero-side .info-card h3::before {
+    width: 17px;
+  }
+  .section-card > h2::after,
+  .contact-card > h2::after {
+    width: 44px;
+  }
+  .service-grid .tile {
+    border-top-width: 3px;
+    min-height: 0;
+  }
+  #contact .contact-grid > .contact-card:nth-child(2) {
+    padding: 22px 18px;
+  }
+  .intake-submit {
+    min-width: 0;
+    width: 100%;
+  }
+  .cta-actions > a {
+    width: 100%;
+  }
+  .foot-box {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+}

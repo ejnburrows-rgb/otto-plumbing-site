@@ -27,6 +27,48 @@ jobs:
             python3 -c "import xml.etree.ElementTree as ET; ET.parse('$f')"
           done
 
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check facelift.js
+          node --check intake-config.js
+          node --check intake-core.js
+          node --check intake.js
+          node --check shell.js
+
+      - name: Run customer intake regression tests
+        run: node --test tests/intake-core.test.mjs
+
+      - name: Verify final-candidate integration hooks
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          html = Path('index.html').read_text()
+          config = Path('intake-config.js').read_text()
+          required_html = [
+              'id="request"',
+              'id="intakeForm"',
+              'src="intake-config.js"',
+              'src="intake-core.js"',
+              'src="intake.js"',
+          ]
+          required_bootstrap = [
+              "stylesheet('shell.css')",
+              "stylesheet('facelift.css')",
+              "script('facelift.js'",
+              "script('shell.js')",
+          ]
+          missing = [x for x in required_html if x not in html]
+          missing += [x for x in required_bootstrap if x not in config]
+          if missing:
+              raise SystemExit('Missing integration hooks: ' + ', '.join(missing))
+          print('Final-candidate integration hooks verified.')
+          PY
+
   secret-scan:
     name: Secret scan (gitleaks)
     runs-on: ubuntu-latest
