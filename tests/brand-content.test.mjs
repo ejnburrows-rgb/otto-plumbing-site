@@ -24,3 +24,11 @@ test('clearly includes residential and commercial buildings across South Florida
   assert.match(copy, /commercial plumbing/);
   assert.match(copy, /Plomería profesional/);
 });
+
+test('uses the concise WhatsApp contact invitation in both languages', () => {
+  assert.match(copy, /Contact us on WhatsApp/);
+  assert.match(copy, /Tap the link and we’ll get in touch with you/);
+  assert.match(copy, /Contáctenos por WhatsApp/);
+  assert.match(copy, /Contáctenos, presione el enlace y nos comunicaremos con usted/);
+  assert.doesNotMatch(copy, /Prepare (a|un) WhatsApp message/);
+});

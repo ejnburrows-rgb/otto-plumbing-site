@@ -98,7 +98,6 @@
 #contact .whatsapp-heading > div { display: grid; gap: 4px; }
 #contact .whatsapp-heading small { color: #27704a; font-size: .68rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
 #contact .whatsapp-heading strong { color: #16452f; font-size: 1.04rem; }
-#contact .whatsapp-status { max-width: 130px; color: #527063; font-size: .69rem; font-weight: 700; line-height: 1.35; text-align: right; }
 #contact .whatsapp-contact > p { margin: 12px 0 14px; color: #527063; font-size: .84rem; line-height: 1.55; }
 #contact .whatsapp-languages { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid #bfd7c8; border-radius: 5px; background: #fff; }
 #contact .whatsapp-languages button {
@@ -131,7 +130,6 @@
 #contact .whatsapp-button:hover { background: #175c3a; }
 #contact .whatsapp-button[hidden] { display: none; }
 #contact .whatsapp-missing { color: #795a16 !important; font-weight: 720; }
-#contact .whatsapp-disclosure { margin-bottom: 0 !important; font-size: .73rem !important; }
 
 /* Ready for verified, sourced reviews; no empty or placeholder section renders. */
 .verified-reviews { padding: clamp(62px, 7vw, 86px) 0; border-top: 1px solid var(--line); }
@@ -159,8 +157,6 @@
   .credential-grid { margin-top: 24px; gap: 10px; }
   .credential-card { padding: 21px; }
   #contact .whatsapp-contact { padding: 18px; }
-  #contact .whatsapp-heading { display: grid; gap: 6px; }
-  #contact .whatsapp-status { max-width: none; text-align: left; }
   #contact .whatsapp-languages { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
 }
 
