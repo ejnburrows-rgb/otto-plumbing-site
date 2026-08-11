@@ -80,13 +80,16 @@ window.OTTO_VERIFIED_REVIEWS = [];
   stylesheet('prestige-polish.css');
   stylesheet('meeting-polish.css');
   stylesheet('production-polish.css');
+  stylesheet('cinematic.css');
 
   function start() {
     protectUnconfiguredHandoff();
     script('facelift.js', function () {
       script('whatsapp.js', function () {
         script('prestige.js', function () {
-          script('shell.js');
+          script('shell.js', function () {
+            script('cinematic.js');
+          });
         });
       });
     });

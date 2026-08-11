@@ -14,8 +14,8 @@ test('uses the supplied official company logo without alteration', () => {
 });
 
 test('publishes the integrity statement in English and Spanish', () => {
-  assert.match(copy, /Integrity is what keeps the waters of trust flowing/);
-  assert.match(copy, /La integridad es lo que mantiene fluyendo las aguas de la confianza/);
+  assert.match(copy, /For over three decades, water has flowed through our work—and integrity through our name/);
+  assert.match(copy, /Durante más de tres décadas, el agua ha fluido gracias a nuestro trabajo—y la integridad ha distinguido nuestro nombre/);
 });
 
 test('clearly includes residential and commercial buildings across South Florida', () => {

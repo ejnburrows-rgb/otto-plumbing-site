@@ -1,0 +1,147 @@
+/* OTTO Plumbing Inc. — South Florida cinematic page transitions. */
+
+:root {
+  --cinematic-top: 188px;
+  --cinematic-gap: 17vh;
+}
+
+html {
+  background-color: #031127;
+  background-image:
+    linear-gradient(115deg, rgba(1, 9, 25, .78), rgba(5, 42, 87, .24) 48%, rgba(0, 16, 43, .68)),
+    url('south-florida-waterfront.webp');
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+body {
+  background: transparent !important;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  content: '';
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 68% 28%, rgba(77, 189, 255, .15), transparent 31%),
+    linear-gradient(180deg, rgba(0, 10, 30, .16), rgba(0, 8, 24, .55));
+}
+
+.nav {
+  background: rgba(247, 250, 255, .91) !important;
+  border-bottom-color: rgba(255, 255, 255, .34) !important;
+  box-shadow: 0 16px 44px rgba(0, 12, 36, .2) !important;
+}
+
+html[data-theme="dark"] .nav {
+  background: rgba(4, 16, 37, .9) !important;
+}
+
+main,
+.foot {
+  position: relative;
+  z-index: 1;
+}
+
+.cinematic-panel {
+  --panel-enter: 1;
+  --panel-exit: 0;
+  position: sticky;
+  top: var(--cinematic-top);
+  z-index: var(--panel-layer, 1);
+  margin-bottom: var(--cinematic-gap);
+  transform: none !important;
+  isolation: isolate;
+}
+
+.cinematic-panel > .wrap {
+  transform-origin: 50% 0;
+  will-change: transform, filter, opacity;
+  transition: box-shadow 180ms ease;
+}
+
+.cinematic-panel > .wrap::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 30px;
+  content: '';
+  pointer-events: none;
+  box-shadow: 0 34px 100px rgba(0, 9, 30, .38);
+  opacity: calc(.28 + (var(--panel-enter) * .54));
+}
+
+.cinematic-panel.is-receding > .wrap {
+  filter: saturate(calc(1 - (var(--panel-exit) * .16))) brightness(calc(1 - (var(--panel-exit) * .13)));
+}
+
+.cinematic-panel .hero-shell,
+.cinematic-panel .section-card {
+  overflow: hidden;
+}
+
+.cinematic-panel .hero-main,
+.cinematic-panel .hero-side,
+.cinematic-panel .section-card {
+  box-shadow: 0 26px 76px rgba(0, 12, 38, .24);
+}
+
+#contact,
+.cta-band,
+.foot {
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+#contact {
+  padding-top: clamp(56px, 7vw, 92px);
+  border-radius: 34px 34px 0 0;
+  box-shadow: 0 -24px 70px rgba(0, 10, 34, .26);
+}
+
+.foot {
+  padding-top: 12px;
+}
+
+@media (max-width: 1100px) {
+  :root { --cinematic-top: 158px; }
+}
+
+@media (max-width: 900px) {
+  html {
+    background-position: 58% center;
+    background-attachment: scroll;
+  }
+  .cinematic-panel {
+    position: relative;
+    top: auto;
+    margin-bottom: 28px;
+  }
+  .cinematic-panel > .wrap {
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+  .cinematic-panel > .wrap::after { display: none; }
+  #contact { border-radius: 24px 24px 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { background-attachment: scroll; }
+  .cinematic-panel {
+    position: relative;
+    top: auto;
+    margin-bottom: 28px;
+  }
+  .cinematic-panel > .wrap {
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    will-change: auto;
+  }
+}
