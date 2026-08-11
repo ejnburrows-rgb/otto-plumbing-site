@@ -5,6 +5,7 @@ import test from 'node:test';
 
 const logo = readFileSync(new URL('../logo.jpg', import.meta.url));
 const copy = readFileSync(new URL('../prestige.js', import.meta.url), 'utf8');
+const polish = readFileSync(new URL('../production-polish.css', import.meta.url), 'utf8');
 
 test('uses the supplied official company logo without alteration', () => {
   assert.equal(
@@ -31,4 +32,11 @@ test('uses the concise WhatsApp contact invitation in both languages', () => {
   assert.match(copy, /Contáctenos por WhatsApp/);
   assert.match(copy, /Contáctenos, presione el enlace y nos comunicaremos con usted/);
   assert.doesNotMatch(copy, /Prepare (a|un) WhatsApp message/);
+});
+
+test('centers the logo inside a seamless matching navy band', () => {
+  assert.match(polish, /background:\s*#0b1222/);
+  assert.match(polish, /grid-template-areas:\s*"links brand actions"/);
+  assert.match(polish, /justify-self:\s*center/);
+  assert.match(polish, /\.brand[\s\S]*?border:\s*0;[\s\S]*?box-shadow:\s*none;/);
 });
