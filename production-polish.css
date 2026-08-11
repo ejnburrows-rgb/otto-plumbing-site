@@ -49,6 +49,30 @@
 .nav-actions .call-btn { background: #0d6fbe; color: #fff; box-shadow: none; }
 .nav-actions .call-btn:hover { background: #fff; color: #0b1222; }
 
+.experience-banner {
+  display: inline-grid !important;
+  gap: 2px !important;
+  padding: 13px 17px !important;
+  border: 1px solid rgba(255, 255, 255, .34) !important;
+  border-left: 3px solid #fff !important;
+  border-radius: 3px !important;
+  background: rgba(255, 255, 255, .11) !important;
+  text-transform: uppercase;
+}
+.experience-banner strong {
+  color: #fff;
+  font-size: clamp(1.2rem, 2.3vw, 1.65rem);
+  font-weight: 850;
+  letter-spacing: -.025em;
+  line-height: 1;
+}
+.experience-banner span {
+  color: rgba(255, 255, 255, .82);
+  font-size: .63rem;
+  font-weight: 760;
+  letter-spacing: .13em;
+}
+
 .brand-quote {
   max-width: 680px;
   margin: 23px 0 0;
@@ -56,7 +80,7 @@
   border-left: 2px solid rgba(255, 255, 255, .7);
   color: rgba(255, 255, 255, .92);
   font-family: 'Newsreader', Georgia, serif;
-  font-size: clamp(1.08rem, 1.8vw, 1.3rem);
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
   font-style: italic;
   line-height: 1.45;
 }

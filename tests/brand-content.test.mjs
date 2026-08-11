@@ -14,9 +14,15 @@ test('uses the supplied official company logo without alteration', () => {
   );
 });
 
-test('publishes the integrity statement in English and Spanish', () => {
-  assert.match(copy, /Integrity is what keeps the waters of trust flowing/);
-  assert.match(copy, /La integridad es lo que mantiene fluyendo las aguas de la confianza/);
+test('publishes the company slogan in English and Spanish', () => {
+  assert.match(copy, /Making water flow through our pipes, like integrity through our name/);
+  assert.match(copy, /Hacemos fluir el agua por nuestras tuberías, como la integridad fluye por nuestro nombre/);
+});
+
+test('shows more than 30 years prominently in both languages', () => {
+  assert.match(copy, /experienceValue: '30\+ YEARS'/);
+  assert.match(copy, /experienceValue: 'MÁS DE 30 AÑOS'/);
+  assert.match(polish, /\.experience-banner strong/);
 });
 
 test('clearly includes residential and commercial buildings across South Florida', () => {
