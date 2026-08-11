@@ -9,8 +9,9 @@
     en: {
       brandSub: 'South Florida plumbing · Established 1996',
       eyebrow: 'South Florida · Est. 1996 · Lic. CFC1429613',
-      heroTitle: 'Trusted plumbing for South Florida homes and businesses.',
-      heroLead: 'Residential and commercial plumbing backed by more than 30 years of experience, direct service, and Florida license CFC1429613.',
+      heroTitle: 'Trusted residential and commercial plumbing across South Florida.',
+      heroLead: 'Professional plumbing for homes, businesses, and buildings, backed by more than 30 years of experience and Florida license CFC1429613.',
+      brandQuote: '“Integrity is what keeps the waters of trust flowing.”',
       primaryCta: 'Call ' + PHONE,
       secondaryCta: 'Request service',
       fact1Label: 'Established',
@@ -19,14 +20,22 @@
       badge: 'Why customers call OTTO',
       info1Title: '30+ years of experience',
       info1Body: 'Serving South Florida homes and businesses since 1996.',
-      info2Title: 'Residential + commercial',
-      info2Body: 'Repairs, replacements, installations, and plumbing project support.',
+      info2Title: 'Homes, businesses + buildings',
+      info2Body: 'Residential and commercial repairs, installations, replacements, and project support across South Florida.',
       info3Title: 'Direct business line',
       info3Body: 'Call or text Monday through Saturday, 7 AM to 7 PM.',
       servicesTitle: 'Plumbing services',
-      servicesLead: 'Straightforward service for repairs, replacements, installations, and residential or commercial plumbing needs.',
+      servicesLead: 'Residential and commercial plumbing for homes, businesses, and buildings across South Florida.',
       businessTitle: 'A local plumbing company you can verify.',
-      businessLead: 'Established in 1996, Florida licensed, and serving South Florida six days a week.',
+      businessLead: 'Independent public records support the company’s license, business rating, and permitted project history.',
+      credential1Kicker: 'Florida DBPR',
+      credential1Body: 'Florida Certified Plumbing Contractor license. Verify its current status directly with the state.',
+      credential2Kicker: 'Better Business Bureau',
+      credential2Value: 'A+ rating',
+      credential2Body: 'BBB business rating. OTTO Plumbing Inc. is not BBB accredited.',
+      credential3Value: 'Score 110 · Top 4%',
+      credential3Body: 'Permit-based contractor profile reporting 175 permitted projects and a July 2026 license verification.',
+      verifySource: 'Verify source ↗',
       biz1Title: 'Company',
       biz2Title: 'Direct line',
       biz3Title: 'Florida license',
@@ -48,6 +57,10 @@
       contactButton2: 'Text now',
       contactWhyLabel: 'Service area',
       contactWhyBody: 'Serving South Florida.',
+      whatsappTitle: 'Prepare a WhatsApp message',
+      whatsappStatus: 'You press Send in WhatsApp',
+      whatsappLead: 'Choose the language for the prepared message.',
+      whatsappDisclosure: 'The website prepares the message. WhatsApp opens and asks you to press Send.',
       ctaTitle: 'Need a plumber?',
       ctaLead: 'Talk directly with OTTO Plumbing Inc. about your residential or commercial plumbing needs.',
       ctaCall: 'Call ' + PHONE,
@@ -57,8 +70,9 @@
     es: {
       brandSub: 'Plomería en el sur de Florida · Desde 1996',
       eyebrow: 'Sur de Florida · Desde 1996 · Lic. CFC1429613',
-      heroTitle: 'Plomería de confianza para hogares y negocios del sur de Florida.',
-      heroLead: 'Servicio residencial y comercial respaldado por más de 30 años de experiencia, atención directa y la licencia de Florida CFC1429613.',
+      heroTitle: 'Plomería residencial y comercial de confianza en todo el sur de Florida.',
+      heroLead: 'Plomería profesional para hogares, negocios y edificios, respaldada por más de 30 años de experiencia y la licencia de Florida CFC1429613.',
+      brandQuote: '“La integridad es lo que mantiene fluyendo las aguas de la confianza.”',
       primaryCta: 'Llamar al ' + PHONE,
       secondaryCta: 'Solicitar servicio',
       fact1Label: 'Establecida',
@@ -67,14 +81,22 @@
       badge: 'Por qué llaman a OTTO',
       info1Title: 'Más de 30 años de experiencia',
       info1Body: 'Atendiendo hogares y negocios del sur de Florida desde 1996.',
-      info2Title: 'Residencial + comercial',
-      info2Body: 'Reparaciones, reemplazos, instalaciones y apoyo para proyectos de plomería.',
+      info2Title: 'Hogares, negocios + edificios',
+      info2Body: 'Reparaciones, instalaciones, reemplazos y apoyo para proyectos residenciales y comerciales en todo el sur de Florida.',
       info3Title: 'Línea directa del negocio',
       info3Body: 'Llame o escriba de lunes a sábado, de 7 AM a 7 PM.',
       servicesTitle: 'Servicios de plomería',
-      servicesLead: 'Servicio directo para reparaciones, reemplazos, instalaciones y necesidades residenciales o comerciales.',
+      servicesLead: 'Plomería residencial y comercial para hogares, negocios y edificios en todo el sur de Florida.',
       businessTitle: 'Una compañía local que puede verificar.',
-      businessLead: 'Establecida en 1996, con licencia de Florida y servicio en el sur de Florida seis días a la semana.',
+      businessLead: 'Registros públicos independientes respaldan la licencia, la calificación comercial y el historial de proyectos con permisos.',
+      credential1Kicker: 'DBPR de Florida',
+      credential1Body: 'Licencia de Contratista Certificado de Plomería de Florida. Verifique su estado actual directamente con el estado.',
+      credential2Kicker: 'Better Business Bureau',
+      credential2Value: 'Calificación A+',
+      credential2Body: 'Calificación comercial de BBB. OTTO Plumbing Inc. no está acreditada por BBB.',
+      credential3Value: 'Puntuación 110 · 4% superior',
+      credential3Body: 'Perfil basado en permisos que informa 175 proyectos con permisos y verificación de licencia en julio de 2026.',
+      verifySource: 'Verificar fuente ↗',
       biz1Title: 'Empresa',
       biz2Title: 'Línea directa',
       biz3Title: 'Licencia de Florida',
@@ -96,6 +118,10 @@
       contactButton2: 'Escribir ahora',
       contactWhyLabel: 'Área de servicio',
       contactWhyBody: 'Servicio en el sur de Florida.',
+      whatsappTitle: 'Prepare un mensaje de WhatsApp',
+      whatsappStatus: 'Usted presiona Enviar en WhatsApp',
+      whatsappLead: 'Elija el idioma del mensaje preparado.',
+      whatsappDisclosure: 'El sitio prepara el mensaje. WhatsApp se abre y le pide presionar Enviar.',
       ctaTitle: '¿Necesita un plomero?',
       ctaLead: 'Hable directamente con OTTO Plumbing Inc. sobre sus necesidades residenciales o comerciales.',
       ctaCall: 'Llamar al ' + PHONE,
@@ -148,9 +174,54 @@
     }
   }
 
+  function renderVerifiedReviews() {
+    var reviews = (window.OTTO_VERIFIED_REVIEWS || []).filter(function (review) {
+      return review && review.name && review.platform && review.excerpt && review.url && Number(review.rating) >= 1 && Number(review.rating) <= 5;
+    });
+    if (!reviews.length || document.querySelector('.verified-reviews')) return;
+
+    var contact = document.getElementById('contact');
+    if (!contact || !contact.parentNode) return;
+    var section = document.createElement('section');
+    section.className = 'verified-reviews';
+    section.setAttribute('aria-labelledby', 'verified-reviews-title');
+    var wrap = document.createElement('div');
+    wrap.className = 'wrap';
+    var title = document.createElement('h2');
+    title.id = 'verified-reviews-title';
+    title.textContent = currentLang() === 'es' ? 'Opiniones verificadas' : 'Verified customer reviews';
+    var grid = document.createElement('div');
+    grid.className = 'verified-review-grid';
+
+    reviews.forEach(function (review) {
+      var card = document.createElement('article');
+      card.className = 'verified-review-card';
+      var stars = document.createElement('div');
+      stars.className = 'verified-review-stars';
+      stars.setAttribute('aria-label', review.rating + ' out of 5 stars');
+      stars.textContent = '★★★★★'.slice(0, Math.round(Number(review.rating)));
+      var quote = document.createElement('blockquote');
+      quote.textContent = '“' + review.excerpt + '”';
+      var source = document.createElement('a');
+      source.href = review.url;
+      source.target = '_blank';
+      source.rel = 'noopener noreferrer';
+      source.textContent = review.name + ' · ' + review.platform;
+      card.appendChild(stars);
+      card.appendChild(quote);
+      card.appendChild(source);
+      grid.appendChild(card);
+    });
+    wrap.appendChild(title);
+    wrap.appendChild(grid);
+    section.appendChild(wrap);
+    contact.parentNode.insertBefore(section, contact);
+  }
+
   function applyAll() {
     applyLogo();
     applyCopy();
+    renderVerifiedReviews();
   }
 
   applyAll();
