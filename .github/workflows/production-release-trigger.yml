@@ -1,0 +1,24 @@
+name: Production release trigger
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/production-release-trigger.yml
+
+permissions:
+  contents: write
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Trigger hosting integration
+        run: |
+          git config user.name "OTTO Release"
+          git config user.email "actions@users.noreply.github.com"
+          git commit --allow-empty -m "Trigger production hosting release"
+          git push origin main
