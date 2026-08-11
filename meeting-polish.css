@@ -307,6 +307,44 @@ html[data-theme="dark"] #contact .contact-grid > .contact-card:nth-child(2) {
   }
 }
 
+/* Tablet pass: avoid the unfinished single-column service wall on common
+ * iPad/small-laptop widths while keeping contact and hero comfortably stacked. */
+@media (min-width: 721px) and (max-width: 980px) {
+  .hero {
+    padding-top: 38px;
+  }
+  .hero-shell {
+    gap: 16px;
+  }
+  .hero-main,
+  .hero-side,
+  .section-card,
+  .contact-card {
+    border-radius: 14px;
+  }
+  #services .service-grid,
+  #business .reason-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .service-grid .tile {
+    min-height: 142px;
+  }
+  #contact .contact-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, .72fr);
+    align-items: stretch;
+  }
+  .cta-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 22px;
+  }
+  .cta-actions {
+    margin-top: 0;
+  }
+}
+
 @media (max-width: 720px) {
   /* Keep the phone header compact so the customer sees the service immediately. */
   .nav-inner {
@@ -364,6 +402,21 @@ html[data-theme="dark"] #contact .contact-grid > .contact-card:nth-child(2) {
   .hero-cta > a {
     width: 100%;
   }
+  /* Turn proof points into a compact credential rail instead of three chunky cards. */
+  .hero-facts {
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,.16);
+    border-bottom: 1px solid rgba(255,255,255,.16);
+  }
+  .hero-facts .fact {
+    padding: 13px 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .hero-facts .fact + .fact {
+    border-top: 1px solid rgba(255,255,255,.12);
+  }
   .hero-side .info-card h3::before {
     width: 17px;
   }
@@ -380,5 +433,14 @@ html[data-theme="dark"] #contact .contact-grid > .contact-card:nth-child(2) {
   }
   .intake-submit {
     min-width: 0;
+    width: 100%;
+  }
+  .cta-actions > a {
+    width: 100%;
+  }
+  .foot-box {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
   }
 }
