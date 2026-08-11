@@ -71,6 +71,7 @@ window.OTTO_INTAKE_CONFIG = {
   stylesheet('facelift.css');
   stylesheet('prestige.css');
   stylesheet('prestige-polish.css');
+  stylesheet('meeting-polish.css');
 
   function start() {
     protectUnconfiguredHandoff();
