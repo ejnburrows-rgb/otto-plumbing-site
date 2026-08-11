@@ -10,7 +10,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
 
       - name: Validate HTML
         uses: anishathalye/proof-html@v2
@@ -28,7 +28,7 @@ jobs:
           done
 
       - name: Set up Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
 
@@ -38,10 +38,12 @@ jobs:
           node --check intake-config.js
           node --check intake-core.js
           node --check intake.js
+          node --check prestige.js
           node --check shell.js
+          node --check whatsapp.js
 
-      - name: Run customer intake regression tests
-        run: node --test tests/intake-core.test.mjs
+      - name: Run website regression tests
+        run: node --test tests/*.test.mjs
 
       - name: Verify final-candidate integration hooks
         run: |
@@ -73,7 +75,7 @@ jobs:
     name: Secret scan (gitleaks)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
