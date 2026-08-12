@@ -418,11 +418,25 @@ permissions:
     git push origin main
 ```
 
-It is self-deleting, but merging it re-arms a job that runs **every five
-minutes** with write access and pushes commits straight to `main` until it
-succeeds in removing itself. That directly violates this repository's own
-"never commit to `main`" rule, and the commit history already shows it firing
-(`dcb8cea Trigger verified production hosting release`).
+It is meant to be self-deleting, but it is **not** self-deleting — it is
+firing right now and failing every time. The workflow-run history shows it
+triggering roughly hourly and failing on every attempt:
+
+```
+2026-08-12T11:33:59Z  schedule  main  failure  bf1a76b6
+2026-08-12T10:45:53Z  schedule  main  failure  bf1a76b6
+2026-08-12T09:50:23Z  schedule  main  failure  bf1a76b6
+2026-08-12T08:51:01Z  schedule  main  failure  bf1a76b6
+… eight consecutive failures in the twelve hours before this audit
+```
+
+The likely reason it cannot clean itself up: the job checks out `ref: main`,
+and the workflow file does not exist on `main` — it exists only on this branch
+— so `git rm` fails before the commit and push can run. The job therefore
+never removes its own trigger and will keep firing indefinitely, burning
+Actions minutes on a permanently red workflow. The commit history shows it did
+succeed at least once (`dcb8cea Trigger verified production hosting release`),
+which is how a commit reached `main` without a pull request.
 **Recommended fix:** Delete the file from the branch. Deployment should be
 triggered by Vercel watching `main`, not by a cron job that rewrites `main`.
 
@@ -911,6 +925,43 @@ Assessed against **production** unless noted.
 | Security | **PASS** | No secrets, no backend, no exposed data. Process risks noted separately |
 | Vercel configuration | **BLOCKED** | Project not visible to the connected account — owner must verify |
 | BBB "A+ rating" claim | **BLOCKED** | bbb.org returns 403 to non-browser clients — owner must confirm |
+| CI pipeline | **FAIL** | Both jobs red on this branch — see below |
+
+### CI status
+
+The `CI` workflow is **red on this branch**, and it is red for reasons that
+predate this audit — the audit added one Markdown file and no HTML, CSS, JS,
+or workflow changes.
+
+Everything scriptable in the `validate` job passes when run locally against the
+branch: all seven `node --check` calls, `node --test tests/*.test.mjs`
+(**27 passed, 0 failed**), the `manifest.json` JSON parse, all four SVG parses,
+and the final-candidate integration-hook check.
+
+The one step that cannot be run locally is `anishathalye/proof-html@v2`, which
+link-checks the HTML. Testing every external link in `index.html` the way that
+action would:
+
+| Link | Status |
+|---|---|
+| `fonts.googleapis.com/css2?family=…` | 200 |
+| `otto-plumbing-site.vercel.app/` | 200 |
+| `buildzoom.com/contractor/otto-plumbing-inc` | 200 |
+| `myfloridalicense.com/wl11.asp?…` | 200 |
+| `bbb.org/us/fl/miami/profile/plumber/otto-plumbing-inc-…` | **403** |
+
+The BBB link — added to `index.html` by commit `563e9ed` on this branch —
+returns 403 to non-browser clients, which html-proofer treats as a broken
+external link. That is the strongest available explanation for the `validate`
+failure, and it is a second, independent reason to reconsider the BBB
+credential card (bug 12).
+
+The `Secret scan (gitleaks)` job also fails. **Its cause was not determined** —
+GitHub's log download returned HTTP 404 for both failed jobs in this
+environment, so this is inference from reproducible local evidence rather than
+from the CI log itself. What can be stated: the audit's Markdown file contains
+no keys, tokens, credentials, or high-entropy strings, so it is not a plausible
+cause. Someone with dashboard access should open the run and read the log.
 
 ---
 
