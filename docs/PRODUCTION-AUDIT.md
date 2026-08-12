@@ -75,11 +75,26 @@ deployment proof — resolves but reports
 `releaseMarker: final-delivery-site-cleanup-2026-08-10`, older than the HTML
 beside it. `logo.jpg`, `robots.txt`, `sitemap.xml`, and `release.json` all 404.
 
-The Vercel project settings could **not** be inspected. The connected Vercel
-account exposes one team ("EJN's projects") whose only project is
-`cartilla-de-gretel`; `otto-plumbing-site` is not in it, and a deployment
-lookup for the hostname returns `not_found`. The owner has to check this in the
-Vercel dashboard directly — see *Best Next Action*.
+The Vercel project settings could **not** be read directly — the connected
+account's API access does not expose this project (its only listed project is
+an unrelated one, and a deployment lookup for the hostname returns
+`not_found`). But the pull request opened alongside this audit produced enough
+evidence to narrow the problem considerably:
+
+- The project is **`otto-plumbing-site`** (`prj_e3XUAppseApwOPcvmcSO1FmTk4bU`)
+  in team `ejns-projects-1b938dd2`.
+- **The GitHub↔Vercel connection works.** Vercel built a preview from the audit
+  branch within seconds of the push and reported Ready.
+- **The preview serves the branch content exactly.** The preview's
+  `index.html` is byte-identical to the branch tip apart from Vercel's own
+  preview-only feedback script, and `logo.jpg`, `production-polish.css`, and
+  `whatsapp.js` — all of which 404 on production — resolve on the preview.
+
+So Vercel is not disconnected and the build is not broken. **The fault is
+confined to what the production alias points at** — the production branch
+setting, or an alias bound to a deployment that is no longer produced by the
+`main` branch. That is a dashboard setting, and it is the one thing the owner
+has to check. See *Best Next Action*.
 
 ---
 
@@ -1003,9 +1018,22 @@ reliably becomes the live site, every fix below is unverifiable — and the
 project has already burned five commits (`4dcbb3e`, `4b38aab`, `15a0396`,
 `6659dbd`, `17a6fe0`) trying to force deploys instead of diagnosing this.
 
-It also requires the owner. This audit could not inspect the Vercel project:
-the connected account's only team contains a single unrelated project, and the
-deployment lookup for the hostname returns `not_found`.
+**The problem is narrower than it looks, and the diagnosis is nearly done.**
+Vercel built a preview from the audit branch immediately and served the branch
+content byte-for-byte, so the repository connection, the build, and the deploy
+pipeline all work. What is broken is only what the **production alias** points
+at. Check, in this order: the project's production branch setting, then whether
+`otto-plumbing-site.vercel.app` is aliased to a specific old deployment rather
+than following production, then whether `main` is being skipped by an ignored-
+build setting.
+
+The final step is not optional: after redeploying, load
+`/version.json` and confirm the release marker changed. That file exists
+precisely so this is verifiable, and it currently reports a marker two releases
+stale.
+
+This step needs the owner — the connected account's API access does not expose
+this project, so it can only be done from the Vercel dashboard.
 
 ---
 
