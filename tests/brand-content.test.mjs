@@ -6,6 +6,10 @@ import test from 'node:test';
 const logo = readFileSync(new URL('../logo.jpg', import.meta.url));
 const copy = readFileSync(new URL('../prestige.js', import.meta.url), 'utf8');
 const polish = readFileSync(new URL('../production-polish.css', import.meta.url), 'utf8');
+const page = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const mobilePolish = readFileSync(new URL('../prestige-polish.css', import.meta.url), 'utf8');
+const shell = readFileSync(new URL('../shell.js', import.meta.url), 'utf8');
+const intakeConfig = readFileSync(new URL('../intake-config.js', import.meta.url), 'utf8');
 
 test('uses the supplied official company logo without alteration', () => {
   assert.equal(
@@ -45,4 +49,30 @@ test('centers the logo inside a seamless matching navy band', () => {
   assert.match(polish, /grid-template-areas:\s*"links brand actions"/);
   assert.match(polish, /justify-self:\s*center/);
   assert.match(polish, /\.brand[\s\S]*?border:\s*0;[\s\S]*?box-shadow:\s*none;/);
+});
+
+test('publishes only the confirmed credential claims', () => {
+  assert.doesNotMatch(page, /bbb\.org|A\+ rating|July 2026 license verification/);
+  assert.doesNotMatch(copy, /Better Business Bureau|July 2026 license verification/);
+  assert.match(page, /CFC1429613/);
+});
+
+test('keeps mobile call, language, and sticky navigation paths available', () => {
+  assert.doesNotMatch(mobilePolish, /\.nav-actions\s*>\s*\.call-btn\s*\{\s*display:\s*none/);
+  assert.doesNotMatch(polish, /\.nav-actions\s+\.toggle-group\s*\{\s*display:\s*none/);
+  assert.match(polish, /\.nav\s*\{[\s\S]*?position:\s*sticky/);
+  assert.match(shell, /class="shell-callbar"/);
+});
+
+test('configures the confirmed email fallback', () => {
+  assert.match(intakeConfig, /fallbackEmail:\s*'hernandezotto77@gmail\.com'/);
+});
+
+test('includes parseable Plumber structured data', () => {
+  const match = page.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  assert.ok(match);
+  const data = JSON.parse(match[1]);
+  assert.equal(data['@type'], 'Plumber');
+  assert.equal(data.telephone, '+1-786-344-2837');
+  assert.equal(data.identifier.value, 'CFC1429613');
 });

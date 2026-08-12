@@ -1,8 +1,8 @@
 # Customer intake workflow - setup and behaviour
 
-The website request form is fully built in code. Online sending stays switched off
-until the client's verified Formspree endpoint is added to `intake-config.js`.
-The office fallback email also stays blank until the client confirms the inbox.
+The website request form is fully built in code. The confirmed office email
+fallback is active. Direct Formspree sending stays switched off until the
+client's verified endpoint is added to `intake-config.js`.
 
 ## Files
 
@@ -30,20 +30,19 @@ Form element IDs (do not rename without updating `intake.js`): `intakeForm`,
 2. Verify that email and set it as the form notification destination.
 3. Create the OTTO Plumbing service-request form and copy its public endpoint.
 4. Put that endpoint in `endpoint` in `intake-config.js`.
-5. Put the same confirmed office inbox in `fallbackEmail` if email fallback is desired.
-6. Deploy the candidate, submit one real request from a phone, and confirm the office receives it.
-7. Confirm the website shows success only after Formspree accepts the request.
+5. Deploy the candidate, submit one real request from a phone, and confirm the office receives it.
+6. Confirm the website shows success only after Formspree accepts the request.
 
 A Formspree endpoint is a public URL, like a form `action` attribute. No API key,
 password, or service credential belongs in this repository. Nothing in this
 workflow writes customer requests to Supabase or the CRM.
 
-## Behaviour before that setup is done
+## Behaviour before Formspree setup is done
 
-The form still validates customer details, but it does not send them anywhere
-and never claims success. Direct call and text paths remain available. Because
-the office email is intentionally unconfirmed, the email fallback remains
-hidden until `fallbackEmail` is set to the verified client inbox.
+The form validates customer details and prepares a pre-filled message to the
+confirmed office inbox. The visitor must send that message from their own email
+app, so the site never claims it was delivered. Direct call and text paths also
+remain available.
 
 ## Behaviour after that setup is done
 

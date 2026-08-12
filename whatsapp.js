@@ -30,6 +30,10 @@
 
     var config = (typeof window !== 'undefined' && window.OTTO_INTAKE_CONFIG) || {};
     var number = normalizeNumber(config.whatsappNumber);
+    if (!number) {
+      root.hidden = true;
+      return;
+    }
     var link = root.querySelector('[data-whatsapp-link]');
     var missing = root.querySelector('[data-whatsapp-missing]');
     var buttons = root.querySelectorAll('[data-whatsapp-language]');

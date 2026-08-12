@@ -1,10 +1,10 @@
 /* OTTO Plumbing Inc. - customer intake delivery configuration.
  * Final review candidate. No secrets belong here. The Formspree endpoint and
- * confirmed office email stay empty until the client setup visit.
+ * Formspree endpoint stays empty until the client setup visit.
  */
 window.OTTO_INTAKE_CONFIG = {
   endpoint: '',
-  fallbackEmail: '',
+  fallbackEmail: 'hernandezotto77@gmail.com',
   // Confirm the WhatsApp-enabled business number before setting this value.
   // Required format: country code plus business number, digits only.
   whatsappNumber: '',
