@@ -80,13 +80,19 @@ window.OTTO_VERIFIED_REVIEWS = [];
   stylesheet('prestige-polish.css');
   stylesheet('meeting-polish.css');
   stylesheet('production-polish.css');
+  /* stages.css is linked statically in index.html — it defines page structure,
+   * and injecting it here made the document reflow after first paint. Its
+   * colour half is injected last so it wins ties against the sheets above. */
+  stylesheet('stages-theme.css');
 
   function start() {
     protectUnconfiguredHandoff();
     script('facelift.js', function () {
       script('whatsapp.js', function () {
         script('prestige.js', function () {
-          script('shell.js');
+          script('shell.js', function () {
+            script('stages.js');
+          });
         });
       });
     });

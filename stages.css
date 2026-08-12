@@ -1,0 +1,206 @@
+/* OTTO Plumbing Inc. — image-led scroll panels.
+ *
+ * Each major section becomes a full-screen panel that holds, then recedes as
+ * the next panel expands over it.
+ *
+ * This file introduces only new namespaced classes (.stage*, .panel*). It
+ * overrides no existing selector and uses no !important, so it does not add to
+ * the override stack the audit flagged.
+ *
+ * The static base below is an ordinary readable document. Motion is layered on
+ * afterwards, and only where the browser supports it and the visitor wants it.
+ */
+
+/* ------------------------------------------------------------------ stage */
+
+.stage {
+  position: relative;
+  /* One viewport of hold plus one of handoff. */
+  height: 200svh;
+}
+
+.stage__inner {
+  position: sticky;
+  top: 0;
+  display: grid;
+  height: 100svh;
+  overflow: clip;
+  /* Corners round only while receding; see the keyframes. */
+  border-radius: 0;
+  background: var(--bg, #f4f7fb);
+  transform-origin: 50% 30%;
+}
+
+/* The last stage never recedes, so it needs no handoff distance. */
+.stage:last-of-type { height: 100svh; }
+
+/* Anchor jumps must land on the top of a panel, never mid-handoff. */
+.stage[id] { scroll-margin-top: 0; }
+
+/* ------------------------------------------------------------------ panel */
+
+.panel {
+  /* The media and scrim layers below are absolutely positioned against this
+   * box. Without an explicit containing block they resolve against .stage,
+   * which collapses the scrim to zero height in the flow variant. */
+  position: relative;
+  display: grid;
+  align-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+}
+
+.panel__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+}
+
+/* The media layer is absolutely positioned and fills its panel, so the image
+ * must not carry an intrinsic aspect ratio — that would size the box from the
+ * file's own dimensions and shift layout the moment a photo decodes. Real
+ * photographs therefore swap in for the placeholders with zero layout shift. */
+.panel__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* These panels carry copy across their full width, not just one side, so the
+ * scrim has to hold contrast everywhere rather than fading out to one edge.
+ * It keeps a gentle diagonal for depth but never drops below ~0.78, which is
+ * what guarantees legible text over a bright photograph as well as a dark one. */
+.panel__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(104deg, rgba(7, 15, 30, .94) 0%, rgba(7, 15, 30, .88) 45%, rgba(7, 15, 30, .80) 100%),
+    radial-gradient(120% 90% at 50% 40%, rgba(7, 15, 30, 0) 35%, rgba(7, 15, 30, .35) 100%);
+}
+
+.panel__copy {
+  position: relative;
+  z-index: 2;
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 40px 0;
+  max-height: 100%;
+  overflow-y: auto;
+  /* Deliberately not `overscroll-behavior: contain`: when a panel's copy is
+   * scrolled to its end the gesture must chain to the page, or the reader is
+   * trapped inside the panel. */
+  color: #fff;
+}
+
+.panel__inner { width: 100%; }
+
+/* --------------------------------------------------------------- the motion */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
+    .stage { view-timeline: --stage block; }
+
+    .stage:not(:last-of-type) .stage__inner {
+      animation: otto-panel-recede linear both;
+      animation-timeline: --stage;
+      /* For a 200svh stage in a 100svh viewport, `contain 100%` is the exact
+       * scroll position where the next panel starts rising into view from the
+       * bottom, and `cover 100%` is where it has fully covered the screen. So
+       * the outgoing panel holds at full size for its first viewport, then
+       * recedes in lockstep with the incoming one — never into empty space. */
+      animation-range: contain 100% cover 100%;
+    }
+
+    @keyframes otto-panel-recede {
+      to {
+        transform: scale(.92) translateY(-2svh);
+        border-radius: 28px;
+        opacity: .45;
+      }
+    }
+  }
+
+  /* Phones get the same page-by-page structure with an opacity-only handoff.
+   * Sticky plus transforms plus dynamic browser chrome is the reliable recipe
+   * for iOS repaint jank, so the transform is deliberately absent here. */
+  @media (prefers-reduced-motion: no-preference) and (max-width: 767.98px) {
+    .stage { view-timeline: --stage block; }
+
+    .stage:not(:last-of-type) .stage__inner {
+      animation: otto-panel-fade linear both;
+      animation-timeline: --stage;
+      animation-range: contain 100% cover 100%;
+    }
+
+    @keyframes otto-panel-fade { to { opacity: .35; } }
+  }
+}
+
+/* Browsers without scroll-driven animations (Safari, older Chrome) get the
+ * same handoff from a class toggled by an IntersectionObserver in stages.js.
+ * No scroll listener, so nothing runs per frame. */
+@supports not (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .stage__inner {
+      transition: transform .5s cubic-bezier(.22, .61, .36, 1),
+                  opacity .5s cubic-bezier(.22, .61, .36, 1),
+                  border-radius .5s cubic-bezier(.22, .61, .36, 1);
+    }
+    .stage.is-receding .stage__inner {
+      transform: scale(.92) translateY(-2svh);
+      border-radius: 28px;
+      opacity: .45;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) and (max-width: 767.98px) {
+    .stage.is-receding .stage__inner {
+      transform: none;
+      opacity: .35;
+    }
+  }
+}
+
+/* will-change is applied only while a stage is near the viewport and removed
+ * afterwards — never left on globally. */
+.stage.is-near .stage__inner { will-change: transform, opacity; }
+
+/* ------------------------------------------------------- content overflow */
+
+/* Panels whose content cannot fit a single screen fall back to ordinary flow
+ * rather than trapping the reader in an inner scroller. */
+@media (max-width: 767.98px) {
+  .stage.stage--flow { height: auto; }
+  .stage.stage--flow .stage__inner {
+    position: static;
+    height: auto;
+    min-height: 100svh;
+  }
+  .panel__copy { max-height: none; overflow-y: visible; padding: 72px 0; }
+  .panel__scrim {
+    background: linear-gradient(180deg, rgba(7, 15, 30, .90) 0%, rgba(7, 15, 30, .84) 55%, rgba(7, 15, 30, .92) 100%);
+  }
+}
+
+/* ------------------------------------------------------- reduced motion */
+
+/* Not a shortened animation — none at all. The page collapses to an ordinary
+ * document with every word in its final state. */
+@media (prefers-reduced-motion: reduce) {
+  .stage { height: auto; }
+  .stage__inner {
+    position: static;
+    height: auto;
+    min-height: 100svh;
+    transform: none;
+    opacity: 1;
+    border-radius: 0;
+    transition: none;
+    animation: none;
+    will-change: auto;
+  }
+  .panel__copy { max-height: none; overflow-y: visible; }
+}

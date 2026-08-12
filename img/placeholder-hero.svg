@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="presentation">
+  <rect width="1200" height="800" fill="#0b1222"/>
+  <rect x="24" y="24" width="1152" height="752" fill="none" stroke="#1d2b40" stroke-width="2" stroke-dasharray="10 8"/>
+  <g transform="translate(600 336)" fill="none" stroke="#26364f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-74-34h34l14-20h52l14 20h34a16 16 0 0 1 16 16v76a16 16 0 0 1-16 16h-148a16 16 0 0 1-16-16v-76a16 16 0 0 1 16-16z"/>
+    <circle cx="0" cy="22" r="30"/>
+  </g>
+  <text x="600" y="470" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-size="26" letter-spacing="5" fill="#3a4b66">PHOTO PENDING</text>
+  <text x="600" y="524" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+        font-size="30" font-weight="600" fill="#46597a">OTTO van and technician</text>
+  <text x="600" y="572" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-size="20" letter-spacing="2" fill="#33445e">Panel 1 — Hero</text>
+</svg>
