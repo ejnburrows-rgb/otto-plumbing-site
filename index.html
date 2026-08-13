@@ -92,6 +92,13 @@ img, svg { display: block; max-width: 100%; }
   position: sticky;
   top: 0;
   z-index: 20;
+  /* The header box is pinned so nothing inside it can move the document.
+     The bootstrap chain mutates this bar after first paint — shell.js injects a
+     menu button, prestige-polish.css later hides the theme toggle — and while
+     that settles the row was briefly 165px tall, shifting the whole page.
+     Blocking JS drops CLS from 0.217 to 0.026, which is what identified it. */
+  height: 97px;
+  overflow: hidden;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   background: color-mix(in srgb, var(--bg) 82%, transparent);
@@ -102,6 +109,7 @@ img, svg { display: block; max-width: 100%; }
      header resizes after the injected stylesheets land and shifts the whole
      page down. Measured: 96 / 84 / 72 across the breakpoints below. */
   min-height: 96px;
+  height: 96px;
   /* Same three-column grid production-polish.css settles on. Declaring flex
      here made the header wrap to 165px until that sheet loaded, then snap to
      96px — a 0.35 layout shift on every visit. */
@@ -129,12 +137,14 @@ img, svg { display: block; max-width: 100%; }
   border-radius: 0;
 }
 @media (max-width: 980px) {
-  .nav-inner { min-height: 84px; grid-template-columns: auto 1fr auto; }
+  .nav { height: 85px; }
+  .nav-inner { min-height: 84px; height: 84px; grid-template-columns: auto 1fr auto; }
   .nav-links { display: none; }
   .brand img { width: 132px; height: 52px; }
 }
 @media (max-width: 720px) {
-  .nav-inner { min-height: 72px; }
+  .nav { height: 73px; }
+  .nav-inner { min-height: 72px; height: 72px; }
   .brand img { width: 112px; height: 44px; }
 }
 @media (max-width: 390px) {
@@ -169,6 +179,10 @@ img, svg { display: block; max-width: 100%; }
   justify-self: end;
   display: flex;
   align-items: center;
+  /* Must never wrap: the theme toggle is visible until prestige-polish.css
+     loads, and shell.js adds a menu button, so a wrapping row would grow the
+     header mid-load. */
+  flex-wrap: nowrap;
   gap: 10px;
 }
 .toggle-group {
@@ -565,13 +579,23 @@ img, svg { display: block; max-width: 100%; }
   .intake-actions > * { width: 100%; }
 }
 </style>
+<!-- Linked here rather than injected by intake-config.js. The order is the
+     one the bootstrap chain used, so the cascade is unchanged; resolving it
+     before first paint is what removes the post-load reflow. -->
+<link rel="stylesheet" href="shell.css">
+<link rel="stylesheet" href="facelift.css">
+<link rel="stylesheet" href="prestige.css">
+<link rel="stylesheet" href="prestige-polish.css">
+<link rel="stylesheet" href="meeting-polish.css">
+<link rel="stylesheet" href="production-polish.css">
+<link rel="stylesheet" href="stages-theme.css">
 </head>
 <body>
 <a class="skip-link" href="#main" data-i18n="skip">Skip to main content</a>
 <header class="nav">
   <div class="wrap nav-inner">
     <a class="brand" href="#top" aria-label="OTTO Plumbing Inc.">
-      <img src="logo.jpg" alt="OTTO Plumbing Inc.">
+      <picture><source srcset="logo.webp" type="image/webp"><img src="logo.jpg" alt="OTTO Plumbing Inc." width="176" height="68" fetchpriority="high" decoding="async"></picture>
       <div class="brand-copy">
         <div class="brand-title">OTTO Plumbing Inc.</div>
         <div class="brand-sub" data-i18n="brandSub">Licensed plumbing service</div>
