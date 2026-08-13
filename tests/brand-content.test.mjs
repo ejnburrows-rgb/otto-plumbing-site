@@ -7,6 +7,9 @@ const polish = readFileSync(new URL('../production-polish.css', import.meta.url)
 const page = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const mobilePolish = readFileSync(new URL('../prestige-polish.css', import.meta.url), 'utf8');
 const shell = readFileSync(new URL('../shell.js', import.meta.url), 'utf8');
+const shellStyles = readFileSync(new URL('../shell.css', import.meta.url), 'utf8');
+const stages = readFileSync(new URL('../stages.css', import.meta.url), 'utf8');
+const stageMotion = readFileSync(new URL('../stages.js', import.meta.url), 'utf8');
 const intakeConfig = readFileSync(new URL('../intake-config.js', import.meta.url), 'utf8');
 
 test('uses the four approved website photographs and supplied company logo', () => {
@@ -64,6 +67,17 @@ test('keeps mobile call, language, and sticky navigation paths available', () =>
   assert.doesNotMatch(polish, /\.nav-actions\s+\.toggle-group\s*\{\s*display:\s*none/);
   assert.match(polish, /\.nav\s*\{[\s\S]*?position:\s*sticky/);
   assert.match(shell, /class="shell-callbar"/);
+});
+
+test('minimizes and maximizes the page design while scrolling', () => {
+  assert.match(stages, /\.stage\s*\+\s*\.stage\s*\{\s*margin-top:\s*-100svh/);
+  assert.match(stages, /@keyframes otto-panel-recede[\s\S]*?transform:\s*scale\(\.92\)/);
+  assert.match(stages, /@keyframes otto-panel-fade[\s\S]*?transform:\s*scale\(\.95\)/);
+  assert.match(stages, /html\.stage-motion\s+\.stage__inner/);
+  assert.match(stageMotion, /requestAnimationFrame\(renderMotion\)/);
+  assert.match(stageMotion, /--stage-scale/);
+  assert.match(shell, /shell-header-minimized/);
+  assert.match(shellStyles, /html\.shell-header-minimized\s+\.nav-inner/);
 });
 
 test('configures the confirmed email fallback', () => {

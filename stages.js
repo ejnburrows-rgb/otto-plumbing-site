@@ -3,58 +3,80 @@
  * Real OTTO photographs are stored as compact WebP base64 assets so this
  * static site can ship them through the same repository/deployment path.
  * The hero is loaded immediately; later panels load only as they approach the
- * viewport. Scroll motion remains CSS-first with an IntersectionObserver
- * fallback and no scroll listener.
+ * viewport. A single passive, animation-frame-throttled scroll update keeps
+ * the panel handoff consistent across modern browsers.
  */
 (function () {
   'use strict';
 
   var stages = [].slice.call(document.querySelectorAll('.stage'));
-  if (!stages.length || !window.IntersectionObserver) return;
+  if (!stages.length) return;
 
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
   if (reduced && reduced.matches) return;
 
-  var supportsTimeline = false;
-  try {
-    supportsTimeline = window.CSS && CSS.supports && CSS.supports('animation-timeline', 'view()');
-  } catch (ignored) {
-    supportsTimeline = false;
-  }
-
   /* Keep will-change scoped to stages that are actually near the viewport, so
    * the compositor is not asked to hold layers for the whole page. */
-  var nearby = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      entry.target.classList.toggle('is-near', entry.isIntersecting);
-    });
-  }, { rootMargin: '80% 0px 80% 0px' });
+  if (window.IntersectionObserver) {
+    var nearby = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        entry.target.classList.toggle('is-near', entry.isIntersecting);
+      });
+    }, { rootMargin: '80% 0px 80% 0px' });
 
-  stages.forEach(function (stage) { nearby.observe(stage); });
+    stages.forEach(function (stage) { nearby.observe(stage); });
+  }
 
-  if (supportsTimeline) return;
+  function clamp(value) {
+    return Math.max(0, Math.min(1, value));
+  }
 
-  /* Fallback handoff: a stage recedes once its own scroll range is mostly
-   * spent, which is the same moment the next panel has covered the screen. */
-  var recede = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      var stage = entry.target;
-      if (stage === stages[stages.length - 1]) return;
-      var rect = entry.boundingClientRect;
-      var past = rect.top <= 0 && rect.bottom <= window.innerHeight * 1.15;
-      stage.classList.toggle('is-receding', past);
-    });
-  }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
+  function setMotion(inner, incoming, outgoing, viewportHeight) {
+    var scale = .95 + (.05 * incoming) - (.08 * outgoing);
+    var opacity = .65 + (.35 * incoming) - (.55 * outgoing);
+    var edge = Math.max(1 - incoming, outgoing);
+    inner.style.setProperty('--stage-scale', scale.toFixed(4));
+    inner.style.setProperty('--stage-opacity', opacity.toFixed(4));
+    inner.style.setProperty('--stage-radius', (28 * edge).toFixed(2) + 'px');
+    inner.style.setProperty('--stage-shift', (-viewportHeight * .02 * outgoing).toFixed(2) + 'px');
+  }
 
-  stages.forEach(function (stage) { recede.observe(stage); });
+  var framePending = false;
+  function renderMotion() {
+    framePending = false;
+    var viewportHeight = Math.max(window.innerHeight || 0, 1);
+    var desktop = window.innerWidth >= 768;
 
-  /* A stage that is scrolled past entirely while the observer is throttled can
-   * be left mid-state; settle it when the tab regains focus. */
-  window.addEventListener('pageshow', function () {
-    stages.forEach(function (stage) {
+    stages.forEach(function (stage, index) {
+      var inner = stage.querySelector('.stage__inner');
+      if (!inner) return;
       var rect = stage.getBoundingClientRect();
-      if (stage === stages[stages.length - 1]) return;
-      stage.classList.toggle('is-receding', rect.top <= 0 && rect.bottom <= window.innerHeight * 1.15);
+      var incoming;
+      var outgoing;
+
+      if (desktop) {
+        incoming = index === 0 ? 1 : clamp((viewportHeight - rect.top) / viewportHeight);
+        outgoing = index === stages.length - 1 ? 0 : clamp(-rect.top / viewportHeight);
+      } else {
+        incoming = index === 0 ? 1 : clamp((viewportHeight - rect.top) / (viewportHeight * .65));
+        outgoing = index === stages.length - 1
+          ? 0
+          : clamp((viewportHeight * .25 - rect.bottom) / (viewportHeight * .65));
+      }
+
+      setMotion(inner, incoming, outgoing, viewportHeight);
     });
-  });
+  }
+
+  function requestMotion() {
+    if (framePending) return;
+    framePending = true;
+    window.requestAnimationFrame(renderMotion);
+  }
+
+  document.documentElement.classList.add('stage-motion');
+  window.addEventListener('scroll', requestMotion, { passive: true });
+  window.addEventListener('resize', requestMotion);
+  window.addEventListener('pageshow', requestMotion);
+  renderMotion();
 })();

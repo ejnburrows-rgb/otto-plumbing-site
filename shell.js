@@ -393,6 +393,7 @@
   });
 
   var ticking = false;
+  var lastScrollY = window.pageYOffset;
   window.addEventListener(
     'scroll',
     function () {
@@ -401,7 +402,13 @@
       window.requestAnimationFrame(function () {
         ticking = false;
         var y = window.pageYOffset;
+        var delta = y - lastScrollY;
         root.classList.toggle('shell-scrolled', y > 8);
+        if (!drawerOpen) {
+          if (y <= 24 || delta < -6) root.classList.remove('shell-header-minimized');
+          else if (y > 120 && delta > 6) root.classList.add('shell-header-minimized');
+        }
+        lastScrollY = y;
         topBtn.classList.toggle('is-on', y > window.innerHeight * 1.2);
         if (origin) {
           /* the bar only retires once the reader has actually travelled away
@@ -443,5 +450,6 @@
 
   renderCopy();
   root.classList.toggle('shell-scrolled', window.pageYOffset > 8);
+  root.classList.toggle('shell-header-minimized', window.pageYOffset > 120);
   root.classList.add('shell-ready');
 })();

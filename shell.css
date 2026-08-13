@@ -29,10 +29,53 @@ html.shell-lock { overflow: hidden; }
 /* ---------- Sticky header ---------- */
 
 .nav {
-  transition: box-shadow var(--shell-speed) var(--shell-ease);
+  transition:
+    height var(--shell-speed) var(--shell-ease),
+    box-shadow var(--shell-speed) var(--shell-ease);
 }
 html.shell-scrolled .nav {
   box-shadow: 0 12px 32px rgba(10, 20, 45, 0.09);
+}
+.nav-inner,
+.brand img,
+.nav-actions .call-btn,
+.shell-menu-btn {
+  transition:
+    min-height var(--shell-speed) var(--shell-ease),
+    width var(--shell-speed) var(--shell-ease),
+    height var(--shell-speed) var(--shell-ease),
+    padding var(--shell-speed) var(--shell-ease);
+}
+html.shell-header-minimized .nav { height: 69px !important; }
+html.shell-header-minimized .nav-inner {
+  min-height: 68px !important;
+  height: 68px !important;
+}
+html.shell-header-minimized .brand img {
+  width: 132px !important;
+  height: 50px !important;
+}
+
+@media (max-width: 720px) {
+  html.shell-header-minimized .nav { height: 61px !important; }
+  html.shell-header-minimized .nav-inner {
+    min-height: 60px !important;
+    height: 60px !important;
+  }
+  html.shell-header-minimized .brand img {
+    width: 96px !important;
+    height: 38px !important;
+  }
+  html.shell-header-minimized .nav-actions .call-btn,
+  html.shell-header-minimized .shell-menu-btn { min-height: 38px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav,
+  .nav-inner,
+  .brand img,
+  .nav-actions .call-btn,
+  .shell-menu-btn { transition: none; }
 }
 
 /* ---------- Desktop navigation hierarchy ---------- */

@@ -34,6 +34,13 @@
 /* The last stage never recedes, so it needs no handoff distance. */
 .stage:last-of-type { height: 100svh; }
 
+/* On larger screens the next panel rises over the final viewport of the
+ * current panel. This is the missing handoff that makes one panel visibly
+ * minimize while the next expands to fill the screen. */
+@media (min-width: 768px) {
+  .stage + .stage { margin-top: -100svh; }
+}
+
 /* Anchor jumps must land on the top of a panel, never mid-handoff. */
 .stage[id] { scroll-margin-top: 0; }
 
@@ -124,9 +131,8 @@
     }
   }
 
-  /* Phones get the same page-by-page structure with an opacity-only handoff.
-   * Sticky plus transforms plus dynamic browser chrome is the reliable recipe
-   * for iOS repaint jank, so the transform is deliberately absent here. */
+  /* Phones use a lighter version of the same resize, keeping the intended
+   * minimize/maximize behavior without the larger desktop movement. */
   @media (prefers-reduced-motion: no-preference) and (max-width: 767.98px) {
     .stage { view-timeline: --stage block; }
 
@@ -136,7 +142,13 @@
       animation-range: contain 100% cover 100%;
     }
 
-    @keyframes otto-panel-fade { to { opacity: .35; } }
+    @keyframes otto-panel-fade {
+      to {
+        transform: scale(.95) translateY(-1svh);
+        border-radius: 18px;
+        opacity: .5;
+      }
+    }
   }
 }
 
@@ -158,8 +170,9 @@
   }
   @media (prefers-reduced-motion: no-preference) and (max-width: 767.98px) {
     .stage.is-receding .stage__inner {
-      transform: none;
-      opacity: .35;
+      transform: scale(.95) translateY(-1svh);
+      border-radius: 18px;
+      opacity: .5;
     }
   }
 }
@@ -167,6 +180,15 @@
 /* will-change is applied only while a stage is near the viewport and removed
  * afterwards — never left on globally. */
 .stage.is-near .stage__inner { will-change: transform, opacity; }
+
+/* stages.js owns the final interpolation so the handoff behaves identically
+ * in browsers with and without CSS scroll timelines. */
+html.stage-motion .stage__inner {
+  animation: none !important;
+  transform: translate3d(0, var(--stage-shift, 0), 0) scale(var(--stage-scale, 1));
+  border-radius: var(--stage-radius, 0);
+  opacity: var(--stage-opacity, 1);
+}
 
 /* ------------------------------------------------------- content overflow */
 
