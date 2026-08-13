@@ -1,16 +1,98 @@
-/* OTTO Plumbing Inc. — scroll-panel fallback.
+/* OTTO Plumbing Inc. — panel photography and scroll-panel fallback.
  *
- * Browsers with scroll-driven animations (animation-timeline) drive the panel
- * handoff entirely in CSS and this file does nothing but manage will-change.
- *
- * Everywhere else, an IntersectionObserver toggles `.is-receding` and CSS
- * transitions do the work. There is deliberately no scroll listener, so
- * nothing runs on the main thread per frame.
+ * Real OTTO photographs are stored as compact WebP base64 assets so this
+ * static site can ship them through the same repository/deployment path.
+ * The hero is loaded immediately; later panels load only as they approach the
+ * viewport. Scroll motion remains CSS-first with an IntersectionObserver
+ * fallback and no scroll listener.
  */
 (function () {
   'use strict';
 
   var doc = document;
+  var photoMap = [
+    {
+      selector: '#top .panel__media img',
+      file: 'img/hero.webp.b64',
+      alt: 'OTTO Plumbing technicians working in a marble shower with an OTTO service van outside.'
+    },
+    {
+      selector: '#services .panel__media img',
+      file: 'img/services.webp.b64',
+      alt: 'Gloved OTTO Plumbing technician using wrenches on a brass plumbing fixture.'
+    },
+    {
+      selector: '#business .panel__media img',
+      file: 'img/credentials.webp.b64',
+      alt: 'OTTO Plumbing technicians reviewing plans at a plumbing job site with an OTTO service van.'
+    },
+    {
+      selector: '#contact .panel__media img',
+      file: 'img/contact.webp.b64',
+      alt: 'OTTO Plumbing technician servicing a brass tub fixture.'
+    },
+    {
+      selector: '#closing .panel__media img',
+      file: 'img/closing.webp.b64',
+      alt: 'OTTO Plumbing technician working in a marble bathroom.'
+    }
+  ];
+
+  function webpObjectUrl(base64) {
+    var clean = base64.replace(/\s+/g, '');
+    var binary = window.atob(clean);
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+    return URL.createObjectURL(new Blob([bytes], { type: 'image/webp' }));
+  }
+
+  function loadPhoto(photo) {
+    var img = doc.querySelector(photo.selector);
+    if (!img || img.getAttribute('data-otto-photo')) return;
+    img.setAttribute('data-otto-photo', 'loading');
+
+    fetch(photo.file, { credentials: 'same-origin' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('Photo request failed');
+        return response.text();
+      })
+      .then(function (base64) {
+        var objectUrl = webpObjectUrl(base64);
+        img.alt = photo.alt;
+        img.removeAttribute('aria-hidden');
+        img.addEventListener('load', function () {
+          URL.revokeObjectURL(objectUrl);
+        }, { once: true });
+        img.src = objectUrl;
+        img.setAttribute('data-otto-photo', 'loaded');
+      })
+      .catch(function () {
+        img.removeAttribute('data-otto-photo');
+      });
+  }
+
+  if (photoMap.length) loadPhoto(photoMap[0]);
+
+  if (window.IntersectionObserver) {
+    var photoObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var index = Number(entry.target.getAttribute('data-otto-photo-index'));
+        if (!Number.isNaN(index) && photoMap[index]) loadPhoto(photoMap[index]);
+        photoObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: '100% 0px 100% 0px' });
+
+    photoMap.slice(1).forEach(function (photo, offset) {
+      var img = doc.querySelector(photo.selector);
+      if (!img) return;
+      img.setAttribute('data-otto-photo-index', String(offset + 1));
+      photoObserver.observe(img);
+    });
+  } else {
+    photoMap.slice(1).forEach(loadPhoto);
+  }
+
   var stages = [].slice.call(doc.querySelectorAll('.stage'));
   if (!stages.length || !window.IntersectionObserver) return;
 
