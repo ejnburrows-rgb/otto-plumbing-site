@@ -91,7 +91,9 @@ End every report with: done · blocked (on what) · single next action + owner.
 - **Default to branch + pull request.** A direct `main` release is allowed only
   when EJN explicitly authorizes it in the current session.
 - Never force-push. Never rewrite shared history.
-- Every commit authored `EJN <ejnburrows@gmail.com>`.
+- Prefer `EJN <ejnburrows@gmail.com>` when the write path exposes author fields.
+  Commits made through EJN's authenticated GitHub account are also valid owner
+  authorship when the connector controls the commit identity.
 - Never put an AI or tool name in commits, messages, or PR text.
 
 ---
