@@ -16,8 +16,9 @@ const stages = readFileSync(new URL('../stages.js', import.meta.url), 'utf8');
 test('uses the supplied official company logo without alteration', () => {
   assert.equal(
     createHash('sha256').update(logo).digest('hex'),
-    'c65156b7497dd40f83a270272021ac069af95964f00bb6dbce8fbc34fcfbfc4a'
+    '003b024a7dafc57efc65459b6ba340a4c1b9aa25f52846a24b2733d0febc4eb2'
   );
+  assert.match(page, /class="hero-brand-logo"\s+src="logo\.jpg"/);
 });
 
 test('publishes the company slogan in English and Spanish', () => {
@@ -53,6 +54,16 @@ test('centers the logo inside a seamless matching navy band', () => {
   assert.match(polish, /\.brand[\s\S]*?border:\s*0;[\s\S]*?box-shadow:\s*none;/);
 });
 
+test('publishes one visible header number with call, SMS, and WhatsApp choices', () => {
+  assert.match(page, /class="brand-established">EST\.1996</);
+  assert.match(page, /class="header-phone"[^>]+>\(786\) 344-2837<\/a>/);
+  assert.match(page, /class="header-contact-link"\s+href="tel:\+17863442837">llamar<\/a>/);
+  assert.match(page, /<summary>escribir<\/summary>/);
+  assert.match(page, /href="sms:\+17863442837">SMS<\/a>/);
+  assert.match(page, /href="https:\/\/wa\.me\/17863442837"/);
+  assert.match(intakeConfig, /whatsappNumber:\s*'17863442837'/);
+});
+
 test('publishes only the confirmed credential claims', () => {
   assert.doesNotMatch(page, /bbb\.org|A\+ rating|July 2026 license verification/);
   assert.doesNotMatch(copy, /Better Business Bureau|July 2026 license verification/);
@@ -73,7 +84,7 @@ test('adds touch-specific controls for Android phones and tablets', () => {
   assert.match(shellStyles, /min-width:\s*721px[\s\S]*?max-width:\s*980px[\s\S]*?pointer:\s*coarse/);
   assert.match(shellStyles, /\.shell-callbar[\s\S]*?display:\s*grid/);
   assert.match(polish, /@media \(hover: none\), \(pointer: coarse\)[\s\S]*?\.shell-menu-btn[\s\S]*?min-height:\s*48px/);
-  assert.match(polish, /max-width:\s*980px[\s\S]*?pointer:\s*coarse[\s\S]*?\.nav-actions\s*>\s*\.call-btn[\s\S]*?min-width:\s*48px/);
+  assert.match(polish, /@media \(hover: none\), \(pointer: coarse\)[\s\S]*?\.header-contact-link[\s\S]*?min-height:\s*48px/);
 });
 
 test('references complete WebP photographs for every staged panel', () => {

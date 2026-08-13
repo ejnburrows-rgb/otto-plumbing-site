@@ -14,13 +14,16 @@
   display: grid !important;
   grid-template-columns: minmax(250px, 1fr) auto minmax(250px, 1fr);
   grid-template-areas: "links brand actions";
-  min-height: 96px !important;
+  min-height: 148px !important;
   gap: 24px;
 }
 .brand {
   grid-area: brand;
   min-width: 0 !important;
   justify-self: center;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -30,16 +33,23 @@
 }
 .brand .crm-wordmark,
 .brand img {
-  width: 84px !important;
-  height: 84px !important;
+  width: 248px !important;
+  height: 100px !important;
   padding: 0 !important;
-  object-fit: contain !important;
+  object-fit: cover !important;
   object-position: center !important;
   border-radius: 0 !important;
 }
+.brand-established {
+  color: rgba(255, 255, 255, .88);
+  font-size: .72rem;
+  font-weight: 850;
+  letter-spacing: .18em;
+  line-height: 1;
+}
 .nav-links { grid-area: links; justify-self: start; color: rgba(255, 255, 255, .76); }
 .nav-links a:hover { color: #fff; }
-.nav-actions { grid-area: actions; justify-self: end; }
+.nav-actions { grid-area: actions; justify-self: end; align-items: center; }
 .nav-actions .toggle-group,
 .nav-actions .icon-btn {
   border-color: rgba(255, 255, 255, .24);
@@ -49,8 +59,57 @@
 .nav-actions .toggle-group button { color: rgba(255, 255, 255, .82); }
 .nav-actions .toggle-group button { min-width: 44px; min-height: 44px; }
 .nav-actions .toggle-group button.is-on { background: #fff; color: #0b1222; }
-.nav-actions .call-btn { background: #0d6fbe; color: #fff; box-shadow: none; }
-.nav-actions .call-btn:hover { background: #fff; color: #0b1222; }
+.header-contact {
+  display: grid;
+  justify-items: end;
+  gap: 7px;
+}
+.header-phone {
+  color: #fff;
+  font-size: .98rem;
+  font-weight: 850;
+  letter-spacing: .015em;
+  text-decoration: none;
+}
+.header-contact-actions { display: flex; gap: 7px; }
+.header-contact-link,
+.header-write summary,
+.header-write-menu a {
+  display: inline-flex;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 4px;
+  background: #0d6fbe;
+  color: #fff;
+  align-items: center;
+  justify-content: center;
+  font-size: .82rem;
+  font-weight: 800;
+  text-decoration: none;
+  text-transform: lowercase;
+}
+.header-contact-link:hover,
+.header-write summary:hover { background: #fff; color: #0b1222; }
+.header-write { position: relative; }
+.header-write summary { list-style: none; cursor: pointer; }
+.header-write summary::-webkit-details-marker { display: none; }
+.header-write-menu {
+  position: absolute;
+  top: calc(100% + 7px);
+  right: 0;
+  z-index: 30;
+  display: grid;
+  width: 132px;
+  gap: 5px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 6px;
+  background: #0b1222;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .24);
+}
+.header-write:not([open]) .header-write-menu { display: none; }
+.header-write-menu a { width: 100%; text-transform: none; }
 
 .experience-banner {
   display: inline-grid !important;
@@ -185,9 +244,40 @@
 .verified-review-card a { color: var(--blue); font-size: .82rem; font-style: normal; font-weight: 760; }
 
 @media (max-width: 980px) {
-  .nav-inner { grid-template-columns: 1fr auto 1fr; min-height: 84px !important; }
+  .nav-inner {
+    grid-template-columns: auto auto;
+    grid-template-areas: "brand brand" "actions actions";
+    justify-content: center;
+    min-height: 214px !important;
+    gap: 4px;
+    padding: 4px 0 !important;
+  }
   .brand .crm-wordmark,
-  .brand img { width: 72px !important; height: 72px !important; }
+  .brand img { width: 220px !important; height: 88px !important; }
+  .nav-actions {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-areas: "menu language" "contact contact";
+    justify-content: center;
+    justify-items: center;
+    width: 100%;
+    gap: 7px;
+  }
+  .shell-menu-btn { grid-area: menu; }
+  .nav-actions .toggle-group { grid-area: language; }
+  .shell-menu-btn,
+  .nav-actions .toggle-group button,
+  .header-phone,
+  .header-contact-link,
+  .header-write summary { min-height: 48px; }
+  .header-phone { display: inline-flex; align-items: center; }
+  .header-contact {
+    grid-area: contact;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
   .credential-grid,
   .verified-review-grid { grid-template-columns: 1fr; }
   .credential-card { min-height: 0; }
@@ -198,20 +288,10 @@
 }
 
 @media (max-width: 720px) {
-  .nav-inner { min-height: 72px !important; gap: 6px; padding: 6px 0 !important; }
-  .brand .crm-wordmark,
-  .brand img { width: 60px !important; height: 60px !important; }
-  .nav-actions { gap: 4px; }
-  .nav-actions > .call-btn {
-    width: 44px;
-    min-width: 44px;
-    padding: 0;
-    font-size: 0;
-  }
-  .nav-actions > .call-btn::before {
-    content: "☎";
-    font-size: 1rem;
-  }
+  .nav-inner { min-height: 214px !important; }
+  .header-phone { font-size: .9rem; }
+  .header-contact-link,
+  .header-write summary { padding-inline: 11px; }
   .credential-grid { margin-top: 24px; gap: 10px; }
   .credential-card { padding: 21px; }
   #contact .whatsapp-contact { padding: 18px; }
@@ -219,33 +299,22 @@
 }
 
 @media (max-width: 390px) {
-  .brand .crm-wordmark,
-  .brand img { width: 56px !important; height: 56px !important; }
+  .header-contact { gap: 6px; }
+  .header-contact-link,
+  .header-write summary { padding-inline: 9px; }
 }
 
 @media (hover: none), (pointer: coarse) {
   .nav-actions .toggle-group button,
+  .header-contact-link,
+  .header-write summary,
+  .header-write-menu a,
   .shell-menu-btn,
   .shell-close,
   .shell-link,
   .shell-return-go,
   .shell-return-dismiss,
   .shell-top { min-height: 48px; }
-}
-
-@media (max-width: 980px) and (hover: none),
-       (max-width: 980px) and (pointer: coarse) {
-  .nav-actions > .call-btn {
-    width: 48px;
-    min-width: 48px;
-    min-height: 48px;
-    padding: 0;
-    font-size: 0;
-  }
-  .nav-actions > .call-btn::before {
-    content: "☎";
-    font-size: 1rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -5,9 +5,7 @@
 window.OTTO_INTAKE_CONFIG = {
   endpoint: '',
   fallbackEmail: 'hernandezotto77@gmail.com',
-  // Confirm the WhatsApp-enabled business number before setting this value.
-  // Required format: country code plus business number, digits only.
-  whatsappNumber: '',
+  whatsappNumber: '17863442837',
   timeoutMs: 15000
 };
 

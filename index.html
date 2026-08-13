@@ -585,10 +585,7 @@ img, svg { display: block; max-width: 100%; }
   <div class="wrap nav-inner">
     <a class="brand" href="#top" aria-label="OTTO Plumbing Inc.">
       <img src="logo.jpg" alt="OTTO Plumbing Inc. logo">
-      <div class="brand-copy">
-        <div class="brand-title">OTTO Plumbing Inc.</div>
-        <div class="brand-sub" data-i18n="brandSub">Licensed plumbing service</div>
-      </div>
+      <span class="brand-established">EST.1996</span>
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="#services" data-i18n="navServices">Services</a>
@@ -600,7 +597,19 @@ img, svg { display: block; max-width: 100%; }
         <button type="button" data-lang="en" class="is-on" aria-pressed="true">EN</button>
         <button type="button" data-lang="es" aria-pressed="false">ES</button>
       </div>
-      <a class="call-btn" href="tel:+17863442837" data-i18n="callNow">Call or text</a>
+      <div class="header-contact">
+        <a class="header-phone" href="tel:+17863442837" aria-label="Call OTTO Plumbing at (786) 344-2837">(786) 344-2837</a>
+        <div class="header-contact-actions">
+          <a class="header-contact-link" href="tel:+17863442837">llamar</a>
+          <details class="header-write">
+            <summary>escribir</summary>
+            <div class="header-write-menu">
+              <a href="sms:+17863442837">SMS</a>
+              <a href="https://wa.me/17863442837" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            </div>
+          </details>
+        </div>
+      </div>
     </div>
   </div>
 </header>
@@ -615,14 +624,15 @@ img, svg { display: block; max-width: 100%; }
      <div class="panel__copy"><div class="panel__inner"><div class="hero">
     <div class="wrap hero-shell">
       <div class="hero-main">
+        <img class="hero-brand-logo" src="logo.jpg" alt="OTTO Plumbing Inc. company logo" width="1024" height="1024" decoding="async">
         <div class="hero-eyebrow experience-banner">
           <strong data-i18n="experienceValue">30+ YEARS</strong>
           <span data-i18n="experienceLabel">Serving South Florida</span>
         </div>
         <h1 id="panel-hero-h" data-i18n="heroTitle">Professional plumbing service with verified business information.</h1>
-        <p class="lead" data-i18n="heroLead">Call or text OTTO Plumbing Inc. directly at (786) 344-2837. This site shows only confirmed public details for immediate customer delivery.</p>
+        <p class="lead" data-i18n="heroLead">Professional plumbing for homes, businesses, and buildings across South Florida.</p>
         <div class="hero-cta">
-          <a class="btn-primary" href="tel:+17863442837" data-i18n="primaryCta">Call (786) 344-2837</a>
+          <a class="btn-primary" href="tel:+17863442837" data-i18n="primaryCta">Call now</a>
           <a class="btn-secondary" href="#contact" data-i18n="secondaryCta">See contact options</a>
         </div>
         <div class="hero-facts">
@@ -631,8 +641,8 @@ img, svg { display: block; max-width: 100%; }
             <div class="fact-value">OTTO Plumbing Inc.</div>
           </div>
           <div class="fact">
-            <div class="fact-label" data-i18n="fact2Label">Phone</div>
-            <div class="fact-value">(786) 344-2837</div>
+            <div class="fact-label" data-i18n="fact2Label">Hours</div>
+            <div class="fact-value">Mon–Sat · 7 AM–7 PM</div>
           </div>
           <div class="fact">
             <div class="fact-label" data-i18n="fact3Label">License</div>
@@ -735,7 +745,7 @@ img, svg { display: block; max-width: 100%; }
         <div class="contact-stack">
           <div class="contact-row">
             <small data-i18n="contactPhoneLabel">Call or text</small>
-            <strong><a href="tel:+17863442837">(786) 344-2837</a></strong>
+            <strong><a href="tel:+17863442837">Direct business line</a></strong>
           </div>
           <div class="contact-row">
             <small data-i18n="contactLicenseLabel">License</small>
@@ -788,7 +798,7 @@ img, svg { display: block; max-width: 100%; }
     <div class="wrap intake-wrap" id="request">
       <div class="contact-card">
         <h2 id="panel-request-h" data-otto-i18n="formTitle">Request service online</h2>
-        <p class="contact-lead" data-otto-i18n="formLead">Send the job details and the office will follow up. Nothing is reported as sent unless the receiving system confirms it. To reach OTTO Plumbing right now, call or text (786) 344-2837.</p>
+        <p class="contact-lead" data-otto-i18n="formLead">Send the job details and the office will follow up. Nothing is reported as sent unless the receiving system confirms it.</p>
         <form class="intake-form" id="intakeForm" novalidate>
           <div class="intake-grid">
             <div class="intake-field">
@@ -798,7 +808,7 @@ img, svg { display: block; max-width: 100%; }
             </div>
             <div class="intake-field">
               <label for="intakePhone" data-otto-i18n="labelPhone">Phone</label>
-              <input id="intakePhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="32" data-otto-i18n-ph="phPhone" placeholder="(786) 344-2837" required>
+              <input id="intakePhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="32" data-otto-i18n-ph="phPhone" placeholder="Your phone number" required>
               <p class="intake-error" data-otto-error-for="phone"></p>
             </div>
             <div class="intake-field">
@@ -847,7 +857,7 @@ img, svg { display: block; max-width: 100%; }
           </div>
           <div class="intake-actions">
             <button class="intake-submit" type="submit" id="intakeSubmit" data-otto-i18n="submitIdle">Send request</button>
-            <a class="call-btn" href="tel:+17863442837" data-otto-i18n="callInstead">Call (786) 344-2837</a>
+            <a class="call-btn" href="tel:+17863442837" data-otto-i18n="callInstead">Call now</a>
           </div>
           <p class="intake-status" id="intakeStatus" role="status" aria-live="polite"></p>
           <div class="intake-fallback" id="intakeFallback">
@@ -855,8 +865,8 @@ img, svg { display: block; max-width: 100%; }
               <small data-otto-i18n="fallbackLabel">Reach the office directly</small>
               <div class="contact-note" data-otto-i18n="fallbackBody">Your details are still in the form. Nothing has been sent to the office yet.</div>
             </div>
-            <a class="call-btn" href="tel:+17863442837" data-otto-i18n="fallbackCall">Call (786) 344-2837</a>
-            <a class="call-btn" href="sms:+17863442837" data-otto-i18n="fallbackText">Text (786) 344-2837</a>
+            <a class="call-btn" href="tel:+17863442837" data-otto-i18n="fallbackCall">Call now</a>
+            <a class="call-btn" href="sms:+17863442837" data-otto-i18n="fallbackText">Text now</a>
             <a class="call-btn" id="intakeMailto" href="tel:+17863442837" data-otto-i18n="fallbackEmail">Open a pre-filled email</a>
           </div>
         </form>
@@ -878,7 +888,7 @@ img, svg { display: block; max-width: 100%; }
         <h2 id="panel-cta-h" data-i18n="ctaTitle">Need plumbing help?</h2>
         <p data-i18n="ctaLead">Call or text the verified OTTO Plumbing Inc. number.</p>
         <div class="cta-actions">
-          <a class="btn-primary" href="tel:+17863442837" data-i18n="ctaCall">Call (786) 344-2837</a>
+          <a class="btn-primary" href="tel:+17863442837" data-i18n="ctaCall">Call now</a>
           <a class="btn-secondary" href="tel:+17863442837" data-i18n="ctaText">Text the business line</a>
         </div>
       </div>
@@ -891,7 +901,7 @@ img, svg { display: block; max-width: 100%; }
 <footer class="foot">
   <div class="wrap foot-box">
     <div>© 2026 OTTO Plumbing Inc.</div>
-    <div data-i18n="footerRight">Verified phone: (786) 344-2837 · License: CFC1429613</div>
+    <div data-i18n="footerRight">South Florida · License: CFC1429613</div>
   </div>
 </footer>
 <script>
@@ -905,11 +915,11 @@ const translations = {
     callNow: 'Call or text',
     eyebrow: 'Licensed • Insured • English / Spanish',
     heroTitle: 'Professional plumbing service with verified business information.',
-    heroLead: 'Call or text OTTO Plumbing Inc. directly at (786) 344-2837. This site shows only confirmed public details for immediate customer delivery.',
-    primaryCta: 'Call (786) 344-2837',
+    heroLead: 'Professional plumbing for homes, businesses, and buildings across South Florida.',
+    primaryCta: 'Call now',
     secondaryCta: 'See contact options',
     fact1Label: 'Business',
-    fact2Label: 'Phone',
+    fact2Label: 'Hours',
     fact3Label: 'License',
     badge: 'Immediate delivery version',
     info1Title: 'One clear contact path',
@@ -948,9 +958,9 @@ const translations = {
     contactWhyBody: 'The verified phone line always works, and the request form only reports success when the office actually receives it.',
     ctaTitle: 'Need plumbing help?',
     ctaLead: 'Call or text the verified OTTO Plumbing Inc. number.',
-    ctaCall: 'Call (786) 344-2837',
+    ctaCall: 'Call now',
     ctaText: 'Text the business line',
-    footerRight: 'Verified phone: (786) 344-2837 · License: CFC1429613'
+    footerRight: 'South Florida · License: CFC1429613'
   },
   es: {
     skip: 'Ir al contenido principal',
@@ -961,11 +971,11 @@ const translations = {
     callNow: 'Llamar o escribir',
     eyebrow: 'Licencia • Seguro • Inglés / Español',
     heroTitle: 'Servicio profesional de plomería con información comercial verificada.',
-    heroLead: 'Llame o escriba directamente a OTTO Plumbing Inc. al (786) 344-2837. Este sitio muestra solo detalles públicos confirmados para una entrega inmediata.',
-    primaryCta: 'Llamar al (786) 344-2837',
+    heroLead: 'Plomería profesional para hogares, negocios y edificios en todo el sur de Florida.',
+    primaryCta: 'Llamar ahora',
     secondaryCta: 'Ver opciones de contacto',
     fact1Label: 'Negocio',
-    fact2Label: 'Teléfono',
+    fact2Label: 'Horario',
     fact3Label: 'Licencia',
     badge: 'Versión final de entrega',
     info1Title: 'Un solo camino de contacto',
@@ -1004,9 +1014,9 @@ const translations = {
     contactWhyBody: 'La línea telefónica verificada siempre funciona, y el formulario solo confirma el envío cuando la oficina realmente lo recibe.',
     ctaTitle: '¿Necesita ayuda de plomería?',
     ctaLead: 'Llame o escriba al número verificado de OTTO Plumbing Inc.',
-    ctaCall: 'Llamar al (786) 344-2837',
+    ctaCall: 'Llamar ahora',
     ctaText: 'Escribir a la línea del negocio',
-    footerRight: 'Teléfono verificado: (786) 344-2837 · Licencia: CFC1429613'
+    footerRight: 'Sur de Florida · Licencia: CFC1429613'
   }
 };
 const langButtons = [...document.querySelectorAll('[data-lang]')];

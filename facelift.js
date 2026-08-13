@@ -17,8 +17,8 @@
       callNow: 'Call or text',
       eyebrow: 'South Florida plumbing • Since 1996',
       heroTitle: 'Experienced plumbing service for South Florida homes and businesses.',
-      heroLead: 'OTTO Plumbing Inc. has served South Florida since 1996. Call or text ' + PHONE + ' for residential and commercial plumbing service.',
-      primaryCta: 'Call ' + PHONE,
+      heroLead: 'OTTO Plumbing Inc. has served South Florida since 1996 with residential and commercial plumbing service.',
+      primaryCta: 'Call now',
       secondaryCta: 'Request service',
       fact1Label: 'Experience',
       fact2Label: 'Hours',
@@ -48,9 +48,9 @@
       contactWhyBody: 'Serving South Florida.',
       ctaTitle: 'Need a plumber?',
       ctaLead: 'Call or text OTTO Plumbing Inc. to discuss the job.',
-      ctaCall: 'Call ' + PHONE,
+      ctaCall: 'Call now',
       ctaText: 'Text the business line',
-      footerRight: 'South Florida · Lic. #CFC1429613 · ' + PHONE
+      footerRight: 'South Florida · Lic. #CFC1429613'
     },
     es: {
       brandSub: 'Plomería en el sur de Florida desde 1996',
@@ -60,8 +60,8 @@
       callNow: 'Llamar o escribir',
       eyebrow: 'Plomería en el sur de Florida • Desde 1996',
       heroTitle: 'Servicio de plomería con experiencia para hogares y negocios del sur de Florida.',
-      heroLead: 'OTTO Plumbing Inc. sirve al sur de Florida desde 1996. Llame o escriba al ' + PHONE + ' para servicio de plomería residencial y comercial.',
-      primaryCta: 'Llamar al ' + PHONE,
+      heroLead: 'OTTO Plumbing Inc. sirve al sur de Florida desde 1996 con servicio de plomería residencial y comercial.',
+      primaryCta: 'Llamar ahora',
       secondaryCta: 'Solicitar servicio',
       fact1Label: 'Experiencia',
       fact2Label: 'Horario',
@@ -91,9 +91,9 @@
       contactWhyBody: 'Servicio en el sur de Florida.',
       ctaTitle: '¿Necesita un plomero?',
       ctaLead: 'Llame o escriba a OTTO Plumbing Inc. para hablar sobre el trabajo.',
-      ctaCall: 'Llamar al ' + PHONE,
+      ctaCall: 'Llamar ahora',
       ctaText: 'Escribir a la línea del negocio',
-      footerRight: 'Sur de Florida · Lic. #CFC1429613 · ' + PHONE
+      footerRight: 'Sur de Florida · Lic. #CFC1429613'
     }
   };
 
@@ -123,21 +123,21 @@
     prefText: 'Mensaje de texto',
     prefEmail: 'Correo',
     formTitle: 'Solicitar servicio en línea',
-    formLead: 'Envíe los detalles del trabajo y la oficina le responderá. Nada se reporta como enviado hasta que el sistema receptor lo confirme. Para atención inmediata, llame o escriba al ' + PHONE + '.',
+    formLead: 'Envíe los detalles del trabajo y la oficina le responderá. Nada se reporta como enviado hasta que el sistema receptor lo confirme.',
     submitIdle: 'Enviar solicitud',
     submitSending: 'Enviando, espere',
     submitEmail: 'Preparar solicitud por correo',
-    callInstead: 'Llamar al ' + PHONE,
+    callInstead: 'Llamar ahora',
     fallbackLabel: 'Comuníquese directamente con la oficina',
     fallbackBody: 'Sus datos siguen en el formulario. Todavía no se ha enviado nada a la oficina.',
-    fallbackCall: 'Llamar al ' + PHONE,
-    fallbackText: 'Escribir al ' + PHONE,
+    fallbackCall: 'Llamar ahora',
+    fallbackText: 'Escribir ahora',
     fallbackEmail: 'Abrir un correo ya completado'
   };
 
   var FORM_ES_PLACEHOLDERS = {
     phName: 'Nombre y apellido',
-    phPhone: PHONE,
+    phPhone: 'Su número de teléfono',
     phEmail: 'usted@ejemplo.com',
     phLocation: 'Barrio, ciudad o dirección',
     phDetails: 'Describa el problema, el accesorio afectado y cuándo comenzó.'

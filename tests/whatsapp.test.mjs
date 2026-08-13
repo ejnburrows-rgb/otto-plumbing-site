@@ -27,7 +27,7 @@ test('does not invent or activate an invalid number', () => {
   assert.equal(whatsapp.buildUrl('not confirmed', 'es'), '');
 });
 
-test('keeps the WhatsApp interface inside Contact only', () => {
+test('keeps the full WhatsApp interface in Contact and exposes the requested header shortcut', () => {
   const marker = 'data-whatsapp-contact';
   // Located by id rather than an exact class string so the assertion keeps
   // testing where WhatsApp lives, not how the contact section is styled.
@@ -37,5 +37,5 @@ test('keeps the WhatsApp interface inside Contact only', () => {
   assert.equal(page.split(marker).length - 1, 1);
   assert.ok(page.indexOf(marker) > contactStart);
   assert.ok(page.indexOf(marker) < contactEnd);
-  assert.equal(page.includes('wa.me/'), false);
+  assert.match(page.slice(0, contactStart), /href="https:\/\/wa\.me\/17863442837"/);
 });

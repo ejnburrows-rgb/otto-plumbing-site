@@ -14,7 +14,7 @@
       heroTitle: 'Trusted residential and commercial plumbing across South Florida.',
       heroLead: 'Professional plumbing for homes, businesses, and buildings, backed by more than 30 years of experience and Florida license CFC1429613.',
       brandQuote: '“Making water flow through our pipes, like integrity through our name.”',
-      primaryCta: 'Call ' + PHONE,
+      primaryCta: 'Call now',
       secondaryCta: 'Request service',
       fact1Label: 'Established',
       fact2Label: 'Hours',
@@ -51,9 +51,9 @@
       whatsappLead: 'Tap the link and we’ll get in touch with you.',
       ctaTitle: 'Need a plumber?',
       ctaLead: 'Talk directly with OTTO Plumbing Inc. about your residential or commercial plumbing needs.',
-      ctaCall: 'Call ' + PHONE,
+      ctaCall: 'Call now',
       ctaText: 'Text the business line',
-      footerRight: 'South Florida · Lic. #CFC1429613 · ' + PHONE
+      footerRight: 'South Florida · Lic. #CFC1429613'
     },
     es: {
       brandSub: 'Plomería en el sur de Florida · Desde 1996',
@@ -63,7 +63,7 @@
       heroTitle: 'Plomería residencial y comercial de confianza en todo el sur de Florida.',
       heroLead: 'Plomería profesional para hogares, negocios y edificios, respaldada por más de 30 años de experiencia y la licencia de Florida CFC1429613.',
       brandQuote: '“Hacemos fluir el agua por nuestras tuberías, como la integridad fluye por nuestro nombre.”',
-      primaryCta: 'Llamar al ' + PHONE,
+      primaryCta: 'Llamar ahora',
       secondaryCta: 'Solicitar servicio',
       fact1Label: 'Establecida',
       fact2Label: 'Horario',
@@ -100,9 +100,9 @@
       whatsappLead: 'Contáctenos, presione el enlace y nos comunicaremos con usted.',
       ctaTitle: '¿Necesita un plomero?',
       ctaLead: 'Hable directamente con OTTO Plumbing Inc. sobre sus necesidades residenciales o comerciales.',
-      ctaCall: 'Llamar al ' + PHONE,
+      ctaCall: 'Llamar ahora',
       ctaText: 'Escribir a la línea del negocio',
-      footerRight: 'Sur de Florida · Lic. #CFC1429613 · ' + PHONE
+      footerRight: 'Sur de Florida · Lic. #CFC1429613'
     }
   };
 

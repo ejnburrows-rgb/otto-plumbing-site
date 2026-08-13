@@ -33,8 +33,8 @@
       close: 'Close menu',
       sections: 'Sections',
       home: 'Top of page',
-      call: 'Call (786) 344-2837',
-      text: 'Text (786) 344-2837',
+      call: 'Call now',
+      text: 'Text now',
       back: 'Back to where you were',
       dismiss: 'Dismiss',
       top: 'Back to top',
@@ -47,8 +47,8 @@
       close: 'Cerrar menú',
       sections: 'Secciones',
       home: 'Inicio de la página',
-      call: 'Llamar al (786) 344-2837',
-      text: 'Escribir al (786) 344-2837',
+      call: 'Llamar ahora',
+      text: 'Escribir ahora',
       back: 'Volver a donde estaba',
       dismiss: 'Descartar',
       top: 'Volver arriba',
@@ -139,8 +139,8 @@
     '<p class="shell-kicker" data-shell-copy="sections">Sections</p>' +
     '<nav class="shell-panel-nav" id="shellPanelNav" aria-label="Sections"></nav>' +
     '<div class="shell-panel-actions">' +
-    '<a class="call-btn" href="tel:+17863442837" data-shell-copy="call">Call (786) 344-2837</a>' +
-    '<a class="call-btn shell-alt-btn" href="sms:+17863442837" data-shell-copy="text">Text (786) 344-2837</a>' +
+    '<a class="call-btn" href="tel:+17863442837" data-shell-copy="call">Call now</a>' +
+    '<a class="call-btn shell-alt-btn" href="sms:+17863442837" data-shell-copy="text">Text now</a>' +
     '</div>' +
     '</div>' +
     '</div>';
@@ -256,8 +256,8 @@
     '<button type="button" class="shell-return-dismiss" id="shellReturnDismiss" data-shell-copy="dismiss">Dismiss</button>' +
     '</div>' +
     '<div class="shell-callbar" id="shellCallBar">' +
-    '<a class="call-btn" href="tel:+17863442837" data-shell-copy="call">Call (786) 344-2837</a>' +
-    '<a class="call-btn shell-alt-btn" href="sms:+17863442837" data-shell-copy="text">Text (786) 344-2837</a>' +
+    '<a class="call-btn" href="tel:+17863442837" data-shell-copy="call">Call now</a>' +
+    '<a class="call-btn shell-alt-btn" href="sms:+17863442837" data-shell-copy="text">Text now</a>' +
     '</div>' +
     '<button type="button" class="shell-top" id="shellTop">' +
     '<span aria-hidden="true">\u2191</span><span data-shell-copy="top">Back to top</span>' +
