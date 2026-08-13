@@ -72,7 +72,7 @@ test('adds touch-specific controls for Android phones and tablets', () => {
   assert.match(shellStyles, /min-width:\s*721px[\s\S]*?max-width:\s*980px[\s\S]*?pointer:\s*coarse/);
   assert.match(shellStyles, /\.shell-callbar[\s\S]*?display:\s*grid/);
   assert.match(polish, /@media \(hover: none\), \(pointer: coarse\)[\s\S]*?\.shell-menu-btn[\s\S]*?min-height:\s*48px/);
-  assert.match(polish, /\.nav-actions\s*>\s*\.call-btn[\s\S]*?min-width:\s*48px/);
+  assert.match(polish, /max-width:\s*980px[\s\S]*?pointer:\s*coarse[\s\S]*?\.nav-actions\s*>\s*\.call-btn[\s\S]*?min-width:\s*48px/);
 });
 
 test('configures the confirmed email fallback', () => {
