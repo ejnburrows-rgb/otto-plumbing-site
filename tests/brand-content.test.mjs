@@ -1,9 +1,7 @@
 import assert from 'node:assert/strict';
-import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
-const logo = readFileSync(new URL('../logo.jpg', import.meta.url));
 const copy = readFileSync(new URL('../prestige.js', import.meta.url), 'utf8');
 const polish = readFileSync(new URL('../production-polish.css', import.meta.url), 'utf8');
 const page = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
@@ -11,11 +9,14 @@ const mobilePolish = readFileSync(new URL('../prestige-polish.css', import.meta.
 const shell = readFileSync(new URL('../shell.js', import.meta.url), 'utf8');
 const intakeConfig = readFileSync(new URL('../intake-config.js', import.meta.url), 'utf8');
 
-test('uses the supplied official company logo without alteration', () => {
-  assert.equal(
-    createHash('sha256').update(logo).digest('hex'),
-    'c65156b7497dd40f83a270272021ac069af95964f00bb6dbce8fbc34fcfbfc4a'
-  );
+test('uses only the four approved website photographs', () => {
+  const references = [...page.matchAll(/<img[^>]+src="([^"]+)"/g)].map((match) => match[1]);
+  assert.deepEqual([...new Set(references)].sort(), [
+    'img/credentials-1996.webp',
+    'img/hero-technicians.webp',
+    'img/luxury-bathroom.webp',
+    'img/services-closeup.webp'
+  ]);
 });
 
 test('publishes the company slogan in English and Spanish', () => {

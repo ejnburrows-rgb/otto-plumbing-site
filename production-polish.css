@@ -37,6 +37,17 @@
   object-position: center !important;
   border-radius: 0 !important;
 }
+.brand-monogram {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, .85);
+  border-radius: 50%;
+  font: 800 1rem/1 Inter, system-ui, sans-serif;
+  letter-spacing: .06em;
+}
 .nav-links { grid-area: links; justify-self: start; color: rgba(255, 255, 255, .76); }
 .nav-links a:hover { color: #fff; }
 .nav-actions { grid-area: actions; justify-self: end; }
@@ -188,6 +199,7 @@
   .nav-inner { grid-template-columns: 1fr auto 1fr; min-height: 84px !important; }
   .brand .crm-wordmark,
   .brand img { width: 72px !important; height: 72px !important; }
+  .brand-monogram { width: 72px; height: 72px; }
   .credential-grid,
   .verified-review-grid { grid-template-columns: 1fr; }
   .credential-card { min-height: 0; }
@@ -201,6 +213,7 @@
   .nav-inner { min-height: 72px !important; gap: 6px; padding: 6px 0 !important; }
   .brand .crm-wordmark,
   .brand img { width: 60px !important; height: 60px !important; }
+  .brand-monogram { width: 60px; height: 60px; font-size: .8rem; }
   .nav-actions { gap: 4px; }
   .nav-actions > .call-btn {
     width: 44px;
@@ -221,6 +234,7 @@
 @media (max-width: 390px) {
   .brand .crm-wordmark,
   .brand img { width: 56px !important; height: 56px !important; }
+  .brand-monogram { width: 56px; height: 56px; font-size: .75rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

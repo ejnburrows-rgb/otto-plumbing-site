@@ -3,7 +3,6 @@
   'use strict';
 
   var PHONE = '(786) 344-2837';
-  var CRM_LOGO = 'logo.jpg';
 
   var COPY = {
     en: {
@@ -115,15 +114,6 @@
     return document.documentElement.lang === 'es' ? 'es' : 'en';
   }
 
-  function applyLogo() {
-    var img = document.querySelector('.brand img');
-    if (!img) return;
-    if (img.getAttribute('src') !== CRM_LOGO) img.setAttribute('src', CRM_LOGO);
-    img.setAttribute('alt', 'OTTO Plumbing Inc.');
-    img.removeAttribute('aria-hidden');
-    img.classList.add('crm-wordmark');
-  }
-
   function applyCopy() {
     var lang = currentLang();
     try {
@@ -195,7 +185,6 @@
   }
 
   function applyAll() {
-    applyLogo();
     applyCopy();
     renderVerifiedReviews();
   }
