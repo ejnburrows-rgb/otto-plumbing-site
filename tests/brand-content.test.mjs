@@ -9,13 +9,14 @@ const mobilePolish = readFileSync(new URL('../prestige-polish.css', import.meta.
 const shell = readFileSync(new URL('../shell.js', import.meta.url), 'utf8');
 const intakeConfig = readFileSync(new URL('../intake-config.js', import.meta.url), 'utf8');
 
-test('uses only the four approved website photographs', () => {
+test('uses the four approved website photographs and supplied company logo', () => {
   const references = [...page.matchAll(/<img[^>]+src="([^"]+)"/g)].map((match) => match[1]);
   assert.deepEqual([...new Set(references)].sort(), [
     'img/credentials-1996.webp',
     'img/hero-technicians.webp',
     'img/luxury-bathroom.webp',
-    'img/services-closeup.webp'
+    'img/services-closeup.webp',
+    'logo.jpg'
   ]);
 });
 
@@ -45,10 +46,10 @@ test('uses the concise WhatsApp contact invitation in both languages', () => {
   assert.doesNotMatch(copy, /Prepare (a|un) WhatsApp message/);
 });
 
-test('centers the logo inside a seamless matching navy band', () => {
+test('places the supplied logo at the top left inside the navy header', () => {
   assert.match(polish, /background:\s*#0b1222/);
-  assert.match(polish, /grid-template-areas:\s*"links brand actions"/);
-  assert.match(polish, /justify-self:\s*center/);
+  assert.match(polish, /grid-template-areas:\s*"brand links actions"/);
+  assert.match(polish, /justify-self:\s*start/);
   assert.match(polish, /\.brand[\s\S]*?border:\s*0;[\s\S]*?box-shadow:\s*none;/);
 });
 
