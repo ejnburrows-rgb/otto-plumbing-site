@@ -11,6 +11,7 @@ const mobilePolish = readFileSync(new URL('../prestige-polish.css', import.meta.
 const shell = readFileSync(new URL('../shell.js', import.meta.url), 'utf8');
 const shellStyles = readFileSync(new URL('../shell.css', import.meta.url), 'utf8');
 const intakeConfig = readFileSync(new URL('../intake-config.js', import.meta.url), 'utf8');
+const stages = readFileSync(new URL('../stages.js', import.meta.url), 'utf8');
 
 test('uses the supplied official company logo without alteration', () => {
   assert.equal(
@@ -73,6 +74,19 @@ test('adds touch-specific controls for Android phones and tablets', () => {
   assert.match(shellStyles, /\.shell-callbar[\s\S]*?display:\s*grid/);
   assert.match(polish, /@media \(hover: none\), \(pointer: coarse\)[\s\S]*?\.shell-menu-btn[\s\S]*?min-height:\s*48px/);
   assert.match(polish, /max-width:\s*980px[\s\S]*?pointer:\s*coarse[\s\S]*?\.nav-actions\s*>\s*\.call-btn[\s\S]*?min-width:\s*48px/);
+});
+
+test('references complete WebP photographs for every staged panel', () => {
+  const photoFiles = [...stages.matchAll(/file:\s*'([^']+\.webp\.b64)'/g)].map((match) => match[1]);
+  assert.equal(photoFiles.length, 5);
+
+  for (const photoFile of photoFiles) {
+    const base64 = readFileSync(new URL(`../${photoFile}`, import.meta.url), 'utf8').replace(/\s+/g, '');
+    const photo = Buffer.from(base64, 'base64');
+    assert.equal(photo.subarray(0, 4).toString('ascii'), 'RIFF', `${photoFile} has a valid RIFF header`);
+    assert.equal(photo.subarray(8, 12).toString('ascii'), 'WEBP', `${photoFile} is a WebP image`);
+    assert.equal(photo.readUInt32LE(4) + 8, photo.length, `${photoFile} is not truncated`);
+  }
 });
 
 test('configures the confirmed email fallback', () => {

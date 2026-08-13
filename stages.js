@@ -13,8 +13,8 @@
   var photoMap = [
     {
       selector: '#top .panel__media img',
-      file: 'img/hero.webp.b64',
-      alt: 'OTTO Plumbing technicians working in a marble shower with an OTTO service van outside.'
+      file: 'img/closing.webp.b64',
+      alt: 'OTTO Plumbing technician working in a marble bathroom.'
     },
     {
       selector: '#services .panel__media img',
@@ -23,8 +23,8 @@
     },
     {
       selector: '#business .panel__media img',
-      file: 'img/credentials.webp.b64',
-      alt: 'OTTO Plumbing technicians reviewing plans at a plumbing job site with an OTTO service van.'
+      file: 'img/contact.webp.b64',
+      alt: 'OTTO Plumbing technician servicing a brass tub fixture.'
     },
     {
       selector: '#contact .panel__media img',
