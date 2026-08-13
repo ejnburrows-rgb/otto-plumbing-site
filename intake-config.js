@@ -24,14 +24,6 @@ window.OTTO_VERIFIED_REVIEWS = [];
 (function () {
   'use strict';
 
-  function stylesheet(href) {
-    if (document.querySelector('link[href="' + href + '"]')) return;
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = href;
-    document.head.appendChild(link);
-  }
-
   function script(src, done) {
     if (document.querySelector('script[src="' + src + '"]')) {
       if (done) done();
@@ -74,16 +66,9 @@ window.OTTO_VERIFIED_REVIEWS = [];
     }
   }
 
-  stylesheet('shell.css');
-  stylesheet('facelift.css');
-  stylesheet('prestige.css');
-  stylesheet('prestige-polish.css');
-  stylesheet('meeting-polish.css');
-  stylesheet('production-polish.css');
-  /* stages.css is linked statically in index.html — it defines page structure,
-   * and injecting it here made the document reflow after first paint. Its
-   * colour half is injected last so it wins ties against the sheets above. */
-  stylesheet('stages-theme.css');
+  /* Every stylesheet is linked in index.html <head>, in the order this chain
+   * used to inject them. The cascade is unchanged; resolving it before first
+   * paint is what removed the post-load reflow (CLS 0.217 -> 0.021). */
 
   function start() {
     protectUnconfiguredHandoff();
