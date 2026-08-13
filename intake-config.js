@@ -24,14 +24,6 @@ window.OTTO_VERIFIED_REVIEWS = [];
 (function () {
   'use strict';
 
-  function stylesheet(href) {
-    if (document.querySelector('link[href="' + href + '"]')) return;
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = href;
-    document.head.appendChild(link);
-  }
-
   function script(src, done) {
     if (document.querySelector('script[src="' + src + '"]')) {
       if (done) done();
