@@ -9,6 +9,7 @@ const polish = readFileSync(new URL('../production-polish.css', import.meta.url)
 const page = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const mobilePolish = readFileSync(new URL('../prestige-polish.css', import.meta.url), 'utf8');
 const shell = readFileSync(new URL('../shell.js', import.meta.url), 'utf8');
+const shellStyles = readFileSync(new URL('../shell.css', import.meta.url), 'utf8');
 const intakeConfig = readFileSync(new URL('../intake-config.js', import.meta.url), 'utf8');
 
 test('uses the supplied official company logo without alteration', () => {
@@ -62,6 +63,16 @@ test('keeps mobile call, language, and sticky navigation paths available', () =>
   assert.doesNotMatch(polish, /\.nav-actions\s+\.toggle-group\s*\{\s*display:\s*none/);
   assert.match(polish, /\.nav\s*\{[\s\S]*?position:\s*sticky/);
   assert.match(shell, /class="shell-callbar"/);
+});
+
+test('adds touch-specific controls for Android phones and tablets', () => {
+  assert.match(page, /viewport-fit=cover/);
+  assert.match(page, /@media \(hover: none\), \(pointer: coarse\)/);
+  assert.match(page, /touch-action:\s*manipulation/);
+  assert.match(shellStyles, /min-width:\s*721px[\s\S]*?max-width:\s*980px[\s\S]*?pointer:\s*coarse/);
+  assert.match(shellStyles, /\.shell-callbar[\s\S]*?display:\s*grid/);
+  assert.match(polish, /@media \(hover: none\), \(pointer: coarse\)[\s\S]*?\.shell-menu-btn[\s\S]*?min-height:\s*48px/);
+  assert.match(polish, /\.nav-actions\s*>\s*\.call-btn[\s\S]*?min-width:\s*48px/);
 });
 
 test('configures the confirmed email fallback', () => {

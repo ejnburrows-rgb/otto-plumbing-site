@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>OTTO Plumbing Inc. — South Florida Plumbing Since 1996</title>
 <meta name="description" content="OTTO Plumbing Inc. provides residential and commercial plumbing across South Florida. 30+ years of experience. Lic. CFC1429613. Call or text (786) 344-2837.">
 <link rel="canonical" href="https://otto-plumbing-site.vercel.app/">
@@ -563,6 +563,19 @@ img, svg { display: block; max-width: 100%; }
 @media (max-width: 720px) {
   .intake-grid { grid-template-columns: 1fr; }
   .intake-actions > * { width: 100%; }
+}
+@media (hover: none), (pointer: coarse) {
+  :is(a, button, input, select, textarea) {
+    -webkit-tap-highlight-color: rgba(13, 111, 190, 0.18);
+  }
+  :is(a, button) { touch-action: manipulation; }
+  :is(.nav-links a, .toggle-group button, .call-btn, .btn-primary, .btn-secondary, .intake-submit) {
+    min-height: 48px;
+  }
+  .intake-field :is(input, select, textarea) { font-size: 16px; }
+  :is(.call-btn, .btn-primary, .btn-secondary, .intake-submit):active {
+    transform: scale(.98);
+  }
 }
 </style>
 </head>

@@ -159,6 +159,7 @@ html.shell-scrolled .nav {
   min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   padding: 16px 18px calc(22px + env(safe-area-inset-bottom));
   display: grid;
   gap: 10px;
@@ -298,6 +299,34 @@ html.shell-scrolled .nav {
   border-bottom: 1px solid transparent;
 }
 .shell-foot-top:hover { border-bottom-color: currentColor; }
+
+@media (hover: none), (pointer: coarse) {
+  :is(.shell-menu-btn, .shell-close, .shell-link, .shell-return-go, .shell-return-dismiss, .shell-top) {
+    min-height: 48px;
+    touch-action: manipulation;
+  }
+  :is(.shell-menu-btn, .shell-close, .shell-link, .shell-top):active {
+    transform: scale(.98);
+  }
+  .shell-menu-btn:hover,
+  .shell-close:hover,
+  .shell-link:hover,
+  .shell-top:hover { border-color: var(--line); }
+}
+
+@media (min-width: 721px) and (max-width: 980px) and (hover: none),
+       (min-width: 721px) and (max-width: 980px) and (pointer: coarse) {
+  body { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
+  .shell-callbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: min(430px, calc(100vw - 36px));
+    pointer-events: auto;
+  }
+  .shell-callbar .call-btn { width: 100%; padding-inline: 14px; }
+  .shell-top { display: none; }
+}
 
 @media (max-width: 720px) {
   body { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }

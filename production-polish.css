@@ -223,6 +223,21 @@
   .brand img { width: 56px !important; height: 56px !important; }
 }
 
+@media (hover: none), (pointer: coarse) {
+  .nav-actions > .call-btn {
+    width: 48px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+  .nav-actions .toggle-group button,
+  .shell-menu-btn,
+  .shell-close,
+  .shell-link,
+  .shell-return-go,
+  .shell-return-dismiss,
+  .shell-top { min-height: 48px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .credential-card { transition: none; }
 }
