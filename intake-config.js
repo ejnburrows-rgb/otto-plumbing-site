@@ -1,10 +1,10 @@
 /* OTTO Plumbing Inc. - customer intake delivery configuration.
  * Final review candidate. No secrets belong here. The Formspree endpoint and
- * confirmed office email stay empty until the client setup visit.
+ * Formspree endpoint stays empty until the client setup visit.
  */
 window.OTTO_INTAKE_CONFIG = {
   endpoint: '',
-  fallbackEmail: '',
+  fallbackEmail: 'hernandezotto77@gmail.com',
   // Confirm the WhatsApp-enabled business number before setting this value.
   // Required format: country code plus business number, digits only.
   whatsappNumber: '',
@@ -80,13 +80,19 @@ window.OTTO_VERIFIED_REVIEWS = [];
   stylesheet('prestige-polish.css');
   stylesheet('meeting-polish.css');
   stylesheet('production-polish.css');
+  /* stages.css is linked statically in index.html — it defines page structure,
+   * and injecting it here made the document reflow after first paint. Its
+   * colour half is injected last so it wins ties against the sheets above. */
+  stylesheet('stages-theme.css');
 
   function start() {
     protectUnconfiguredHandoff();
     script('facelift.js', function () {
       script('whatsapp.js', function () {
         script('prestige.js', function () {
-          script('shell.js');
+          script('shell.js', function () {
+            script('stages.js');
+          });
         });
       });
     });

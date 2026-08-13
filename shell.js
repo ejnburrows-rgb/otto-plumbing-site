@@ -1,7 +1,7 @@
 /* OTTO Plumbing Inc. - interaction shell.
  *
  * Scope: how a visitor moves through the page. Mobile menu drawer, section
- * minimize and maximize, in-page jumps that land below the sticky header,
+ * in-page jumps that land below the sticky header,
  * clearly labelled return controls, current-section marking, and keyboard and
  * focus handling.
  *
@@ -35,10 +35,6 @@
       home: 'Top of page',
       call: 'Call (786) 344-2837',
       text: 'Text (786) 344-2837',
-      minimize: 'Minimize',
-      maximize: 'Expand',
-      hiddenOne: 'Minimized. 1 item hidden.',
-      hiddenMany: 'Minimized. {n} items hidden.',
       back: 'Back to where you were',
       dismiss: 'Dismiss',
       top: 'Back to top',
@@ -53,10 +49,6 @@
       home: 'Inicio de la página',
       call: 'Llamar al (786) 344-2837',
       text: 'Escribir al (786) 344-2837',
-      minimize: 'Minimizar',
-      maximize: 'Expandir',
-      hiddenOne: 'Minimizado. 1 elemento oculto.',
-      hiddenMany: 'Minimizado. {n} elementos ocultos.',
       back: 'Volver a donde estaba',
       dismiss: 'Descartar',
       top: 'Volver arriba',
@@ -64,7 +56,6 @@
     }
   };
 
-  var STORE_KEY = 'otto-site-sections';
   var SPEED = 240;
 
   function lang() {
@@ -87,20 +78,6 @@
   function scrollToY(y) {
     if (reduced() || !('scrollBehavior' in root.style)) window.scrollTo(0, y);
     else window.scrollTo({ top: y, behavior: 'smooth' });
-  }
-  function readStore() {
-    try {
-      return JSON.parse(localStorage.getItem(STORE_KEY) || '{}') || {};
-    } catch (err) {
-      return {};
-    }
-  }
-  function writeStore(state) {
-    try {
-      localStorage.setItem(STORE_KEY, JSON.stringify(state));
-    } catch (err) {
-      /* storage can be blocked; state simply is not remembered */
-    }
   }
   function focusables(scope) {
     return [].slice
@@ -266,125 +243,6 @@
     }
   });
 
-  /* --------------------------------------------- section minimize/maximize */
-
-  var collapsibles = [];
-
-  [
-    { id: 'services', grid: '.service-grid' },
-    { id: 'business', grid: '.reason-grid' }
-  ].forEach(function (def) {
-    var section = doc.getElementById(def.id);
-    if (!section) return;
-    var card = section.querySelector('.section-card');
-    var heading = card && card.querySelector('h2');
-    var grid = card && card.querySelector(def.grid);
-    if (!card || !heading || !grid) return;
-
-    var head = doc.createElement('div');
-    head.className = 'shell-section-head';
-    card.insertBefore(head, heading);
-    head.appendChild(heading);
-
-    var toggle = doc.createElement('button');
-    toggle.type = 'button';
-    toggle.className = 'shell-section-toggle';
-    toggle.id = 'shellToggle-' + def.id;
-    toggle.setAttribute('aria-controls', 'shellCollapse-' + def.id);
-    toggle.innerHTML =
-      '<span class="shell-glyph" aria-hidden="true">\u2013</span><span class="shell-toggle-label">Minimize</span>';
-    head.appendChild(toggle);
-
-    var wrap = doc.createElement('div');
-    wrap.className = 'shell-collapse';
-    wrap.id = 'shellCollapse-' + def.id;
-    grid.parentNode.insertBefore(wrap, grid);
-    wrap.appendChild(grid);
-
-    var summary = doc.createElement('p');
-    summary.className = 'shell-summary';
-    summary.hidden = true;
-    wrap.parentNode.insertBefore(summary, wrap);
-
-    var item = {
-      id: def.id,
-      heading: heading,
-      toggle: toggle,
-      label: toggle.querySelector('.shell-toggle-label'),
-      glyph: toggle.querySelector('.shell-glyph'),
-      wrap: wrap,
-      summary: summary,
-      count: grid.children.length,
-      open: true
-    };
-
-    function render() {
-      item.label.textContent = item.open ? t('minimize') : t('maximize');
-      item.glyph.textContent = item.open ? '\u2013' : '+';
-      item.toggle.setAttribute('aria-expanded', item.open ? 'true' : 'false');
-      item.wrap.setAttribute('aria-hidden', item.open ? 'false' : 'true');
-      if (item.open) {
-        item.summary.hidden = true;
-      } else {
-        item.summary.hidden = false;
-        var tpl = item.count === 1 ? t('hiddenOne') : t('hiddenMany');
-        item.summary.textContent = tpl.replace('{n}', String(item.count));
-      }
-    }
-    item.render = render;
-
-    function apply(open, animate) {
-      item.open = open;
-      var before = item.heading.getBoundingClientRect().top;
-      if (!animate || reduced()) {
-        item.wrap.style.transition = 'none';
-        item.wrap.style.maxHeight = open ? 'none' : '0px';
-        item.wrap.classList.toggle('is-collapsed', !open);
-        render();
-        window.requestAnimationFrame(function () {
-          item.wrap.style.transition = '';
-        });
-        return;
-      }
-      var full = item.wrap.scrollHeight;
-      if (open) {
-        item.wrap.classList.remove('is-collapsed');
-        item.wrap.style.maxHeight = '0px';
-        window.requestAnimationFrame(function () {
-          item.wrap.style.maxHeight = full + 'px';
-        });
-        window.setTimeout(function () {
-          if (item.open) item.wrap.style.maxHeight = 'none';
-        }, SPEED + 40);
-      } else {
-        item.wrap.style.maxHeight = full + 'px';
-        window.requestAnimationFrame(function () {
-          item.wrap.classList.add('is-collapsed');
-          item.wrap.style.maxHeight = '0px';
-        });
-      }
-      render();
-      window.setTimeout(function () {
-        var after = item.heading.getBoundingClientRect().top;
-        var drift = after - before;
-        if (Math.abs(drift) > 2) window.scrollBy(0, drift);
-      }, SPEED + 60);
-    }
-    item.apply = apply;
-
-    toggle.addEventListener('click', function () {
-      var next = !item.open;
-      apply(next, true);
-      var state = readStore();
-      state[def.id] = next ? 'open' : 'closed';
-      writeStore(state);
-    });
-
-    var saved = readStore()[def.id];
-    apply(saved !== 'closed', false);
-    collapsibles.push(item);
-  });
-
   /* ------------------------------------------------------ return controls */
 
   var dock = doc.createElement('div');
@@ -396,6 +254,10 @@
     '<span aria-hidden="true">\u2190</span><span data-shell-copy="back">Back to where you were</span>' +
     '</button>' +
     '<button type="button" class="shell-return-dismiss" id="shellReturnDismiss" data-shell-copy="dismiss">Dismiss</button>' +
+    '</div>' +
+    '<div class="shell-callbar" id="shellCallBar">' +
+    '<a class="call-btn" href="tel:+17863442837" data-shell-copy="call">Call (786) 344-2837</a>' +
+    '<a class="call-btn shell-alt-btn" href="sms:+17863442837" data-shell-copy="text">Text (786) 344-2837</a>' +
     '</div>' +
     '<button type="button" class="shell-top" id="shellTop">' +
     '<span aria-hidden="true">\u2191</span><span data-shell-copy="top">Back to top</span>' +
@@ -558,9 +420,6 @@
 
   window.addEventListener('resize', function () {
     if (drawerOpen && window.innerWidth > 980) closeDrawer(false);
-    collapsibles.forEach(function (item) {
-      if (item.open) item.wrap.style.maxHeight = 'none';
-    });
   });
 
   /* --------------------------------------------------------- translations */
@@ -574,9 +433,6 @@
       if (source) el.textContent = source.textContent.trim();
     });
     menuBtn.setAttribute('aria-label', t('menuAria'));
-    collapsibles.forEach(function (item) {
-      item.render();
-    });
   }
 
   [].slice.call(doc.querySelectorAll('[data-lang]')).forEach(function (btn) {

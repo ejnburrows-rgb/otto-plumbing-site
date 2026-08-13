@@ -29,7 +29,9 @@ test('does not invent or activate an invalid number', () => {
 
 test('keeps the WhatsApp interface inside Contact only', () => {
   const marker = 'data-whatsapp-contact';
-  const contactStart = page.indexOf('<section class="section" id="contact">');
+  // Located by id rather than an exact class string so the assertion keeps
+  // testing where WhatsApp lives, not how the contact section is styled.
+  const contactStart = page.search(/<section[^>]*\sid="contact"[^>]*>/);
   const contactEnd = page.indexOf('</section>', contactStart);
   assert.ok(contactStart >= 0 && contactEnd > contactStart);
   assert.equal(page.split(marker).length - 1, 1);

@@ -34,12 +34,6 @@
       servicesLead: 'From leaks and drains to water heaters, fixtures, and remodel work, OTTO handles residential and commercial plumbing service.',
       businessTitle: 'Why call OTTO',
       businessLead: 'Clear credentials, decades of experience, and direct access to a South Florida plumbing business.',
-      biz1Title: 'Established',
-      biz2Title: 'Experience',
-      biz3Title: 'License',
-      biz4Title: 'Business hours',
-      biz5Title: 'Service area',
-      biz6Title: 'Direct line',
       contactTitle: 'Talk directly with OTTO Plumbing',
       contactLead: 'Call or text during business hours, or send the job details with the service-request form below.',
       contactPhoneLabel: 'Call or text',
@@ -83,12 +77,6 @@
       servicesLead: 'Desde fugas y drenajes hasta calentadores de agua, accesorios y remodelaciones, OTTO atiende trabajos residenciales y comerciales.',
       businessTitle: 'Por qué llamar a OTTO',
       businessLead: 'Credenciales claras, décadas de experiencia y contacto directo con un negocio de plomería del sur de Florida.',
-      biz1Title: 'Establecida',
-      biz2Title: 'Experiencia',
-      biz3Title: 'Licencia',
-      biz4Title: 'Horario',
-      biz5Title: 'Área de servicio',
-      biz6Title: 'Línea directa',
       contactTitle: 'Hable directamente con OTTO Plumbing',
       contactLead: 'Llame o escriba durante el horario comercial, o envíe los detalles del trabajo con el formulario de servicio de abajo.',
       contactPhoneLabel: 'Llamar o escribir',
@@ -112,11 +100,6 @@
   var HERO_VALUES = {
     en: ['30+ years', 'Mon–Sat · 7 AM–7 PM', 'CFC1429613'],
     es: ['Más de 30 años', 'Lun–sáb · 7 AM–7 PM', 'CFC1429613']
-  };
-
-  var BUSINESS_VALUES = {
-    en: ['Since 1996', '30+ years', 'CFC1429613', 'Mon–Sat · 7 AM–7 PM', 'South Florida', PHONE],
-    es: ['Desde 1996', 'Más de 30 años', 'CFC1429613', 'Lun–sáb · 7 AM–7 PM', 'Sur de Florida', PHONE]
   };
 
   var FORM_ES = {
@@ -194,15 +177,6 @@
     for (var i = 0; i < nodes.length && i < values.length; i += 1) nodes[i].textContent = values[i];
   }
 
-  function applyBusinessValues() {
-    var values = BUSINESS_VALUES[currentLang()];
-    var tiles = document.querySelectorAll('#business .reason-grid .tile');
-    for (var i = 0; i < tiles.length && i < values.length; i += 1) {
-      var p = tiles[i].querySelector('p');
-      if (p) p.textContent = values[i];
-    }
-  }
-
   function fixActions() {
     var secondary = document.querySelector('[data-i18n="secondaryCta"]');
     if (secondary) secondary.setAttribute('href', '#request');
@@ -261,7 +235,6 @@
   function applyAll() {
     applyTranslationLayer();
     applyHeroValues();
-    applyBusinessValues();
     fixActions();
     fixMeta();
     polishSpanishForm();

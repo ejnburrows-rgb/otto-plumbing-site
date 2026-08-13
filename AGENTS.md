@@ -42,7 +42,10 @@ Current status is tracked in
 
 ## HARD RULES
 
-- **Never commit to `main`.** All changes go on a branch as a pull request.
+- **Default release path is branch + pull request.** If EJN explicitly instructs
+  the current session to publish or push to `main`, that owner instruction
+  authorizes the release. Owner workflow overrides do not override safety,
+  canonical business facts, or truthful form behaviour.
 - **Client name is always written OTTO** (all caps).
 - **No mascots or cartoon creative.** This is a business/trades site; keep
   deliverables professional.
@@ -50,9 +53,8 @@ Current status is tracked in
   environment variables if the site ever needs them.
 - **One agent per repo at a time.** Read the project's `STATUS.md` in
   `dev-firm-compass` before starting, and update it before ending.
-- **Cross-agent review:** the agent that authored a PR never approves it. A
-  different agent reviews and posts a plain-English verdict + a 3-item "what
-  E N should personally check" list before the PR is presented to E N.
+- **Cross-agent review is the default:** the agent that authored a PR never
+  approves it. EJN may explicitly waive this workflow gate for a release.
 
 ---
 
@@ -86,10 +88,12 @@ End every report with: done · blocked (on what) · single next action + owner.
 
 ## GIT
 
-- **Never commit to `main`.** Branch + pull request with a plain-language
-  description.
+- **Default to branch + pull request.** A direct `main` release is allowed only
+  when EJN explicitly authorizes it in the current session.
 - Never force-push. Never rewrite shared history.
-- Every commit authored `EJN <ejnburrows@gmail.com>`.
+- Prefer `EJN <ejnburrows@gmail.com>` when the write path exposes author fields.
+  Commits made through EJN's authenticated GitHub account are also valid owner
+  authorship when the connector controls the commit identity.
 - Never put an AI or tool name in commits, messages, or PR text.
 
 ---
@@ -101,6 +105,7 @@ End every report with: done · blocked (on what) · single next action + owner.
 - Contact form: real POST when an endpoint is configured; honest error or
   truthful mailto fallback when not. **Never fake a success message.**
 - Human sign-off for anything a client can see on the live site before merge.
+  EJN's explicit instruction to publish the current work counts as that sign-off.
 
 ---
 

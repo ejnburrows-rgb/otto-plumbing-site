@@ -3,8 +3,7 @@
  * Keeps OTTO branding, bilingual behavior, intake and interaction logic intact.
  */
 
-:root,
-html[data-theme="dark"] {
+:root {
   --navy: #123a63;
   --navy-2: #0f3155;
   --blue: #0d6fbe;
@@ -147,8 +146,7 @@ html.shell-scrolled .nav { box-shadow: 0 8px 24px rgba(18,58,99,.06); }
 .fact + .fact { padding-left: 20px; }
 .fact:last-child { border-right: 0; }
 .fact-label { margin-bottom: 4px; color: #cce8fb; font-size: .64rem; letter-spacing: .09em; }
-.fact-value,
-html[data-theme="dark"] .fact-value { color: #fff; font-size: .93rem; }
+.fact-value { color: #fff; font-size: .93rem; }
 
 .hero-side {
   padding: 38px 34px;
@@ -234,8 +232,7 @@ html[data-theme="dark"] .fact-value { color: #fff; font-size: .93rem; }
   color: var(--ink);
   box-shadow: none;
 }
-#business .section-card h2,
-html[data-theme="dark"] #business .section-card h2 { color: var(--navy); }
+#business .section-card h2 { color: var(--navy); }
 #business .section-lead { color: var(--muted); }
 #business .reason-grid { gap: 12px; background: transparent; border: 0; }
 #business .tile {
@@ -246,8 +243,7 @@ html[data-theme="dark"] #business .section-card h2 { color: var(--navy); }
   background: #fff;
 }
 #business .tile:hover { transform: none; background: #fff; border-color: #bfd4e3; }
-#business .tile h3,
-html[data-theme="dark"] #business .tile h3 { color: var(--navy); font-size: .9rem; }
+#business .tile h3 { color: var(--navy); font-size: .9rem; }
 #business .tile p { color: var(--muted); font-size: .89rem; line-height: 1.52; }
 
 /* Contact */
@@ -276,10 +272,7 @@ html[data-theme="dark"] #business .tile h3 { color: var(--navy); font-size: .9re
 .intake-field label { font-size: .7rem; }
 .intake-field input,
 .intake-field select,
-.intake-field textarea,
-html[data-theme="dark"] .intake-field input,
-html[data-theme="dark"] .intake-field select,
-html[data-theme="dark"] .intake-field textarea {
+.intake-field textarea {
   min-height: 46px;
   padding: 11px 12px;
   border-radius: 4px;
@@ -315,12 +308,10 @@ html[data-theme="dark"] .intake-field textarea {
 
 /* Interaction shell */
 .shell-menu-btn,
-.shell-close,
-.shell-section-toggle { min-height: 40px; border-radius: 4px; background: #fff; box-shadow: none; }
+.shell-close { min-height: 40px; border-radius: 4px; background: #fff; box-shadow: none; }
 .shell-panel { width: min(350px, 92vw); background: #fff; box-shadow: -14px 0 40px rgba(10,26,47,.12); }
 .shell-panel-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; }
 .shell-link { min-height: 48px; border-radius: 4px; background: #fff; }
-.shell-summary { border-radius: 4px; }
 
 @media (max-width: 980px) {
   .hero { padding-top: 28px; }
@@ -339,15 +330,15 @@ html[data-theme="dark"] .intake-field textarea {
   .brand img { width: 102px; height: 36px; padding: 0; }
   .nav-actions { width: auto; margin-left: auto; justify-content: flex-end; flex-wrap: nowrap; gap: 5px; }
   .nav-actions .toggle-group { display: inline-flex !important; flex: 0 0 auto; }
-  .nav-actions > .call-btn { display: none; }
-  .toggle-group button { min-width: 28px; padding: 6px 5px; font-size: .68rem; }
+  .nav-actions > .call-btn { padding-inline: 8px; font-size: .7rem; }
+  .toggle-group button { min-width: 44px; min-height: 44px; padding: 6px 5px; font-size: .68rem; }
   .shell-menu-btn { min-height: 36px; padding-inline: 8px; border-radius: 4px; font-size: .74rem; }
 
   .hero { padding: 14px 0 36px; }
   .hero-shell { border-radius: 5px; }
   .hero-main { padding: 38px 22px 30px; }
   .hero-eyebrow { font-size: .61rem; line-height: 1.5; }
-  .hero h1 { margin-top: 16px; font-size: clamp(2.5rem, 12vw, 3.2rem); line-height: 1; letter-spacing: -.047em; }
+  .hero h1 { margin-top: 16px; font-size: clamp(2.15rem, 10vw, 2.8rem); line-height: 1; letter-spacing: -.047em; }
   .hero p.lead { font-size: .96rem; line-height: 1.62; }
   .hero-cta { display: grid; grid-template-columns: 1fr; margin-top: 23px; }
   .hero .btn-primary,
@@ -392,9 +383,10 @@ html[data-theme="dark"] .intake-field textarea {
   .wrap { width: min(100% - 22px, 1180px); }
   .brand .crm-wordmark,
   .brand img { width: 94px; height: 34px; }
-  .toggle-group button { min-width: 27px; padding-inline: 4px; }
+  .toggle-group button { min-width: 44px; padding-inline: 4px; }
   .shell-menu-btn { padding-inline: 7px; }
-  .hero h1 { font-size: 2.34rem; }
+  .hero-main { padding-top: 28px; }
+  .hero h1 { font-size: 2.02rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

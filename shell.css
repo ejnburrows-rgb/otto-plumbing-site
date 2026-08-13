@@ -1,10 +1,9 @@
 /* OTTO Plumbing Inc. - interaction shell.
  *
- * Navigation, drawer, collapse and return controls only. Everything here is
+ * Navigation, drawer and return controls only. Everything here is
  * scoped to .shell-* classes or to interaction state on existing controls, so
  * the visual design of the hero, services, contact and footer stays free for
- * separate design work. All colours come from the existing CSS variables, so
- * light and dark themes follow the site.
+ * separate design work. All colours come from the existing CSS variables.
  */
 
 :root {
@@ -13,10 +12,6 @@
   --shell-scrim: rgba(8, 16, 32, 0.42);
   --shell-surface: var(--card-solid);
 }
-html[data-theme="dark"] {
-  --shell-scrim: rgba(0, 0, 0, 0.6);
-}
-
 html.shell-lock { overflow: hidden; }
 
 .shell-sr-only {
@@ -38,9 +33,6 @@ html.shell-lock { overflow: hidden; }
 }
 html.shell-scrolled .nav {
   box-shadow: 0 12px 32px rgba(10, 20, 45, 0.09);
-}
-html[data-theme="dark"].shell-scrolled .nav {
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 }
 
 /* ---------- Desktop navigation hierarchy ---------- */
@@ -69,7 +61,6 @@ html[data-theme="dark"].shell-scrolled .nav {
   font-weight: 600;
 }
 .nav-links a.is-current::after { transform: scaleX(1); }
-html[data-theme="dark"] .nav-links a.is-current::after { background: #93b0ff; }
 
 /* ---------- Menu button (mobile and tablet only) ---------- */
 
@@ -218,52 +209,6 @@ html[data-theme="dark"] .nav-links a.is-current::after { background: #93b0ff; }
 .shell-panel-actions .call-btn { width: 100%; }
 .shell-alt-btn { background: var(--blue-2); }
 
-/* ---------- Section minimize and maximize ---------- */
-
-.shell-section-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.shell-section-head h2 { margin: 0 0 4px; }
-.shell-section-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  min-height: 44px;
-  padding: 0 16px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--shell-surface);
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: border-color 180ms var(--shell-ease), transform 180ms var(--shell-ease);
-}
-.shell-section-toggle:hover { border-color: var(--blue-2); }
-.shell-section-toggle:active { transform: translateY(1px); }
-.shell-glyph {
-  display: inline-block;
-  width: 12px;
-  text-align: center;
-  color: var(--muted);
-}
-.shell-collapse {
-  overflow: hidden;
-  transition: max-height var(--shell-speed) var(--shell-ease), opacity var(--shell-speed) var(--shell-ease);
-}
-.shell-collapse.is-collapsed { opacity: 0; }
-.shell-summary {
-  margin: 4px 0 0;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-.shell-summary[hidden] { display: none; }
-
 /* ---------- Return controls ---------- */
 
 .shell-dock {
@@ -284,6 +229,7 @@ html[data-theme="dark"] .nav-links a.is-current::after { background: #93b0ff; }
   pointer-events: none;
   transition: opacity var(--shell-speed) var(--shell-ease), transform var(--shell-speed) var(--shell-ease);
 }
+.shell-callbar { display: none; }
 .shell-return.is-on,
 .shell-top.is-on {
   opacity: 1;
@@ -354,6 +300,7 @@ html[data-theme="dark"] .nav-links a.is-current::after { background: #93b0ff; }
 .shell-foot-top:hover { border-bottom-color: currentColor; }
 
 @media (max-width: 720px) {
+  body { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
   .shell-dock {
     left: 12px;
     right: 12px;
@@ -362,6 +309,13 @@ html[data-theme="dark"] .nav-links a.is-current::after { background: #93b0ff; }
     justify-items: stretch;
   }
   .shell-return { justify-content: space-between; }
-  .shell-top { justify-content: center; }
+  .shell-callbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    pointer-events: auto;
+  }
+  .shell-callbar .call-btn { width: 100%; padding-inline: 10px; }
+  .shell-top { display: none; }
   .foot-box { flex-wrap: wrap; }
 }
