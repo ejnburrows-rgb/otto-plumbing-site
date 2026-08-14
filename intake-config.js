@@ -1,6 +1,6 @@
-/* OTTO Plumbing Inc. - customer intake delivery configuration.
- * Final review candidate. No secrets belong here. The Formspree endpoint and
- * Formspree endpoint stays empty until the client setup visit.
+/* OTTO Plumbing Inc. — customer intake delivery configuration.
+ * No secrets belong here. External delivery stays fail-safe: the form reports
+ * success only after the receiving system confirms it.
  */
 window.OTTO_INTAKE_CONFIG = {
   endpoint: '',
@@ -15,12 +15,6 @@ window.OTTO_INTAKE_CONFIG = {
  * checked. Supported fields: name, rating, platform, excerpt, and url. */
 window.OTTO_VERIFIED_REVIEWS = [];
 
-/* Final-candidate asset bootstrap.
- * The intake branch owns the page markup; this loads the already-approved
- * interaction shell plus the visual/copy facelift without rewriting that
- * tested markup. If either enhancement fails, the underlying page and form
- * remain usable.
- */
 (function () {
   'use strict';
 
@@ -66,15 +60,13 @@ window.OTTO_VERIFIED_REVIEWS = [];
     }
   }
 
-  /* Every stylesheet is linked in index.html <head>, in the order this chain
-   * used to inject them. The cascade is unchanged; resolving it before first
-   * paint is what removed the post-load reflow (CLS 0.217 -> 0.021). */
-
+  /* Customer-facing copy settles first; the form layer then owns only form
+   * text and action wiring. The remaining enhancements do not rewrite copy. */
   function start() {
     protectUnconfiguredHandoff();
-    script('facelift.js', function () {
-      script('whatsapp.js', function () {
-        script('prestige.js', function () {
+    script('prestige.js', function () {
+      script('facelift.js', function () {
+        script('whatsapp.js', function () {
           script('shell.js', function () {
             script('stages.js');
           });
