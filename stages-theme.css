@@ -1,67 +1,39 @@
-/* OTTO Plumbing Inc. — panel theming.
- *
- * Split out of stages.css and injected LAST by the bootstrap chain in
- * intake-config.js. The reason is cascade order, not taste: the six existing
- * stylesheets are injected at runtime, so a statically-linked sheet loses every
- * equal-specificity tie to them — and #business .section-card h2 carries an id,
- * which no class selector can outrank.
- *
- * Colour-only rules live here so loading them late cannot move any layout.
- * Structure stays in stages.css, which is linked statically to avoid reflow.
+/* OTTO Plumbing Inc. — premium panel theming.
+ * Photography carries the visual weight. Containers are intentionally quiet;
+ * spacing, type and fine rules provide hierarchy before another card is added.
  */
 
-/* The sections being hosted here were built as free-standing cards, each with
- * its own surface, border and shadow. Inside a photographic panel that chrome
- * competes with the image, so it is stripped and the panel itself becomes the
- * surface. */
-.panel__copy .section-card,
-.panel__copy .contact-card,
-.panel__copy .cta-card,
+.panel__copy .hero,
+.panel__copy .section,
+.panel__copy .cta-band,
 .panel__copy .hero-shell,
 .panel__copy .hero-main,
 .panel__copy .hero-side,
-.panel__copy .cta-band,
-.panel__copy .hero,
-.panel__copy .section {
+.panel__copy .section-card,
+.panel__copy .contact-card,
+.panel__copy .cta-card {
   background: transparent;
   border: 0;
-  box-shadow: none;
-  padding: 0;
   border-radius: 0;
+  box-shadow: none;
 }
 
-/* Vertical rhythm is the panel's job now, not each section's. */
+.panel__copy .hero,
+.panel__copy .section,
+.panel__copy .cta-band { padding: 0; }
+.panel__copy .hero-main,
+.panel__copy .hero-side,
+.panel__copy .section-card,
+.panel__copy .contact-card,
+.panel__copy .cta-card { padding: 0; }
 .panel__copy .wrap { width: 100%; }
-.panel__copy .hero-shell { gap: clamp(20px, 3vw, 40px); align-items: center; }
-
-/* Type is dialled back so a whole section fits one screen without an inner
- * scrollbar. These are the only places stages.css touches existing type. */
-.panel .panel__copy .hero h1 { margin: 12px 0 10px; font-size: clamp(1.9rem, 3.4vw, 3.1rem); }
-.panel .panel__copy h2 { font-size: clamp(1.6rem, 2.8vw, 2.4rem); margin-top: 0; }
-.panel__copy .lead,
-.panel__copy .section-lead,
-.panel__copy .contact-lead { font-size: clamp(.95rem, 1.1vw, 1.02rem); }
-.panel__copy .hero-facts { margin-top: 18px; gap: 8px; }
-.panel__copy .fact { padding: 10px 12px; }
-.panel__copy .hero-side { gap: 10px; }
-.panel__copy .info-card { padding: 14px 16px; }
-.panel__copy .info-card h3 { font-size: .98rem; }
-.panel__copy .info-card p { font-size: .85rem; margin-top: 4px; }
-.panel__copy .service-grid { gap: 10px; }
-.panel__copy .tile { padding: 14px 16px; }
-.panel__copy .tile h3 { font-size: .98rem; }
-.panel__copy .tile p { font-size: .84rem; }
-.panel__copy .credential-card { min-height: 0; padding: 18px; }
-.panel__copy .badge { display: none; }
 
 .panel .panel__copy h1,
 .panel .panel__copy h2,
 .panel .panel__copy h3,
 .panel .panel__copy strong,
 .panel .panel__copy blockquote,
-.panel .panel__copy .fact-value {
-  color: #fff;
-}
+.panel .panel__copy .fact-value { color: #fff; }
 
 .panel .panel__copy p,
 .panel .panel__copy .lead,
@@ -69,141 +41,270 @@
 .panel .panel__copy .contact-lead,
 .panel .panel__copy .contact-note,
 .panel .panel__copy small,
-.panel .panel__copy .fact-label {
-  color: rgba(255, 255, 255, .84);
-}
-
-.panel .panel__copy .tile,
-.panel .panel__copy .credential-card,
-.panel .panel__copy .contact-row,
-.panel .panel__copy .info-card {
-  border-color: rgba(255, 255, 255, .22);
-  background: rgba(255, 255, 255, .07);
-  box-shadow: none;
-}
-
-.panel .panel__copy .credential-card p,
-.panel .panel__copy .tile p {
-  color: rgba(255, 255, 255, .78);
-}
-
-.panel .panel__copy .credential-kicker,
-.panel .panel__copy .credential-link {
-  color: #9ec6ee;
-}
-
-.panel__copy a:focus-visible,
-.panel__copy button:focus-visible {
-  outline: 3px solid #ffffff;
-  outline-offset: 3px;
-}
+.panel .panel__copy .fact-label { color: rgba(255, 255, 255, .86); }
 
 .panel .panel__copy a { color: #fff; }
-.panel .panel__copy .call-btn { color: #fff; }
 .panel .panel__copy .btn-primary { color: var(--navy); }
+.panel__copy a:focus-visible,
+.panel__copy button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
 
+#top .panel__copy .hero-shell {
+  grid-template-columns: minmax(0, 1.18fr) minmax(280px, .82fr);
+  gap: clamp(38px, 6vw, 88px);
+  align-items: center;
+}
 
-/* Two of the hosted sections are styled through id-carrying selectors
- * (`#business .section-card h2`, and the contact equivalents). An id beats any
- * number of classes, so these must be matched at the same weight — the ids now
- * live on the .stage wrappers, which makes that straightforward. */
+#top .panel__copy .hero-main { max-width: 720px; }
+#top .panel__copy .hero h1 {
+  margin: 14px 0 16px;
+  max-width: 11ch;
+  font-size: clamp(3rem, 6vw, 5.7rem);
+  line-height: .94;
+  letter-spacing: -.045em;
+}
+#top .panel__copy .lead {
+  max-width: 640px;
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+  line-height: 1.65;
+}
+#top .panel__copy .hero-cta { margin-top: 28px; gap: 10px; }
+#top .panel__copy .btn-primary,
+#top .panel__copy .btn-secondary,
+#closing .panel__copy .btn-primary,
+#closing .panel__copy .btn-secondary {
+  min-height: 50px;
+  padding-inline: 22px;
+  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, opacity 180ms ease;
+}
+#top .panel__copy .btn-primary:hover,
+#closing .panel__copy .btn-primary:hover { transform: translateY(-1px); }
+#top .panel__copy .btn-secondary:hover,
+#closing .panel__copy .btn-secondary:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,.52);
+  background: rgba(255,255,255,.07);
+}
+
+#top .panel__copy .hero-side {
+  display: grid;
+  gap: 0;
+  align-content: center;
+  border-top: 1px solid rgba(255,255,255,.28);
+}
+#top .panel__copy .badge { display: none; }
+#top .panel__copy .info-card {
+  padding: 19px 0;
+  border: 0;
+  border-bottom: 1px solid rgba(255,255,255,.22);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+#top .panel__copy .info-card h3 { margin: 0 0 5px; font-size: 1rem; }
+#top .panel__copy .info-card p { margin: 0; font-size: .91rem; line-height: 1.55; }
+
+#top .panel__copy .hero-facts {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 30px;
+  padding: 15px 0;
+  border-top: 1px solid rgba(255,255,255,.24);
+  border-bottom: 1px solid rgba(255,255,255,.24);
+}
+#top .panel__copy .fact {
+  min-width: 0;
+  padding: 0 13px;
+  border: 0;
+  border-left: 1px solid rgba(255,255,255,.18);
+  border-radius: 0;
+  background: transparent;
+}
+#top .panel__copy .fact:first-child { padding-left: 0; border-left: 0; }
+#top .panel__copy .fact-label {
+  margin: 0 0 4px;
+  font-size: .68rem;
+  line-height: 1.2;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+#top .panel__copy .fact-value {
+  font-size: clamp(.78rem, .95vw, .92rem);
+  line-height: 1.3;
+}
+
+#services .panel__copy .section-card { max-width: 1060px; }
+#services .panel__copy h2,
 #business .panel__copy h2,
 #contact .panel__copy h2,
-#services .panel__copy h2,
-#top .panel__copy h1,
 #closing .panel__copy h2 {
-  color: #fff;
+  margin: 0 0 12px;
+  font-size: clamp(2.25rem, 4.4vw, 4rem);
+  line-height: 1;
+  letter-spacing: -.035em;
 }
-
-#business .panel__copy p,
-#business .panel__copy .section-lead,
-#contact .panel__copy p,
-#contact .panel__copy .contact-lead,
-#services .panel__copy p,
 #services .panel__copy .section-lead,
-#top .panel__copy p,
-#closing .panel__copy p {
-  color: rgba(255, 255, 255, .88);
+#business .panel__copy .section-lead,
+#contact .panel__copy .contact-lead {
+  max-width: 700px;
+  margin-bottom: 28px;
+  font-size: clamp(.98rem, 1.15vw, 1.08rem);
+  line-height: 1.65;
 }
-
-/* Body copy on the scrim needs a touch more lift than the .84 used elsewhere
- * to clear 4.5:1 against the darkest guaranteed backdrop. */
-.panel .panel__copy p,
-.panel .panel__copy .lead,
-.panel .panel__copy .section-lead,
-.panel .panel__copy .contact-lead,
-.panel .panel__copy .contact-note,
-.panel .panel__copy small,
-.panel .panel__copy .fact-label {
-  color: rgba(255, 255, 255, .88);
+#services .panel__copy .service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 34px;
 }
-
-/* Surfaces, at id weight for the same reason as the text above. The outer
- * containers dissolve into the panel; the small cards inside keep a faint
- * translucent fill so they still read as discrete items over a photograph. */
-#top .panel__copy .hero-main,
-#top .panel__copy .hero-side,
-#top .panel__copy .hero-shell,
-#services .panel__copy .section-card,
-#business .panel__copy .section-card,
-#contact .panel__copy .contact-card,
-#closing .panel__copy .cta-card {
+#services .panel__copy .tile {
+  padding: 18px 0 20px;
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,.24);
+  border-radius: 0;
   background: transparent;
-  border-color: transparent;
   box-shadow: none;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
 }
+#services .panel__copy .tile:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,.48);
+  background: linear-gradient(90deg, rgba(255,255,255,.055), transparent 75%);
+}
+#services .panel__copy .tile h3 { margin: 0 0 6px; font-size: 1rem; }
+#services .panel__copy .tile p { margin: 0; font-size: .88rem; line-height: 1.55; }
 
-#top .panel__copy .info-card,
-#top .panel__copy .fact,
-#services .panel__copy .tile,
-#business .panel__copy .credential-card,
-#contact .panel__copy .contact-row,
-#contact .panel__copy .whatsapp-contact {
-  background: rgba(255, 255, 255, .07);
-  border-color: rgba(255, 255, 255, .22);
+.service-flow {
+  margin-top: 30px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.30);
+}
+.service-flow__title {
+  margin: 0 0 18px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.service-flow__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
+}
+.service-flow__step { position: relative; padding-left: 36px; }
+.service-flow__number {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: .76rem;
+  font-weight: 800;
+  opacity: .72;
+}
+.service-flow__step h3 { margin: 0 0 5px; font-size: .98rem; }
+.service-flow__step p { margin: 0; font-size: .86rem; line-height: 1.5; }
+
+#business .panel__copy .credential-grid { gap: 14px; max-width: 880px; }
+#business .panel__copy .credential-card {
+  min-height: 0;
+  padding: 22px;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 18px;
+  background: rgba(9,20,39,.30);
   box-shadow: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
-
-#top .panel__copy small,
-#services .panel__copy small,
-#business .panel__copy small,
-#contact .panel__copy small,
-#closing .panel__copy small,
-#contact .panel__copy .contact-row small {
-  color: rgba(255, 255, 255, .88);
-}
-
+#business .panel__copy .credential-card p { color: rgba(255,255,255,.82); }
 #business .panel__copy .credential-kicker,
-#business .panel__copy .credential-link {
-  color: #bcd9f5;
-}
+#business .panel__copy .credential-link { color: #c6def7; }
 
-/* The contact panel's two cards are painted by selectors carrying an id, a
- * child combinator and a positional pseudo-class
- * (`#contact .contact-grid > .contact-card:first-child`). Matching that weight
- * is the only way to neutralise them without !important. This is precisely the
- * override-stack problem the audit flagged; consolidating the six sheets is
- * what removes the need for selectors like these. */
-#contact .panel__copy .contact-grid > .contact-card:first-child,
-#contact .panel__copy .contact-grid > .contact-card:nth-child(2) {
+#contact .panel__copy .contact-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, .92fr);
+  gap: clamp(38px, 6vw, 82px);
+  align-items: start;
+}
+#contact .panel__copy .contact-stack { gap: 0; }
+#contact .panel__copy .contact-row {
+  padding: 17px 0;
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,.23);
+  border-radius: 0;
   background: transparent;
-  border-color: transparent;
-  color: #fff;
+  box-shadow: none;
+}
+#contact .panel__copy .contact-row:last-child { border-bottom: 1px solid rgba(255,255,255,.23); }
+#contact .panel__copy .call-btn {
+  min-height: 50px;
+  margin-bottom: 10px;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+#contact .panel__copy .call-btn:hover { transform: translateY(-1px); }
+#contact .panel__copy .whatsapp-contact {
+  margin: 14px 0;
+  padding: 16px 0;
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,.22);
+  border-bottom: 1px solid rgba(255,255,255,.22);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-#contact .panel__copy .contact-grid > .contact-card:first-child .contact-row,
-#contact .panel__copy .contact-grid > .contact-card:nth-child(2) .contact-row {
-  background: rgba(255, 255, 255, .07);
-  border-color: rgba(255, 255, 255, .22);
+#closing .panel__copy .cta-card { max-width: 760px; }
+#closing .panel__copy .brand-quote {
+  margin-bottom: 28px;
+  max-width: 30ch;
+  font-size: clamp(1.12rem, 1.75vw, 1.45rem);
+  line-height: 1.45;
 }
 
-#contact .panel__copy .contact-grid > .contact-card:first-child small,
-#contact .panel__copy .contact-grid > .contact-card:nth-child(2) small {
-  color: rgba(255, 255, 255, .88);
+#top .panel__media img { object-position: 54% center; }
+#services .panel__media img { object-position: 56% center; }
+#business .panel__media img { object-position: 52% center; }
+#contact .panel__media img { object-position: 58% center; }
+
+@media (max-width: 980px) {
+  #top .panel__copy .hero-shell,
+  #contact .panel__copy .contact-grid { grid-template-columns: 1fr; gap: 34px; }
+  #top .panel__copy .hero-side { max-width: 640px; }
+  #services .panel__copy .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #top .panel__copy .hero-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 14px; }
+  #top .panel__copy .fact:nth-child(4) { padding-left: 0; border-left: 0; }
 }
 
-#contact .panel__copy .contact-grid > .contact-card:first-child > h2,
-#contact .panel__copy .contact-grid > .contact-card:nth-child(2) > h2 { color: #fff; }
+@media (max-width: 767.98px) {
+  #top .panel__copy .hero h1 { max-width: 10ch; font-size: clamp(2.75rem, 13vw, 4.35rem); }
+  #top .panel__copy .hero-main { max-width: none; }
+  #top .panel__copy .hero-side { gap: 0; }
+  #top .panel__copy .hero-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px 0;
+  }
+  #top .panel__copy .fact {
+    padding: 0 10px;
+    border-left: 1px solid rgba(255,255,255,.18);
+  }
+  #top .panel__copy .fact:nth-child(odd) { padding-left: 0; border-left: 0; }
+  #top .panel__copy .fact:nth-child(5) { grid-column: 1 / -1; }
 
-#contact .panel__copy .contact-grid > .contact-card:first-child .contact-lead,
-#contact .panel__copy .contact-grid > .contact-card:nth-child(2) .contact-lead { color: rgba(255, 255, 255, .88); }
+  #services .panel__copy .service-grid,
+  .service-flow__grid { grid-template-columns: 1fr; gap: 0; }
+  .service-flow__step { padding: 17px 0 17px 36px; border-top: 1px solid rgba(255,255,255,.20); }
+  #business .panel__copy .credential-grid { grid-template-columns: 1fr; }
+
+  #top .panel__media img { object-position: 60% center; }
+  #services .panel__media img { object-position: 62% center; }
+  #business .panel__media img { object-position: 56% center; }
+  #contact .panel__media img { object-position: 61% center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #top .panel__copy .btn-primary,
+  #top .panel__copy .btn-secondary,
+  #closing .panel__copy .btn-primary,
+  #closing .panel__copy .btn-secondary,
+  #services .panel__copy .tile,
+  #contact .panel__copy .call-btn { transition: none; transform: none; }
+}

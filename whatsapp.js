@@ -34,6 +34,8 @@
       root.hidden = true;
       return;
     }
+    root.hidden = false;
+
     var link = root.querySelector('[data-whatsapp-link]');
     var missing = root.querySelector('[data-whatsapp-missing]');
     var buttons = root.querySelectorAll('[data-whatsapp-language]');

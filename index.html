@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OTTO Plumbing Inc. — South Florida Plumbing Since 1996</title>
+<title>OTTO Plumbing Inc. — Residential & Commercial Plumbing in South Florida</title>
 <meta name="description" content="OTTO Plumbing Inc. provides residential and commercial plumbing across South Florida. 30+ years of experience. Lic. CFC1429613. Call or text (786) 344-2837.">
 <link rel="canonical" href="https://otto-plumbing-site.vercel.app/">
 <meta property="og:title" content="OTTO Plumbing Inc. — South Florida Plumbing Since 1996">
@@ -37,8 +37,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;1,6..72,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- Linked statically rather than injected by the bootstrap chain: this sheet
-     defines page structure, so loading it late reflows the whole document. -->
 <link rel="stylesheet" href="stages.css">
 <style>
 :root {
@@ -92,11 +90,6 @@ img, svg { display: block; max-width: 100%; }
   position: sticky;
   top: 0;
   z-index: 20;
-  /* The header box is pinned so nothing inside it can move the document.
-     The bootstrap chain mutates this bar after first paint — shell.js injects a
-     menu button, prestige-polish.css later hides the theme toggle — and while
-     that settles the row was briefly 165px tall, shifting the whole page.
-     Blocking JS drops CLS from 0.217 to 0.026, which is what identified it. */
   height: 97px;
   overflow: hidden;
   backdrop-filter: blur(16px);
@@ -105,14 +98,8 @@ img, svg { display: block; max-width: 100%; }
   border-bottom: 1px solid var(--line);
 }
 .nav-inner {
-  /* Must match the final height production-polish.css settles on, or the
-     header resizes after the injected stylesheets land and shifts the whole
-     page down. Measured: 96 / 84 / 72 across the breakpoints below. */
   min-height: 96px;
   height: 96px;
-  /* Same three-column grid production-polish.css settles on. Declaring flex
-     here made the header wrap to 165px until that sheet loaded, then snap to
-     96px — a 0.35 layout shift on every visit. */
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   grid-template-areas: "brand links actions";
@@ -128,8 +115,6 @@ img, svg { display: block; max-width: 100%; }
   min-width: 0;
 }
 .brand img {
-  /* Same reasoning as .nav-inner: these are the sizes the logo ends up at, so
-     reserving them here keeps first paint and final layout identical. */
   width: 176px;
   height: 68px;
   object-fit: cover;
@@ -147,23 +132,15 @@ img, svg { display: block; max-width: 100%; }
   .nav-inner { min-height: 72px; height: 72px; }
   .brand img { width: 112px; height: 44px; }
 }
-@media (max-width: 390px) {
-  .brand img { width: 104px; height: 42px; }
-}
-.brand-copy {
-  min-width: 0;
-}
+@media (max-width: 390px) { .brand img { width: 104px; height: 42px; } }
+.brand-copy { min-width: 0; }
 .brand-title {
   font-family: 'Newsreader', Georgia, serif;
   font-size: 1.2rem;
   font-weight: 500;
   line-height: 1;
 }
-.brand-sub {
-  font-size: 0.76rem;
-  color: var(--muted);
-  margin-top: 3px;
-}
+.brand-sub { font-size: 0.76rem; color: var(--muted); margin-top: 3px; }
 .nav-links {
   grid-area: links;
   justify-self: start;
@@ -179,9 +156,6 @@ img, svg { display: block; max-width: 100%; }
   justify-self: end;
   display: flex;
   align-items: center;
-  /* Must never wrap: the theme toggle is visible until prestige-polish.css
-     loads, and shell.js adds a menu button, so a wrapping row would grow the
-     header mid-load. */
   flex-wrap: nowrap;
   gap: 10px;
 }
@@ -201,10 +175,7 @@ img, svg { display: block; max-width: 100%; }
   font-weight: 700;
   cursor: pointer;
 }
-.toggle-group button.is-on {
-  background: var(--navy);
-  color: #fff;
-}
+.toggle-group button.is-on { background: var(--navy); color: #fff; }
 .icon-btn {
   width: 42px;
   height: 42px;
@@ -229,9 +200,7 @@ img, svg { display: block; max-width: 100%; }
   box-shadow: var(--shadow);
 }
 .call-btn:hover { background: var(--navy-2); }
-.hero {
-  padding: 56px 0 28px;
-}
+.hero { padding: 56px 0 28px; }
 .hero-shell {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
@@ -274,23 +243,9 @@ img, svg { display: block; max-width: 100%; }
   font-weight: 500;
   letter-spacing: -0.02em;
 }
-.hero h1 {
-  margin: 18px 0 12px;
-  font-size: clamp(2.4rem, 5vw, 4.4rem);
-  line-height: 0.98;
-}
-.hero p.lead {
-  margin: 0;
-  max-width: 32rem;
-  color: rgba(255,255,255,0.84);
-  font-size: 1.05rem;
-}
-.hero-cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
-}
+.hero h1 { margin: 18px 0 12px; font-size: clamp(2.4rem, 5vw, 4.4rem); line-height: 0.98; }
+.hero p.lead { margin: 0; max-width: 32rem; color: rgba(255,255,255,0.84); font-size: 1.05rem; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
 .btn-primary,
 .btn-secondary {
   min-height: 48px;
@@ -301,40 +256,13 @@ img, svg { display: block; max-width: 100%; }
   justify-content: center;
   font-weight: 700;
 }
-.btn-primary {
-  background: #fff;
-  color: var(--navy);
-}
-.btn-secondary {
-  border: 1px solid rgba(255,255,255,0.25);
-  color: #fff;
-}
-.hero-facts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 28px;
-}
-.fact {
-  padding: 14px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.12);
-}
-.fact-label {
-  font-size: 0.8rem;
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 5px;
-}
-.fact-value {
-  font-size: 1rem;
-  font-weight: 700;
-}
-.hero-side {
-  padding: 26px;
-  display: grid;
-  gap: 16px;
-}
+.btn-primary { background: #fff; color: var(--navy); }
+.btn-secondary { border: 1px solid rgba(255,255,255,0.25); color: #fff; }
+.hero-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
+.fact { padding: 14px; border-radius: 20px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); }
+.fact-label { font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-bottom: 5px; }
+.fact-value { font-size: 1rem; font-weight: 700; }
+.hero-side { padding: 26px; display: grid; gap: 16px; }
 .badge {
   display: inline-flex;
   width: fit-content;
@@ -347,97 +275,29 @@ img, svg { display: block; max-width: 100%; }
   font-weight: 700;
   font-size: 0.82rem;
 }
-.info-card {
-  padding: 18px;
-}
-.info-card h3 {
-  margin: 0 0 8px;
-  font-size: 1rem;
-}
-.info-card p {
-  margin: 0;
-  color: var(--muted);
-}
-.section {
-  padding: 16px 0 28px;
-}
-.section-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
-.section-card {
-  padding: 26px;
-}
+.info-card { padding: 18px; }
+.info-card h3 { margin: 0 0 8px; font-size: 1rem; }
+.info-card p { margin: 0; color: var(--muted); }
+.section { padding: 16px 0 28px; }
+.section-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.section-card { padding: 26px; }
 .section-card h2,
-.contact-card h2 {
-  margin: 0 0 10px;
-  font-size: clamp(2rem, 4vw, 3rem);
-}
+.contact-card h2 { margin: 0 0 10px; font-size: clamp(2rem, 4vw, 3rem); }
 .section-lead,
-.contact-lead {
-  margin: 0 0 22px;
-  color: var(--muted);
-  max-width: 42rem;
-}
+.contact-lead { margin: 0 0 22px; color: var(--muted); max-width: 42rem; }
 .service-grid,
-.reason-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-.tile {
-  padding: 18px;
-  border: 1px solid var(--line);
-  border-radius: 22px;
-  background: color-mix(in srgb, var(--card-solid) 84%, transparent);
-}
-.tile h3 {
-  margin: 0 0 8px;
-  font-size: 1rem;
-}
-.tile p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.94rem;
-}
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 16px;
-}
-.contact-card {
-  padding: 28px;
-}
-.contact-stack {
-  display: grid;
-  gap: 14px;
-}
-.contact-row {
-  padding: 18px;
-  border-radius: 22px;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--card-solid) 84%, transparent);
-}
-.contact-row small {
-  display: block;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  margin-bottom: 6px;
-}
-.contact-row strong {
-  display: block;
-  font-size: 1.05rem;
-}
-.contact-note {
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-.cta-band {
-  padding: 12px 0 48px;
-}
+.reason-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.tile { padding: 18px; border: 1px solid var(--line); border-radius: 22px; background: color-mix(in srgb, var(--card-solid) 84%, transparent); }
+.tile h3 { margin: 0 0 8px; font-size: 1rem; }
+.tile p { margin: 0; color: var(--muted); font-size: 0.94rem; }
+.contact-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 16px; }
+.contact-card { padding: 28px; }
+.contact-stack { display: grid; gap: 14px; }
+.contact-row { padding: 18px; border-radius: 22px; border: 1px solid var(--line); background: color-mix(in srgb, var(--card-solid) 84%, transparent); }
+.contact-row small { display: block; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
+.contact-row strong { display: block; font-size: 1.05rem; }
+.contact-note { color: var(--muted); font-size: 0.95rem; }
+.cta-band { padding: 12px 0 48px; }
 .cta-card {
   border-radius: 28px;
   padding: 28px;
@@ -445,51 +305,22 @@ img, svg { display: block; max-width: 100%; }
   color: #fff;
   box-shadow: var(--hero-shadow);
 }
-.cta-card h2 {
-  margin: 0 0 8px;
-  font-family: 'Newsreader', Georgia, serif;
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  font-weight: 500;
-}
-.cta-card p {
-  margin: 0;
-  color: rgba(255,255,255,0.8);
-}
-.cta-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 18px;
-}
-.foot {
-  padding: 0 0 44px;
-}
-.foot-box {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  align-items: center;
-  padding: 18px 0 0;
-  color: var(--muted);
-  font-size: 0.92rem;
-}
+.cta-card h2 { margin: 0 0 8px; font-family: 'Newsreader', Georgia, serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 500; }
+.cta-card p { margin: 0; color: rgba(255,255,255,0.8); }
+.cta-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.foot { padding: 0 0 44px; }
+.foot-box { display: flex; justify-content: space-between; gap: 18px; align-items: center; padding: 18px 0 0; color: var(--muted); font-size: 0.92rem; }
 @media (max-width: 980px) {
   .hero-shell,
   .contact-grid,
   .service-grid,
   .reason-grid,
-  .section-grid {
-    grid-template-columns: 1fr;
-  }
+  .section-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
 }
 @media (max-width: 720px) {
   .wrap { width: min(100% - 24px, 1120px); }
-  .nav-inner {
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 12px 0;
-  }
+  .nav-inner { flex-wrap: wrap; justify-content: center; padding: 12px 0; }
   .nav-actions { width: 100%; justify-content: center; flex-wrap: wrap; }
   .hero-main,
   .hero-side,
@@ -504,20 +335,10 @@ img, svg { display: block; max-width: 100%; }
 }
 .intake-wrap { margin-top: 16px; }
 .intake-form { display: grid; gap: 16px; }
-.intake-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
+.intake-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .intake-field { display: grid; gap: 6px; align-content: start; }
 .intake-field.is-wide { grid-column: 1 / -1; }
-.intake-field label {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-weight: 700;
-  color: var(--muted);
-}
+.intake-field label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--muted); }
 .intake-field input,
 .intake-field select,
 .intake-field textarea {
@@ -531,30 +352,11 @@ img, svg { display: block; max-width: 100%; }
   border-radius: 16px;
 }
 .intake-field textarea { min-height: 128px; resize: vertical; }
-.intake-field :is(input, select, textarea):focus-visible {
-  outline: 3px solid var(--ring);
-  outline-offset: 2px;
-}
+.intake-field :is(input, select, textarea):focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
 .intake-field [aria-invalid="true"] { border-color: #b42318; }
-.intake-error {
-  margin: 0;
-  min-height: 1.1em;
-  font-size: 0.85rem;
-  color: #b42318;
-}
-.intake-hp {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-.intake-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-}
+.intake-error { margin: 0; min-height: 1.1em; font-size: 0.85rem; color: #b42318; }
+.intake-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.intake-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .intake-submit {
   min-height: 48px;
   padding: 0 22px;
@@ -579,9 +381,6 @@ img, svg { display: block; max-width: 100%; }
   .intake-actions > * { width: 100%; }
 }
 </style>
-<!-- Linked here rather than injected by intake-config.js. The order is the
-     one the bootstrap chain used, so the cascade is unchanged; resolving it
-     before first paint is what removes the post-load reflow. -->
 <link rel="stylesheet" href="shell.css">
 <link rel="stylesheet" href="facelift.css">
 <link rel="stylesheet" href="prestige.css">
@@ -598,20 +397,20 @@ img, svg { display: block; max-width: 100%; }
       <picture><source srcset="logo.webp" type="image/webp"><img src="logo.jpg" alt="OTTO Plumbing Inc." width="176" height="68" fetchpriority="high" decoding="async"></picture>
       <div class="brand-copy">
         <div class="brand-title">OTTO Plumbing Inc.</div>
-        <div class="brand-sub" data-i18n="brandSub">Licensed plumbing service</div>
+        <div class="brand-sub" data-i18n="brandSub">South Florida plumbing · Established 1996</div>
       </div>
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="#services" data-i18n="navServices">Services</a>
-      <a href="#business" data-i18n="navBusiness">Business Info</a>
-      <a href="#contact" data-i18n="navContact">Contact</a>
+      <a href="#business" data-i18n="navBusiness">About</a>
+      <a href="#contact" data-i18n="navContact">Request Service</a>
     </nav>
     <div class="nav-actions">
       <div class="toggle-group" role="group" aria-label="Language">
         <button type="button" data-lang="en" class="is-on" aria-pressed="true">EN</button>
         <button type="button" data-lang="es" aria-pressed="false">ES</button>
       </div>
-      <a class="call-btn" href="tel:+17863442837" data-i18n="callNow">Call or text</a>
+      <a class="call-btn" href="tel:+17863442837" data-i18n="callNow">Call OTTO</a>
     </div>
   </div>
 </header>
@@ -630,41 +429,25 @@ img, svg { display: block; max-width: 100%; }
           <strong data-i18n="experienceValue">30+ YEARS</strong>
           <span data-i18n="experienceLabel">Serving South Florida</span>
         </div>
-        <h1 id="panel-hero-h" data-i18n="heroTitle">Professional plumbing service with verified business information.</h1>
-        <p class="lead" data-i18n="heroLead">Call or text OTTO Plumbing Inc. directly at (786) 344-2837. This site shows only confirmed public details for immediate customer delivery.</p>
+        <h1 id="panel-hero-h" data-i18n="heroTitle">OTTO Plumbing Inc.</h1>
+        <p class="lead" data-i18n="heroLead">Residential and commercial plumbing across South Florida. Florida plumbing license CFC1429613. English / Español.</p>
         <div class="hero-cta">
-          <a class="btn-primary" href="tel:+17863442837" data-i18n="primaryCta">Call (786) 344-2837</a>
-          <a class="btn-secondary" href="#contact" data-i18n="secondaryCta">See contact options</a>
+          <a class="btn-primary" href="tel:+17863442837" data-i18n="primaryCta">Call OTTO</a>
+          <a class="btn-secondary" href="#request" data-i18n="secondaryCta">Request Service</a>
         </div>
         <div class="hero-facts">
-          <div class="fact">
-            <div class="fact-label" data-i18n="fact1Label">Business</div>
-            <div class="fact-value">OTTO Plumbing Inc.</div>
-          </div>
-          <div class="fact">
-            <div class="fact-label" data-i18n="fact2Label">Phone</div>
-            <div class="fact-value">(786) 344-2837</div>
-          </div>
-          <div class="fact">
-            <div class="fact-label" data-i18n="fact3Label">License</div>
-            <div class="fact-value">CFC1429613</div>
-          </div>
+          <div class="fact"><div class="fact-label" data-i18n="fact1Label">Experience</div><div class="fact-value" data-i18n="fact1Value">30+ Years</div></div>
+          <div class="fact"><div class="fact-label" data-i18n="fact2Label">Service Area</div><div class="fact-value" data-i18n="fact2Value">South Florida</div></div>
+          <div class="fact"><div class="fact-label" data-i18n="fact3Label">Plumbing</div><div class="fact-value" data-i18n="fact3Value">Residential & Commercial</div></div>
+          <div class="fact"><div class="fact-label" data-i18n="fact4Label">Florida License</div><div class="fact-value">CFC1429613</div></div>
+          <div class="fact"><div class="fact-label" data-i18n="fact5Label">Languages</div><div class="fact-value">English / Español</div></div>
         </div>
       </div>
       <div class="hero-side">
-        <div class="badge" data-i18n="badge">Immediate delivery version</div>
-        <div class="info-card">
-          <h3 data-i18n="info1Title">One clear contact path</h3>
-          <p data-i18n="info1Body">The site uses the confirmed business phone number as the primary customer action instead of a placeholder form or unsupported social link.</p>
-        </div>
-        <div class="info-card">
-          <h3 data-i18n="info2Title">No unsupported public claims</h3>
-          <p data-i18n="info2Body">Unsupported counts, ratings, social links, and placeholder success messages are removed so the site stays professional and honest.</p>
-        </div>
-        <div class="info-card">
-          <h3 data-i18n="info3Title">Bilingual and mobile-friendly</h3>
-          <p data-i18n="info3Body">English and Spanish text and a responsive layout are preserved for customer use.</p>
-        </div>
+        <div class="badge" data-i18n="badge">OTTO Plumbing Inc.</div>
+        <div class="info-card"><h3 data-i18n="info1Title">Residential Plumbing</h3><p data-i18n="info1Body">Plumbing service for homes across South Florida.</p></div>
+        <div class="info-card"><h3 data-i18n="info2Title">Commercial Plumbing</h3><p data-i18n="info2Body">Commercial plumbing service across South Florida.</p></div>
+        <div class="info-card"><h3 data-i18n="info3Title">English / Español</h3><p data-i18n="info3Body">Choose English or Spanish at any time.</p></div>
       </div>
     </div>
      </div></div></div>
@@ -682,8 +465,8 @@ img, svg { display: block; max-width: 100%; }
      <div class="panel__copy"><div class="panel__inner"><div class="section">
     <div class="wrap">
       <div class="section-card">
-        <h2 id="panel-services-h" data-i18n="servicesTitle">Services</h2>
-        <p class="section-lead" data-i18n="servicesLead">The public site keeps the current service categories simple and readable so customers can quickly tell whether they should call.</p>
+        <h2 id="panel-services-h" data-i18n="servicesTitle">Plumbing services</h2>
+        <p class="section-lead" data-i18n="servicesLead">Leak repair, drain and sewer work, water heaters, general plumbing, fixture updates, and remodel support for residential and commercial customers.</p>
         <div class="service-grid">
           <div class="tile"><h3 data-i18n="svc1Title">Leak repair</h3><p data-i18n="svc1Body">Faucets, pipes, valves, and visible water leaks.</p></div>
           <div class="tile"><h3 data-i18n="svc2Title">Drain and sewer</h3><p data-i18n="svc2Body">Drain issues, stoppages, and sewer-related plumbing work.</p></div>
@@ -709,8 +492,8 @@ img, svg { display: block; max-width: 100%; }
      <div class="panel__copy"><div class="panel__inner"><div class="section">
     <div class="wrap">
       <div class="section-card">
-        <h2 id="panel-credentials-h" data-i18n="businessTitle">Credentials you can verify.</h2>
-        <p class="section-lead" data-i18n="businessLead">Independent public records support the company’s license and permitted project history.</p>
+        <h2 id="panel-credentials-h" data-i18n="businessTitle">Licensed. Established. Easy to verify.</h2>
+        <p class="section-lead" data-i18n="businessLead">Florida license CFC1429613 and public project records provide direct ways to verify OTTO Plumbing Inc.</p>
         <div class="credential-grid">
           <a class="credential-card" href="https://www.myfloridalicense.com/portalsearches/VerifyLicensee" target="_blank" rel="noopener noreferrer">
             <span class="credential-kicker" data-i18n="credential1Kicker">Florida DBPR</span>
@@ -742,35 +525,21 @@ img, svg { display: block; max-width: 100%; }
     <div class="wrap contact-grid">
       <div class="contact-card">
         <h2 id="panel-contact-h" data-i18n="contactTitle">Contact OTTO Plumbing</h2>
-        <p class="contact-lead" data-i18n="contactLead">Call or text the verified phone line for the fastest response, or send a service request with the form below.</p>
+        <p class="contact-lead" data-i18n="contactLead">Call or text (786) 344-2837, or send the job details with the service-request form below.</p>
         <div class="contact-stack">
-          <div class="contact-row">
-            <small data-i18n="contactPhoneLabel">Call or text</small>
-            <strong><a href="tel:+17863442837">(786) 344-2837</a></strong>
-          </div>
-          <div class="contact-row">
-            <small data-i18n="contactLicenseLabel">License</small>
-            <strong>CFC1429613</strong>
-          </div>
-          <div class="contact-row">
-            <small data-i18n="contactNotesLabel">Notes</small>
-            <div class="contact-note" data-i18n="contactNotesBody">Email, social profiles, and other public details stay hidden until they are confirmed. This avoids sending customers to the wrong place.</div>
-          </div>
+          <div class="contact-row"><small data-i18n="contactPhoneLabel">Call or text</small><strong><a href="tel:+17863442837">(786) 344-2837</a></strong></div>
+          <div class="contact-row"><small data-i18n="contactLicenseLabel">Florida license</small><strong>CFC1429613</strong></div>
+          <div class="contact-row"><small data-i18n="contactNotesLabel">Service area</small><div class="contact-note" data-i18n="contactNotesBody">South Florida · Residential & Commercial</div></div>
         </div>
       </div>
       <div class="contact-card">
-        <h2 data-i18n="contactCardTitle">What customers should do now</h2>
-        <p class="contact-lead" data-i18n="contactCardLead">Use the direct line above. The site is intentionally simplified so there is one obvious next step and no misleading submission state.</p>
+        <h2 data-i18n="contactCardTitle">Contact options</h2>
+        <p class="contact-lead" data-i18n="contactCardLead">Call OTTO for the most direct path. Text and the online service request are also available.</p>
         <div class="contact-stack">
-          <a class="call-btn" href="tel:+17863442837" style="width:100%;" data-i18n="contactButton1">Call now</a>
-          <a class="call-btn" href="sms:+17863442837" style="width:100%; background: var(--blue-2);" data-i18n="contactButton2">Text now</a>
-          <div class="whatsapp-contact" data-whatsapp-contact>
-            <div class="whatsapp-heading">
-              <div>
-                <small>WhatsApp</small>
-                <strong data-i18n="whatsappTitle">Contact us on WhatsApp</strong>
-              </div>
-            </div>
+          <a class="call-btn" href="tel:+17863442837" style="width:100%;" data-i18n="contactButton1">Call OTTO</a>
+          <a class="call-btn" href="sms:+17863442837" style="width:100%; background: var(--blue-2);" data-i18n="contactButton2">Text OTTO</a>
+          <div class="whatsapp-contact" data-whatsapp-contact hidden>
+            <div class="whatsapp-heading"><div><small>WhatsApp</small><strong data-i18n="whatsappTitle">Contact us on WhatsApp</strong></div></div>
             <p data-i18n="whatsappLead">Tap the link and we’ll get in touch with you.</p>
             <div class="whatsapp-languages" role="group" aria-label="WhatsApp message language">
               <button type="button" class="is-on" data-whatsapp-language="en" aria-pressed="true">English</button>
@@ -779,10 +548,7 @@ img, svg { display: block; max-width: 100%; }
             <a class="whatsapp-button" data-whatsapp-link target="_blank" rel="noopener noreferrer" hidden>Open WhatsApp</a>
             <p class="whatsapp-missing" data-whatsapp-missing role="status"></p>
           </div>
-          <div class="contact-row">
-            <small data-i18n="contactWhyLabel">Why this is safer</small>
-            <div class="contact-note" data-i18n="contactWhyBody">The verified phone line always works, and the request form only reports success when the office actually receives it.</div>
-          </div>
+          <div class="contact-row"><small data-i18n="contactWhyLabel">English / Español</small><div class="contact-note" data-i18n="contactWhyBody">Use the language selector at the top of the page at any time.</div></div>
         </div>
       </div>
     </div>
@@ -791,15 +557,11 @@ img, svg { display: block; max-width: 100%; }
    </div>
   </section>
 
-  <!-- Deliberately not a panel. Pinning a screen that holds form fields breaks
-       on phones: the soft keyboard resizes the viewport while the panel is
-       pinned, and scroll-into-view on a validation error fights the pin. This
-       is the one screen where the effect would cost a lead. -->
   <section class="section" id="request-section" aria-labelledby="panel-request-h">
     <div class="wrap intake-wrap" id="request">
       <div class="contact-card">
         <h2 id="panel-request-h" data-otto-i18n="formTitle">Request service online</h2>
-        <p class="contact-lead" data-otto-i18n="formLead">Send the job details and the office will follow up. Nothing is reported as sent unless the receiving system confirms it. To reach OTTO Plumbing right now, call or text (786) 344-2837.</p>
+        <p class="contact-lead" data-otto-i18n="formLead">Tell us what you need and how you would like to be contacted. For a direct call or text, use (786) 344-2837.</p>
         <form class="intake-form" id="intakeForm" novalidate>
           <div class="intake-grid">
             <div class="intake-field">
@@ -886,11 +648,11 @@ img, svg { display: block; max-width: 100%; }
     <div class="wrap">
       <div class="cta-card">
         <blockquote class="brand-quote" data-i18n="brandQuote">“Making water flow through our pipes, like integrity through our name.”</blockquote>
-        <h2 id="panel-cta-h" data-i18n="ctaTitle">Need plumbing help?</h2>
-        <p data-i18n="ctaLead">Call or text the verified OTTO Plumbing Inc. number.</p>
+        <h2 id="panel-cta-h" data-i18n="ctaTitle">Need plumbing service?</h2>
+        <p data-i18n="ctaLead">Call or text OTTO Plumbing Inc. about your residential or commercial plumbing needs.</p>
         <div class="cta-actions">
-          <a class="btn-primary" href="tel:+17863442837" data-i18n="ctaCall">Call (786) 344-2837</a>
-          <a class="btn-secondary" href="tel:+17863442837" data-i18n="ctaText">Text the business line</a>
+          <a class="btn-primary" href="tel:+17863442837" data-i18n="ctaCall">Call OTTO</a>
+          <a class="btn-secondary" href="sms:+17863442837" data-i18n="ctaText">Text OTTO</a>
         </div>
       </div>
     </div>
@@ -902,35 +664,37 @@ img, svg { display: block; max-width: 100%; }
 <footer class="foot">
   <div class="wrap foot-box">
     <div>© 2026 OTTO Plumbing Inc.</div>
-    <div data-i18n="footerRight">Verified phone: (786) 344-2837 · License: CFC1429613</div>
+    <div data-i18n="footerRight">South Florida · Lic. #CFC1429613 · (786) 344-2837</div>
   </div>
 </footer>
 <script>
 const translations = {
   en: {
     skip: 'Skip to main content',
-    brandSub: 'Licensed plumbing service',
+    brandSub: 'South Florida plumbing · Established 1996',
     navServices: 'Services',
-    navBusiness: 'Business Info',
-    navContact: 'Contact',
-    callNow: 'Call or text',
-    eyebrow: 'Licensed • Insured • English / Spanish',
-    heroTitle: 'Professional plumbing service with verified business information.',
-    heroLead: 'Call or text OTTO Plumbing Inc. directly at (786) 344-2837. This site shows only confirmed public details for immediate customer delivery.',
-    primaryCta: 'Call (786) 344-2837',
-    secondaryCta: 'See contact options',
-    fact1Label: 'Business',
-    fact2Label: 'Phone',
-    fact3Label: 'License',
-    badge: 'Immediate delivery version',
-    info1Title: 'One clear contact path',
-    info1Body: 'The site uses the confirmed business phone number as the primary customer action instead of a placeholder form or unsupported social link.',
-    info2Title: 'No unsupported public claims',
-    info2Body: 'Unsupported counts, ratings, social links, and placeholder success messages are removed so the site stays professional and honest.',
-    info3Title: 'Bilingual and mobile-friendly',
-    info3Body: 'English and Spanish text and a responsive layout are preserved for customer use.',
-    servicesTitle: 'Services',
-    servicesLead: 'The public site keeps the current service categories simple and readable so customers can quickly tell whether they should call.',
+    navBusiness: 'About',
+    navContact: 'Request Service',
+    callNow: 'Call OTTO',
+    experienceValue: '30+ YEARS',
+    experienceLabel: 'Serving South Florida',
+    heroTitle: 'OTTO Plumbing Inc.',
+    heroLead: 'Residential and commercial plumbing across South Florida. Florida plumbing license CFC1429613. English / Español.',
+    primaryCta: 'Call OTTO',
+    secondaryCta: 'Request Service',
+    fact1Label: 'Experience', fact1Value: '30+ Years',
+    fact2Label: 'Service Area', fact2Value: 'South Florida',
+    fact3Label: 'Plumbing', fact3Value: 'Residential & Commercial',
+    fact4Label: 'Florida License', fact5Label: 'Languages',
+    badge: 'OTTO Plumbing Inc.',
+    info1Title: 'Residential Plumbing',
+    info1Body: 'Plumbing service for homes across South Florida.',
+    info2Title: 'Commercial Plumbing',
+    info2Body: 'Commercial plumbing service across South Florida.',
+    info3Title: 'English / Español',
+    info3Body: 'Choose English or Spanish at any time.',
+    servicesTitle: 'Plumbing services',
+    servicesLead: 'Leak repair, drain and sewer work, water heaters, general plumbing, fixture updates, and remodel support for residential and commercial customers.',
     svc1Title: 'Leak repair',
     svc1Body: 'Faucets, pipes, valves, and visible water leaks.',
     svc2Title: 'Drain and sewer',
@@ -943,50 +707,60 @@ const translations = {
     svc5Body: 'Fixture replacement and plumbing upgrades.',
     svc6Title: 'Remodel support',
     svc6Body: 'Plumbing work connected to kitchen, bath, or similar remodels.',
-    businessTitle: 'Business information',
-    businessLead: 'Only confirmed facts appear here. Unknown public details are intentionally left out instead of guessed.',
+    businessTitle: 'Licensed. Established. Easy to verify.',
+    businessLead: 'Florida license CFC1429613 and public project records provide direct ways to verify OTTO Plumbing Inc.',
+    credential1Kicker: 'Florida DBPR',
+    credential1Body: 'Florida Certified Plumbing Contractor license. Verify its current status directly with the state.',
+    credential3Value: 'Score 110 · Top 4%',
+    credential3Body: 'Public contractor profile reporting 175 permitted projects.',
+    verifySource: 'Verify source ↗',
     contactTitle: 'Contact OTTO Plumbing',
-    contactLead: 'Call or text the verified phone line for the fastest response, or send a service request with the form below.',
+    contactLead: 'Call or text (786) 344-2837, or send the job details with the service-request form below.',
     contactPhoneLabel: 'Call or text',
-    contactLicenseLabel: 'License',
-    contactNotesLabel: 'Notes',
-    contactNotesBody: 'Email, social profiles, and other public details stay hidden until they are confirmed. This avoids sending customers to the wrong place.',
-    contactCardTitle: 'What customers should do now',
-    contactCardLead: 'Use the direct line above. The site is intentionally simplified so there is one obvious next step and no misleading submission state.',
-    contactButton1: 'Call now',
-    contactButton2: 'Text now',
-    contactWhyLabel: 'Why this is safer',
-    contactWhyBody: 'The verified phone line always works, and the request form only reports success when the office actually receives it.',
-    ctaTitle: 'Need plumbing help?',
-    ctaLead: 'Call or text the verified OTTO Plumbing Inc. number.',
-    ctaCall: 'Call (786) 344-2837',
-    ctaText: 'Text the business line',
-    footerRight: 'Verified phone: (786) 344-2837 · License: CFC1429613'
+    contactLicenseLabel: 'Florida license',
+    contactNotesLabel: 'Service area',
+    contactNotesBody: 'South Florida · Residential & Commercial',
+    contactCardTitle: 'Contact options',
+    contactCardLead: 'Call OTTO for the most direct path. Text and the online service request are also available.',
+    contactButton1: 'Call OTTO',
+    contactButton2: 'Text OTTO',
+    contactWhyLabel: 'English / Español',
+    contactWhyBody: 'Use the language selector at the top of the page at any time.',
+    whatsappTitle: 'Contact us on WhatsApp',
+    whatsappLead: 'Tap the link and we’ll get in touch with you.',
+    brandQuote: '“Making water flow through our pipes, like integrity through our name.”',
+    ctaTitle: 'Need plumbing service?',
+    ctaLead: 'Call or text OTTO Plumbing Inc. about your residential or commercial plumbing needs.',
+    ctaCall: 'Call OTTO',
+    ctaText: 'Text OTTO',
+    footerRight: 'South Florida · Lic. #CFC1429613 · (786) 344-2837'
   },
   es: {
     skip: 'Ir al contenido principal',
-    brandSub: 'Servicio de plomería con licencia',
+    brandSub: 'Plomería en el sur de Florida · Desde 1996',
     navServices: 'Servicios',
-    navBusiness: 'Información',
-    navContact: 'Contacto',
-    callNow: 'Llamar o escribir',
-    eyebrow: 'Licencia • Seguro • Inglés / Español',
-    heroTitle: 'Servicio profesional de plomería con información comercial verificada.',
-    heroLead: 'Llame o escriba directamente a OTTO Plumbing Inc. al (786) 344-2837. Este sitio muestra solo detalles públicos confirmados para una entrega inmediata.',
-    primaryCta: 'Llamar al (786) 344-2837',
-    secondaryCta: 'Ver opciones de contacto',
-    fact1Label: 'Negocio',
-    fact2Label: 'Teléfono',
-    fact3Label: 'Licencia',
-    badge: 'Versión final de entrega',
-    info1Title: 'Un solo camino de contacto',
-    info1Body: 'El sitio usa el número confirmado del negocio como acción principal en lugar de un formulario placeholder o una red social no confirmada.',
-    info2Title: 'Sin afirmaciones públicas no verificadas',
-    info2Body: 'Se quitaron conteos, calificaciones, enlaces sociales y mensajes de éxito no respaldados para mantener el sitio profesional y honesto.',
-    info3Title: 'Bilingüe y adaptable al móvil',
-    info3Body: 'Se conservan los textos en inglés y español y el diseño adaptable.',
-    servicesTitle: 'Servicios',
-    servicesLead: 'El sitio público mantiene las categorías actuales de servicio simples y fáciles de leer para que el cliente sepa rápidamente si debe llamar.',
+    navBusiness: 'Nosotros',
+    navContact: 'Solicitar servicio',
+    callNow: 'Llamar a OTTO',
+    experienceValue: 'MÁS DE 30 AÑOS',
+    experienceLabel: 'Sirviendo al sur de Florida',
+    heroTitle: 'OTTO Plumbing Inc.',
+    heroLead: 'Plomería residencial y comercial en el sur de Florida. Licencia de plomería de Florida CFC1429613. English / Español.',
+    primaryCta: 'Llamar a OTTO',
+    secondaryCta: 'Solicitar servicio',
+    fact1Label: 'Experiencia', fact1Value: 'Más de 30 años',
+    fact2Label: 'Área de servicio', fact2Value: 'Sur de Florida',
+    fact3Label: 'Plomería', fact3Value: 'Residencial y comercial',
+    fact4Label: 'Licencia de Florida', fact5Label: 'Idiomas',
+    badge: 'OTTO Plumbing Inc.',
+    info1Title: 'Plomería residencial',
+    info1Body: 'Servicio de plomería para hogares en el sur de Florida.',
+    info2Title: 'Plomería comercial',
+    info2Body: 'Servicio de plomería comercial en el sur de Florida.',
+    info3Title: 'English / Español',
+    info3Body: 'Puede cambiar entre inglés y español en cualquier momento.',
+    servicesTitle: 'Servicios de plomería',
+    servicesLead: 'Reparación de fugas, drenaje y alcantarillado, calentadores de agua, plomería general, actualización de accesorios y apoyo para remodelaciones residenciales y comerciales.',
     svc1Title: 'Reparación de fugas',
     svc1Body: 'Llaves, tuberías, válvulas y fugas visibles de agua.',
     svc2Title: 'Drenaje y alcantarillado',
@@ -999,25 +773,33 @@ const translations = {
     svc5Body: 'Reemplazo de accesorios y mejoras de plomería.',
     svc6Title: 'Apoyo para remodelación',
     svc6Body: 'Trabajo de plomería conectado a cocina, baño u otras remodelaciones.',
-    businessTitle: 'Información del negocio',
-    businessLead: 'Aquí solo aparecen hechos confirmados. Los detalles públicos desconocidos se dejan fuera en vez de inventarse.',
-    contactTitle: 'Contactar a OTTO Plumbing',
-    contactLead: 'Llame o escriba a la línea verificada para la respuesta más rápida, o envíe su solicitud de servicio con el formulario de abajo.',
+    businessTitle: 'Con licencia. Establecida. Fácil de verificar.',
+    businessLead: 'La licencia de Florida CFC1429613 y los registros públicos de proyectos ofrecen formas directas de verificar a OTTO Plumbing Inc.',
+    credential1Kicker: 'DBPR de Florida',
+    credential1Body: 'Licencia de Contratista Certificado de Plomería de Florida. Verifique su estado actual directamente con el estado.',
+    credential3Value: 'Puntuación 110 · 4% superior',
+    credential3Body: 'Perfil público de contratista que informa 175 proyectos con permisos.',
+    verifySource: 'Verificar fuente ↗',
+    contactTitle: 'Contacte a OTTO Plumbing',
+    contactLead: 'Llame o escriba al (786) 344-2837, o envíe los detalles del trabajo mediante el formulario de servicio de abajo.',
     contactPhoneLabel: 'Llamar o escribir',
-    contactLicenseLabel: 'Licencia',
-    contactNotesLabel: 'Notas',
-    contactNotesBody: 'El correo, las redes sociales y otros detalles públicos permanecen ocultos hasta confirmarse. Así evitamos enviar clientes al lugar equivocado.',
-    contactCardTitle: 'Qué debe hacer el cliente ahora',
-    contactCardLead: 'Use la línea directa de arriba. El sitio se simplificó a propósito para que exista un solo siguiente paso y ningún estado engañoso.',
-    contactButton1: 'Llamar ahora',
-    contactButton2: 'Escribir ahora',
-    contactWhyLabel: 'Por qué esto es más seguro',
-    contactWhyBody: 'La línea telefónica verificada siempre funciona, y el formulario solo confirma el envío cuando la oficina realmente lo recibe.',
-    ctaTitle: '¿Necesita ayuda de plomería?',
-    ctaLead: 'Llame o escriba al número verificado de OTTO Plumbing Inc.',
-    ctaCall: 'Llamar al (786) 344-2837',
-    ctaText: 'Escribir a la línea del negocio',
-    footerRight: 'Teléfono verificado: (786) 344-2837 · Licencia: CFC1429613'
+    contactLicenseLabel: 'Licencia de Florida',
+    contactNotesLabel: 'Área de servicio',
+    contactNotesBody: 'Sur de Florida · Residencial y comercial',
+    contactCardTitle: 'Opciones de contacto',
+    contactCardLead: 'Llame a OTTO como opción principal. También puede escribir o enviar la solicitud de servicio en línea.',
+    contactButton1: 'Llamar a OTTO',
+    contactButton2: 'Escribir a OTTO',
+    contactWhyLabel: 'English / Español',
+    contactWhyBody: 'Use el selector de idioma en la parte superior de la página en cualquier momento.',
+    whatsappTitle: 'Contáctenos por WhatsApp',
+    whatsappLead: 'Contáctenos, presione el enlace y nos comunicaremos con usted.',
+    brandQuote: '“Hacemos fluir el agua por nuestras tuberías, como la integridad fluye por nuestro nombre.”',
+    ctaTitle: '¿Necesita servicio de plomería?',
+    ctaLead: 'Llame o escriba a OTTO Plumbing Inc. para hablar sobre sus necesidades residenciales o comerciales.',
+    ctaCall: 'Llamar a OTTO',
+    ctaText: 'Escribir a OTTO',
+    footerRight: 'Sur de Florida · Lic. #CFC1429613 · (786) 344-2837'
   }
 };
 const langButtons = [...document.querySelectorAll('[data-lang]')];
@@ -1028,8 +810,6 @@ function setLang(lang) {
     const key = el.getAttribute('data-i18n');
     if (dict[key]) el.textContent = dict[key];
   });
-  if (dict.heroTitle) document.querySelector('[data-i18n="heroTitle"]').textContent = dict.heroTitle;
-  if (dict.heroLead) document.querySelector('[data-i18n="heroLead"]').textContent = dict.heroLead;
   langButtons.forEach((btn) => {
     const on = btn.getAttribute('data-lang') === lang;
     btn.classList.toggle('is-on', on);

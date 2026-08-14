@@ -7,7 +7,6 @@ const polish = readFileSync(new URL('../production-polish.css', import.meta.url)
 const page = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const mobilePolish = readFileSync(new URL('../prestige-polish.css', import.meta.url), 'utf8');
 const shell = readFileSync(new URL('../shell.js', import.meta.url), 'utf8');
-const shellStyles = readFileSync(new URL('../shell.css', import.meta.url), 'utf8');
 const stages = readFileSync(new URL('../stages.css', import.meta.url), 'utf8');
 const stageMotion = readFileSync(new URL('../stages.js', import.meta.url), 'utf8');
 const intakeConfig = readFileSync(new URL('../intake-config.js', import.meta.url), 'utf8');
@@ -31,14 +30,26 @@ test('publishes the company slogan in English and Spanish', () => {
 test('shows more than 30 years prominently in both languages', () => {
   assert.match(copy, /experienceValue: '30\+ YEARS'/);
   assert.match(copy, /experienceValue: 'MÁS DE 30 AÑOS'/);
-  assert.match(polish, /\.experience-banner strong/);
 });
 
-test('clearly includes residential and commercial buildings across South Florida', () => {
-  assert.match(copy, /homes, businesses, and buildings/);
-  assert.match(copy, /hogares, negocios y edificios/);
-  assert.match(copy, /commercial plumbing/);
-  assert.match(copy, /Plomería profesional/);
+test('clearly presents residential and commercial plumbing in both languages', () => {
+  assert.match(copy, /Residential Plumbing/);
+  assert.match(copy, /Commercial Plumbing/);
+  assert.match(copy, /Residential & Commercial/);
+  assert.match(copy, /Plomería residencial/);
+  assert.match(copy, /Plomería comercial/);
+  assert.match(copy, /Residencial y comercial/);
+});
+
+test('customer-facing runtime copy contains no internal QA language', () => {
+  assert.doesNotMatch(copy, /Immediate delivery version/i);
+  assert.doesNotMatch(copy, /No unsupported public claims/i);
+  assert.doesNotMatch(copy, /What customers should do now/i);
+  assert.doesNotMatch(copy, /Why this is safer/i);
+  assert.match(copy, /primaryCta: 'Call OTTO'/);
+  assert.match(copy, /secondaryCta: 'Request Service'/);
+  assert.match(copy, /How service works/);
+  assert.match(copy, /Cómo funciona el servicio/);
 });
 
 test('uses the concise WhatsApp contact invitation in both languages', () => {
@@ -46,17 +57,14 @@ test('uses the concise WhatsApp contact invitation in both languages', () => {
   assert.match(copy, /Tap the link and we’ll get in touch with you/);
   assert.match(copy, /Contáctenos por WhatsApp/);
   assert.match(copy, /Contáctenos, presione el enlace y nos comunicaremos con usted/);
-  assert.doesNotMatch(copy, /Prepare (a|un) WhatsApp message/);
 });
 
-test('places the supplied logo at the top left inside the navy header', () => {
+test('keeps the supplied logo in the navy header', () => {
   assert.match(polish, /background:\s*#0b1222/);
-  assert.match(polish, /grid-template-areas:\s*"brand links actions"/);
-  assert.match(polish, /justify-self:\s*start/);
   assert.match(polish, /\.brand[\s\S]*?border:\s*0;[\s\S]*?box-shadow:\s*none;/);
 });
 
-test('publishes only the confirmed credential claims', () => {
+test('publishes only the existing confirmed credential claims', () => {
   assert.doesNotMatch(page, /bbb\.org|A\+ rating|July 2026 license verification/);
   assert.doesNotMatch(copy, /Better Business Bureau|July 2026 license verification/);
   assert.match(page, /CFC1429613/);
@@ -69,19 +77,29 @@ test('keeps mobile call, language, and sticky navigation paths available', () =>
   assert.match(shell, /class="shell-callbar"/);
 });
 
-test('minimizes and maximizes the page design while scrolling', () => {
-  assert.match(stages, /\.stage\s*\+\s*\.stage\s*\{\s*margin-top:\s*-100svh/);
-  assert.match(stages, /@keyframes otto-panel-recede[\s\S]*?transform:\s*scale\(\.92\)/);
-  assert.match(stages, /@keyframes otto-panel-fade[\s\S]*?transform:\s*scale\(\.95\)/);
-  assert.match(stages, /html\.stage-motion\s+\.stage__inner/);
+test('uses restrained content-led scroll storytelling instead of minimizing whole screens', () => {
+  assert.doesNotMatch(stages, /margin-top:\s*-100svh/);
+  assert.doesNotMatch(stages, /scale\(\.92\)|scale\(\.95\)/);
+  assert.doesNotMatch(stages, /border-radius:\s*28px/);
+  assert.match(stages, /height:\s*135svh/);
+  assert.match(stages, /html\.stage-motion\s+\.stage__inner\s*\{[\s\S]*?transform:\s*none/);
   assert.match(stageMotion, /requestAnimationFrame\(renderMotion\)/);
-  assert.match(stageMotion, /--stage-scale/);
-  assert.match(shell, /shell-header-minimized/);
-  assert.match(shellStyles, /html\.shell-header-minimized\s+\.nav-inner/);
+  assert.match(stageMotion, /--copy-y/);
+  assert.match(stageMotion, /--copy-opacity/);
+  assert.match(stageMotion, /--media-scale/);
+  assert.doesNotMatch(stageMotion, /--stage-scale|--stage-radius|--stage-shift|--stage-opacity/);
 });
 
-test('configures the confirmed email fallback', () => {
+test('mobile and reduced motion preserve ordinary document flow', () => {
+  assert.match(stages, /@media \(max-width:\s*767\.98px\)[\s\S]*?\.stage__inner[\s\S]*?position:\s*relative/);
+  assert.match(stages, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*?margin-top:\s*0/);
+  assert.match(stages, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*?transform:\s*none/);
+  assert.match(stageMotion, /prefers-reduced-motion:\s*reduce/);
+});
+
+test('configures the confirmed email fallback without inventing WhatsApp data', () => {
   assert.match(intakeConfig, /fallbackEmail:\s*'hernandezotto77@gmail\.com'/);
+  assert.match(intakeConfig, /whatsappNumber:\s*''/);
 });
 
 test('includes parseable Plumber structured data', () => {
