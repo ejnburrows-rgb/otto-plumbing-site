@@ -40,12 +40,13 @@ jobs:
           node --check intake.js
           node --check prestige.js
           node --check shell.js
+          node --check stages.js
           node --check whatsapp.js
 
       - name: Run website regression tests
         run: node --test tests/*.test.mjs
 
-      - name: Verify final-candidate integration hooks
+      - name: Verify production integration hooks
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -57,18 +58,24 @@ jobs:
               'src="intake-config.js"',
               'src="intake-core.js"',
               'src="intake.js"',
+              'href="shell.css"',
+              'href="facelift.css"',
+              'href="prestige.css"',
+              'href="stages.css"',
+              'href="stages-theme.css"',
           ]
           required_bootstrap = [
-              "stylesheet('shell.css')",
-              "stylesheet('facelift.css')",
+              "script('prestige.js'",
               "script('facelift.js'",
-              "script('shell.js')",
+              "script('whatsapp.js'",
+              "script('shell.js'",
+              "script('stages.js'",
           ]
           missing = [x for x in required_html if x not in html]
           missing += [x for x in required_bootstrap if x not in config]
           if missing:
               raise SystemExit('Missing integration hooks: ' + ', '.join(missing))
-          print('Final-candidate integration hooks verified.')
+          print('Production integration hooks verified.')
           PY
 
   secret-scan:
@@ -79,7 +86,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      # gitleaks is free for repos under personal accounts (no license needed).
       - name: Run gitleaks
         uses: gitleaks/gitleaks-action@v3
         env:
