@@ -1,10 +1,6 @@
-/* OTTO Plumbing Inc. — panel photography and scroll-panel fallback.
- *
- * Real OTTO photographs are stored as compact WebP base64 assets so this
- * static site can ship them through the same repository/deployment path.
- * The hero is loaded immediately; later panels load only as they approach the
- * viewport. A single passive, animation-frame-throttled scroll update keeps
- * the panel handoff consistent across modern browsers.
+/* OTTO Plumbing Inc. — restrained scroll storytelling.
+ * Native browser scrolling remains in control. Motion is limited to the
+ * photograph and copy layers, never the full viewport/stage.
  */
 (function () {
   'use strict';
@@ -13,58 +9,74 @@
   if (!stages.length) return;
 
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (reduced && reduced.matches) return;
-
-  /* Keep will-change scoped to stages that are actually near the viewport, so
-   * the compositor is not asked to hold layers for the whole page. */
-  if (window.IntersectionObserver) {
-    var nearby = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        entry.target.classList.toggle('is-near', entry.isIntersecting);
-      });
-    }, { rootMargin: '80% 0px 80% 0px' });
-
-    stages.forEach(function (stage) { nearby.observe(stage); });
-  }
+  var framePending = false;
 
   function clamp(value) {
     return Math.max(0, Math.min(1, value));
   }
 
-  function setMotion(inner, incoming, outgoing, viewportHeight) {
-    var scale = .95 + (.05 * incoming) - (.08 * outgoing);
-    var opacity = .65 + (.35 * incoming) - (.55 * outgoing);
-    var edge = Math.max(1 - incoming, outgoing);
-    inner.style.setProperty('--stage-scale', scale.toFixed(4));
-    inner.style.setProperty('--stage-opacity', opacity.toFixed(4));
-    inner.style.setProperty('--stage-radius', (28 * edge).toFixed(2) + 'px');
-    inner.style.setProperty('--stage-shift', (-viewportHeight * .02 * outgoing).toFixed(2) + 'px');
+  function easeOut(value) {
+    var inverse = 1 - value;
+    return 1 - (inverse * inverse * inverse);
   }
 
-  var framePending = false;
+  function resetMotion() {
+    document.documentElement.classList.remove('stage-motion');
+    stages.forEach(function (stage) {
+      stage.classList.remove('is-near');
+      var media = stage.querySelector('.panel__media');
+      var copy = stage.querySelector('.panel__copy');
+      var scrim = stage.querySelector('.panel__scrim');
+      if (media) media.style.removeProperty('--media-scale');
+      if (copy) {
+        copy.style.removeProperty('--copy-y');
+        copy.style.removeProperty('--copy-opacity');
+      }
+      if (scrim) scrim.style.removeProperty('--scrim-opacity');
+    });
+  }
+
   function renderMotion() {
     framePending = false;
+    if (reduced && reduced.matches) {
+      resetMotion();
+      return;
+    }
+
     var viewportHeight = Math.max(window.innerHeight || 0, 1);
     var desktop = window.innerWidth >= 768;
+    document.documentElement.classList.add('stage-motion');
 
     stages.forEach(function (stage, index) {
-      var inner = stage.querySelector('.stage__inner');
-      if (!inner) return;
       var rect = stage.getBoundingClientRect();
-      var incoming;
-      var outgoing;
+      var media = stage.querySelector('.panel__media');
+      var copy = stage.querySelector('.panel__copy');
+      var scrim = stage.querySelector('.panel__scrim');
+      if (!copy) return;
 
-      if (desktop) {
-        incoming = index === 0 ? 1 : clamp((viewportHeight - rect.top) / viewportHeight);
-        outgoing = index === stages.length - 1 ? 0 : clamp(-rect.top / viewportHeight);
-      } else {
-        incoming = index === 0 ? 1 : clamp((viewportHeight - rect.top) / (viewportHeight * .65));
-        outgoing = index === stages.length - 1
-          ? 0
-          : clamp((viewportHeight * .25 - rect.bottom) / (viewportHeight * .65));
+      var rawIncoming = index === 0
+        ? 1
+        : clamp((viewportHeight - rect.top) / (viewportHeight * (desktop ? .58 : .72)));
+      var incoming = easeOut(rawIncoming);
+      var outgoing = desktop ? clamp((-rect.top) / (viewportHeight * .72)) : 0;
+
+      /* Content moves only a few pixels. It becomes readable before the stage
+       * fully owns the viewport and stays nearly opaque while leaving. */
+      var copyY = ((1 - incoming) * (desktop ? 18 : 12)) - (outgoing * 5);
+      var copyOpacity = Math.max(.90, (.18 + (.82 * incoming)) - (.06 * outgoing));
+      copy.style.setProperty('--copy-y', copyY.toFixed(2) + 'px');
+      copy.style.setProperty('--copy-opacity', copyOpacity.toFixed(3));
+
+      if (media) {
+        /* A 1.2% settle is enough to add depth without looking like zoom. */
+        var mediaScale = desktop ? 1.012 - (.012 * incoming) : 1;
+        media.style.setProperty('--media-scale', mediaScale.toFixed(4));
       }
 
-      setMotion(inner, incoming, outgoing, viewportHeight);
+      if (scrim) {
+        var scrimOpacity = .94 + (.06 * incoming);
+        scrim.style.setProperty('--scrim-opacity', scrimOpacity.toFixed(3));
+      }
     });
   }
 
@@ -74,9 +86,23 @@
     window.requestAnimationFrame(renderMotion);
   }
 
-  document.documentElement.classList.add('stage-motion');
+  if (window.IntersectionObserver) {
+    var nearby = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        entry.target.classList.toggle('is-near', entry.isIntersecting);
+      });
+    }, { rootMargin: '65% 0px 65% 0px' });
+    stages.forEach(function (stage) { nearby.observe(stage); });
+  }
+
   window.addEventListener('scroll', requestMotion, { passive: true });
-  window.addEventListener('resize', requestMotion);
+  window.addEventListener('resize', requestMotion, { passive: true });
   window.addEventListener('pageshow', requestMotion);
+
+  if (reduced) {
+    if (typeof reduced.addEventListener === 'function') reduced.addEventListener('change', requestMotion);
+    else if (typeof reduced.addListener === 'function') reduced.addListener(requestMotion);
+  }
+
   renderMotion();
 })();
