@@ -60,15 +60,17 @@ window.OTTO_VERIFIED_REVIEWS = [];
     }
   }
 
-  /* Customer-facing copy settles first; the form layer then owns only form
-   * text and action wiring. The remaining enhancements do not rewrite copy. */
+  /* Customer-facing copy settles first; metadata is then trimmed to verified
+   * claims before the form, contact, shell, and motion enhancements load. */
   function start() {
     protectUnconfiguredHandoff();
     script('prestige.js', function () {
-      script('facelift.js', function () {
-        script('whatsapp.js', function () {
-          script('shell.js', function () {
-            script('stages.js');
+      script('seo-cleanup.js', function () {
+        script('facelift.js', function () {
+          script('whatsapp.js', function () {
+            script('shell.js', function () {
+              script('stages.js');
+            });
           });
         });
       });
