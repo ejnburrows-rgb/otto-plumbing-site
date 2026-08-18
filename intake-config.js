@@ -3,11 +3,10 @@
  * success only after the receiving system confirms it.
  */
 window.OTTO_INTAKE_CONFIG = {
-  endpoint: '',
+  endpoint: 'https://huaehartegjbihyygqgb.supabase.co/functions/v1/website-intake',
   fallbackEmail: 'hernandezotto77@gmail.com',
-  // Confirm the WhatsApp-enabled business number before setting this value.
-  // Required format: country code plus business number, digits only.
-  whatsappNumber: '',
+  // OTTO's published business contact number, country code plus digits only.
+  whatsappNumber: '17863442837',
   timeoutMs: 15000
 };
 
