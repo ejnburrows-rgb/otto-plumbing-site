@@ -97,9 +97,10 @@ test('mobile and reduced motion preserve ordinary document flow', () => {
   assert.match(stageMotion, /prefers-reduced-motion:\s*reduce/);
 });
 
-test('configures the confirmed email fallback without inventing WhatsApp data', () => {
+test('uses the confirmed email and business number for WhatsApp', () => {
   assert.match(intakeConfig, /fallbackEmail:\s*'hernandezotto77@gmail\.com'/);
-  assert.match(intakeConfig, /whatsappNumber:\s*''/);
+  assert.match(intakeConfig, /whatsappNumber:\s*'17863442837'/);
+  assert.match(intakeConfig, /endpoint:\s*'https:\/\/huaehartegjbihyygqgb\.supabase\.co\/functions\/v1\/website-intake'/);
 });
 
 test('includes parseable Plumber structured data', () => {
