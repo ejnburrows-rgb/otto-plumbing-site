@@ -30,6 +30,84 @@ window.OTTO_VERIFIED_REVIEWS = [];
     document.body.appendChild(tag);
   }
 
+  function installThemeControl() {
+    if (document.querySelector('[data-otto-theme-toggle]')) return;
+
+    var style = document.createElement('style');
+    style.id = 'otto-theme-overrides';
+    style.textContent = [
+      ':root[data-theme="dark"] {',
+      '  color-scheme: dark;',
+      '  --ink: #eef3fb;',
+      '  --muted: #aeb9cb;',
+      '  --line: #33415d;',
+      '  --bg: #09111f;',
+      '  --card: rgba(15, 25, 43, 0.94);',
+      '  --card-solid: #111c2f;',
+      '  --shadow: 0 20px 50px rgba(0,0,0,0.28);',
+      '  --hero-shadow: 0 30px 80px rgba(0,0,0,0.38);',
+      '  --ring: #8fb0ff;',
+      '}',
+      ':root[data-theme="dark"] body { background: var(--bg) !important; color: var(--ink) !important; }',
+      ':root[data-theme="dark"] .nav { background: rgba(9,17,31,0.92) !important; border-color: var(--line) !important; }',
+      ':root[data-theme="dark"] :is(.hero-side,.section-card,.contact-card,.info-card,.tile,.contact-row,.credential-card,.intake-card,.intake-panel,.intake-step,.review-card) { background-color: var(--card) !important; color: var(--ink) !important; border-color: var(--line) !important; }',
+      ':root[data-theme="dark"] :is(.toggle-group,.icon-btn,.otto-theme-toggle) { background: var(--card-solid) !important; border-color: var(--line) !important; color: var(--ink) !important; }',
+      ':root[data-theme="dark"] :is(input,select,textarea) { background: #0c1728 !important; color: var(--ink) !important; border-color: var(--line) !important; }',
+      ':root[data-theme="dark"] :is(.section-lead,.contact-lead,.contact-note,.tile p,.info-card p,.brand-sub,.nav-links,.intake-status) { color: var(--muted) !important; }',
+      '.otto-theme-toggle { flex: 0 0 auto; font-size: 1.05rem; line-height: 1; }',
+      '.otto-theme-toggle span { pointer-events: none; }'
+    ].join('\n');
+    document.head.appendChild(style);
+
+    var actions = document.querySelector('.nav-actions');
+    if (!actions) return;
+
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'icon-btn otto-theme-toggle';
+    button.setAttribute('data-otto-theme-toggle', '');
+
+    function preferredTheme() {
+      var saved = localStorage.getItem('otto-site-theme');
+      if (saved === 'dark' || saved === 'light') return saved;
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function labelFor(nextTheme) {
+      var spanish = document.documentElement.lang === 'es';
+      if (nextTheme === 'dark') return spanish ? 'Cambiar a modo oscuro' : 'Switch to dark mode';
+      return spanish ? 'Cambiar a modo claro' : 'Switch to light mode';
+    }
+
+    function applyTheme(theme, save) {
+      var dark = theme === 'dark';
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      button.innerHTML = '<span aria-hidden="true">' + (dark ? '☀' : '☾') + '</span>';
+      var next = dark ? 'light' : 'dark';
+      button.setAttribute('aria-label', labelFor(next));
+      button.title = labelFor(next);
+      button.setAttribute('aria-pressed', dark ? 'true' : 'false');
+      if (save) localStorage.setItem('otto-site-theme', dark ? 'dark' : 'light');
+    }
+
+    button.addEventListener('click', function () {
+      applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', true);
+    });
+
+    var callButton = actions.querySelector('.call-btn');
+    actions.insertBefore(button, callButton || null);
+    applyTheme(preferredTheme(), false);
+
+    if (window.MutationObserver) {
+      new MutationObserver(function () {
+        var current = document.documentElement.getAttribute('data-theme') || 'light';
+        var next = current === 'dark' ? 'light' : 'dark';
+        button.setAttribute('aria-label', labelFor(next));
+        button.title = labelFor(next);
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    }
+  }
+
   function protectUnconfiguredHandoff() {
     var config = window.OTTO_INTAKE_CONFIG || {};
     if (config.endpoint || config.fallbackEmail) return;
@@ -62,6 +140,7 @@ window.OTTO_VERIFIED_REVIEWS = [];
   /* Customer-facing copy settles first; metadata is then trimmed to verified
    * claims before the form, contact, shell, and motion enhancements load. */
   function start() {
+    installThemeControl();
     protectUnconfiguredHandoff();
     script('prestige.js', function () {
       script('seo-cleanup.js', function () {
