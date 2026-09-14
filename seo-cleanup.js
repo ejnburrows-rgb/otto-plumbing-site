@@ -31,4 +31,22 @@
   if (ogTitle) ogTitle.setAttribute('content', 'OTTO Plumbing Inc. — Residential & Commercial Plumbing in South Florida');
   if (ogDescription) ogDescription.setAttribute('content', 'Residential and commercial plumbing across South Florida. Established 1996. Lic. CFC1429613.');
   if (ogUrl) ogUrl.setAttribute('content', canonicalUrl);
+
+  function applyRequestHeading() {
+    var es = document.documentElement.lang === 'es';
+    var title = document.querySelector('#request-section [data-otto-i18n="formTitle"]');
+    var lead = document.querySelector('#request-section [data-otto-i18n="formLead"]');
+    if (title) title.textContent = es ? 'Solicitar servicio' : 'Request service';
+    if (lead) lead.textContent = es
+      ? 'Una solicitud guiada y breve que llega directamente al sistema de servicio de OTTO.'
+      : 'A short guided request that goes directly into OTTO’s service system.';
+  }
+
+  applyRequestHeading();
+  var languageButtons = document.querySelectorAll('[data-lang]');
+  for (var i = 0; i < languageButtons.length; i += 1) {
+    languageButtons[i].addEventListener('click', function () {
+      window.setTimeout(applyRequestHeading, 10);
+    });
+  }
 })();
