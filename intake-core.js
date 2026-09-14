@@ -12,32 +12,135 @@
   var PHONE_E164 = '+17863442837';
   var MIN_FILL_MS = 2500;
   var DUPLICATE_WINDOW_MS = 120000;
-  var FIELD_ORDER = ['name', 'phone', 'email', 'service', 'location', 'contactPreference', 'details'];
+  var FIELD_ORDER = ['name', 'phone', 'email', 'category', 'address', 'contactPreference', 'preferredDate', 'preferredWindow', 'description'];
 
   var LIMITS = {
     name: 80,
     phone: 32,
     email: 120,
-    service: 40,
-    location: 140,
+    category: 40,
+    address: 180,
     contactPreference: 20,
-    details: 1200
+    preferredDate: 16,
+    preferredWindow: 30,
+    description: 1200,
+    answer: 220
   };
 
   var SERVICE_LABELS = {
     leak: 'Leak repair',
-    drain: 'Drain and sewer',
-    heater: 'Water heaters',
-    general: 'General plumbing',
-    fixtures: 'Fixture updates',
-    remodel: 'Remodel support',
-    other: 'Other plumbing work'
+    drain: 'Drain / clog',
+    fixtures: 'Toilet / faucet / fixture',
+    heater: 'Water heater',
+    installation: 'Plumbing installation',
+    remodel: 'Remodel / construction',
+    commercial: 'Commercial service',
+    other: 'Other plumbing work',
+    general: 'General plumbing'
   };
 
   var CONTACT_LABELS = {
     call: 'Phone call',
     text: 'Text message',
-    email: 'Email'
+    email: 'Email',
+    whatsapp: 'WhatsApp'
+  };
+
+  var WINDOW_LABELS = {
+    morning: 'Morning',
+    afternoon: 'Afternoon',
+    evening: 'Evening',
+    flexible: 'Flexible'
+  };
+
+  var ANSWER_KEYS = [
+    'leakActive', 'leakWhere', 'leakShutoff',
+    'drainScope', 'drainFlow',
+    'fixtureType', 'fixtureNeed',
+    'heaterIssue', 'heaterType',
+    'installationType', 'propertyType',
+    'remodelArea', 'remodelStage',
+    'commercialNeed', 'commercialActive',
+    'contextNote'
+  ];
+
+  var REQUIRED_ANSWERS = {
+    leak: ['leakActive', 'leakWhere', 'leakShutoff'],
+    drain: ['drainScope', 'drainFlow'],
+    fixtures: ['fixtureType', 'fixtureNeed'],
+    heater: ['heaterIssue', 'heaterType'],
+    installation: ['installationType', 'propertyType'],
+    remodel: ['remodelArea', 'remodelStage'],
+    commercial: ['commercialNeed', 'commercialActive'],
+    other: ['contextNote'],
+    general: ['contextNote']
+  };
+
+  var ANSWER_LABELS = {
+    leakActive: {
+      label: 'Active leak now',
+      values: { yes: 'Yes', no: 'No', notSure: 'Not sure' }
+    },
+    leakWhere: {
+      label: 'Leak location',
+      values: { sink: 'Sink / cabinet', toilet: 'Toilet', wallCeiling: 'Wall / ceiling', waterHeater: 'Water heater', outside: 'Outside', other: 'Other' }
+    },
+    leakShutoff: {
+      label: 'Water can be shut off',
+      values: { yes: 'Yes', no: 'No', notSure: 'Not sure' }
+    },
+    drainScope: {
+      label: 'Affected fixtures',
+      values: { one: 'One fixture', multiple: 'Multiple fixtures' }
+    },
+    drainFlow: {
+      label: 'Drain condition',
+      values: { blocked: 'Fully blocked', slow: 'Slow' }
+    },
+    fixtureType: {
+      label: 'Fixture',
+      values: { toilet: 'Toilet', faucet: 'Faucet', sink: 'Sink', shower: 'Shower / tub', other: 'Other' }
+    },
+    fixtureNeed: {
+      label: 'Fixture need',
+      values: { repair: 'Repair', replaceInstall: 'Replace / install', other: 'Other' }
+    },
+    heaterIssue: {
+      label: 'Water heater need',
+      values: { noHotWater: 'No hot water', leaking: 'Leaking', replaceInstall: 'Replace / install', other: 'Other' }
+    },
+    heaterType: {
+      label: 'Water heater type',
+      values: { tank: 'Tank', tankless: 'Tankless', notSure: 'Not sure' }
+    },
+    installationType: {
+      label: 'Installation',
+      values: { fixture: 'Fixture', waterHeater: 'Water heater', piping: 'Piping / plumbing lines', other: 'Other' }
+    },
+    propertyType: {
+      label: 'Property',
+      values: { residential: 'Residential', commercial: 'Commercial' }
+    },
+    remodelArea: {
+      label: 'Remodel area',
+      values: { kitchen: 'Kitchen', bath: 'Bathroom', multiple: 'Multiple areas', other: 'Other' }
+    },
+    remodelStage: {
+      label: 'Project stage',
+      values: { planning: 'Planning', inProgress: 'In progress', ready: 'Ready for plumbing' }
+    },
+    commercialNeed: {
+      label: 'Commercial need',
+      values: { leak: 'Leak', drain: 'Drain / clog', fixture: 'Fixture', heater: 'Water heater', installation: 'Installation', other: 'Other' }
+    },
+    commercialActive: {
+      label: 'Issue active now',
+      values: { yes: 'Yes', no: 'No' }
+    },
+    contextNote: {
+      label: 'Need',
+      values: {}
+    }
   };
 
   function stripControl(value) {
@@ -101,16 +204,44 @@
     return CONTACT_LABELS[key] || '';
   }
 
+  function windowLabel(key) {
+    return WINDOW_LABELS[key] || '';
+  }
+
+  function sanitizeAnswers(raw) {
+    raw = raw && typeof raw === 'object' ? raw : {};
+    var result = {};
+    for (var i = 0; i < ANSWER_KEYS.length; i += 1) {
+      var key = ANSWER_KEYS[i];
+      var value = clean(raw[key], LIMITS.answer);
+      if (value) result[key] = value;
+    }
+    return result;
+  }
+
+  function requiredAnswerKeys(category) {
+    var keys = REQUIRED_ANSWERS[category] || [];
+    return keys.slice();
+  }
+
   function sanitize(raw) {
     raw = raw || {};
+    var category = clean(raw.category || raw.service, LIMITS.category).toLowerCase();
+    var address = clean(raw.address || raw.location, LIMITS.address);
+    var description = cleanMultiline(raw.description !== undefined ? raw.description : raw.details, LIMITS.description);
+    var preferredWindow = clean(raw.preferredWindow, LIMITS.preferredWindow);
+    if (preferredWindow && !WINDOW_LABELS[preferredWindow]) preferredWindow = '';
     return {
       name: clean(raw.name, LIMITS.name),
       phone: clean(raw.phone, LIMITS.phone),
       email: clean(raw.email, LIMITS.email).toLowerCase(),
-      service: clean(raw.service, LIMITS.service).toLowerCase(),
-      location: clean(raw.location, LIMITS.location),
+      category: category,
+      address: address,
       contactPreference: clean(raw.contactPreference, LIMITS.contactPreference).toLowerCase(),
-      details: cleanMultiline(raw.details, LIMITS.details)
+      preferredDate: clean(raw.preferredDate, LIMITS.preferredDate),
+      preferredWindow: preferredWindow,
+      description: description,
+      answers: sanitizeAnswers(raw.answers)
     };
   }
 
@@ -125,20 +256,32 @@
 
     if (values.email && !isValidEmail(values.email)) errors.email = 'email';
 
-    if (!values.service) errors.service = 'required';
-    else if (!SERVICE_LABELS[values.service]) errors.service = 'service';
+    if (!values.category) errors.category = 'required';
+    else if (!SERVICE_LABELS[values.category]) errors.category = 'service';
+
+    if (values.address.length < 3) errors.address = 'required';
 
     if (values.contactPreference && !CONTACT_LABELS[values.contactPreference]) {
       values.contactPreference = '';
     }
 
-    if (!values.details) errors.details = 'required';
-    else if (values.details.length < 10) errors.details = 'details';
+    if (values.preferredDate && !/^\d{4}-\d{2}-\d{2}$/.test(values.preferredDate)) {
+      errors.preferredDate = 'date';
+    }
+
+    var required = requiredAnswerKeys(values.category);
+    for (var r = 0; r < required.length; r += 1) {
+      if (!values.answers[required[r]]) {
+        errors.answers = 'answers';
+        break;
+      }
+    }
 
     var invalid = [];
     for (var i = 0; i < FIELD_ORDER.length; i += 1) {
       if (errors[FIELD_ORDER[i]]) invalid.push(FIELD_ORDER[i]);
     }
+    if (errors.answers) invalid.push('answers');
 
     return {
       valid: invalid.length === 0,
@@ -155,43 +298,78 @@
     if (typeof input.elapsedMs === 'number' && input.elapsedMs >= 0 && input.elapsedMs < MIN_FILL_MS) {
       return 'tooFast';
     }
-    var links = String(values.details || '').match(/https?:\/\/|www\./gi);
+    var text = String(values.description || '') + ' ' + String((values.answers && values.answers.contextNote) || '');
+    var links = text.match(/https?:\/\/|www\./gi);
     if (links && links.length >= 2) return 'links';
     return null;
   }
 
+  function answerSummary(category, answers) {
+    var cleanAnswers = sanitizeAnswers(answers);
+    var keys = requiredAnswerKeys(category);
+    if (cleanAnswers.contextNote && keys.indexOf('contextNote') === -1) keys.push('contextNote');
+    var parts = [];
+    for (var i = 0; i < keys.length; i += 1) {
+      var key = keys[i];
+      var value = cleanAnswers[key];
+      if (!value) continue;
+      var config = ANSWER_LABELS[key] || { label: key, values: {} };
+      var readable = config.values[value] || value;
+      parts.push(config.label + ': ' + readable);
+    }
+    return parts.join(' · ');
+  }
+
   function fingerprint(values) {
-    var v = values || {};
+    var v = sanitize(values || {});
+    var answerParts = [];
+    for (var i = 0; i < ANSWER_KEYS.length; i += 1) {
+      var key = ANSWER_KEYS[i];
+      if (v.answers[key]) answerParts.push(key + '=' + v.answers[key]);
+    }
     var basis = [
-      clean(v.name, LIMITS.name),
+      v.name,
       normalizePhone(v.phone),
-      clean(v.email, LIMITS.email),
-      clean(v.service, LIMITS.service),
-      clean(v.location, LIMITS.location),
-      clean(v.contactPreference, LIMITS.contactPreference),
-      cleanMultiline(v.details, LIMITS.details)
+      v.email,
+      v.category,
+      v.address,
+      v.contactPreference,
+      v.preferredDate,
+      v.preferredWindow,
+      answerParts.join('&'),
+      v.description
     ].join('|').toLowerCase();
     var hash = 5381;
-    for (var i = 0; i < basis.length; i += 1) {
-      hash = ((hash * 33) ^ basis.charCodeAt(i)) >>> 0;
+    for (var j = 0; j < basis.length; j += 1) {
+      hash = ((hash * 33) ^ basis.charCodeAt(j)) >>> 0;
     }
-    return 'v1-' + hash.toString(36) + '-' + basis.length.toString(36);
+    return 'v2-' + hash.toString(36) + '-' + basis.length.toString(36);
   }
 
   function buildPayload(values, meta) {
     var v = sanitize(values);
     meta = meta || {};
+    var summary = answerSummary(v.category, v.answers);
     return {
+      source: 'otto-plumbing-site',
       name: v.name,
       phone: formatPhone(v.phone),
       phoneDigits: normalizePhone(v.phone),
       email: v.email,
-      service: serviceLabel(v.service),
-      serviceKey: v.service,
-      location: v.location,
+      service: serviceLabel(v.category),
+      serviceKey: v.category,
+      category: v.category,
+      location: v.address,
+      address: v.address,
       contactPreference: contactLabel(v.contactPreference),
-      details: v.details,
-      _subject: 'Website service request - ' + v.name + ' - ' + (serviceLabel(v.service) || 'Plumbing'),
+      answers: v.answers,
+      answersSummary: summary,
+      details: v.description,
+      description: v.description,
+      preferredDate: v.preferredDate,
+      preferredWindow: windowLabel(v.preferredWindow),
+      preferredWindowKey: v.preferredWindow,
+      _subject: 'Website service request - ' + v.name + ' - ' + (serviceLabel(v.category) || 'Plumbing'),
       submittedAt: new Date().toISOString(),
       language: meta.language === 'es' ? 'es' : 'en',
       page: clean(meta.page, 300)
@@ -212,7 +390,9 @@
           service: 'Servicio',
           location: 'Ubicacion',
           contact: 'Contacto preferido',
-          details: 'Detalles'
+          timing: 'Horario preferido',
+          context: 'Contexto',
+          details: 'Descripcion'
         }
       : {
           subject: 'Service request',
@@ -220,19 +400,27 @@
           phone: 'Phone',
           email: 'Email',
           service: 'Service',
-          location: 'Location',
+          location: 'Service location',
           contact: 'Preferred contact',
-          details: 'Details'
+          timing: 'Preferred timing',
+          context: 'Context',
+          details: 'Description'
         };
-    var subject = labels.subject + ' - ' + (v.name || labels.name) + ' - ' + (serviceLabel(v.service) || 'Plumbing');
+    var subject = labels.subject + ' - ' + (v.name || labels.name) + ' - ' + (serviceLabel(v.category) || 'Plumbing');
     var lines = [labels.name + ': ' + v.name, labels.phone + ': ' + formatPhone(v.phone)];
     if (v.email) lines.push(labels.email + ': ' + v.email);
-    lines.push(labels.service + ': ' + (serviceLabel(v.service) || ''));
-    if (v.location) lines.push(labels.location + ': ' + v.location);
+    lines.push(labels.service + ': ' + (serviceLabel(v.category) || ''));
+    lines.push(labels.location + ': ' + v.address);
     if (v.contactPreference) lines.push(labels.contact + ': ' + contactLabel(v.contactPreference));
-    lines.push('');
-    lines.push(labels.details + ':');
-    lines.push(v.details);
+    var timing = [v.preferredDate, windowLabel(v.preferredWindow)].filter(Boolean).join(' · ');
+    if (timing) lines.push(labels.timing + ': ' + timing);
+    var context = answerSummary(v.category, v.answers);
+    if (context) lines.push(labels.context + ': ' + context);
+    if (v.description) {
+      lines.push('');
+      lines.push(labels.details + ':');
+      lines.push(v.description);
+    }
     return 'mailto:' + address + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
   }
 
@@ -369,6 +557,9 @@
     FIELD_ORDER: FIELD_ORDER,
     SERVICE_LABELS: SERVICE_LABELS,
     CONTACT_LABELS: CONTACT_LABELS,
+    WINDOW_LABELS: WINDOW_LABELS,
+    ANSWER_KEYS: ANSWER_KEYS,
+    REQUIRED_ANSWERS: REQUIRED_ANSWERS,
     MIN_FILL_MS: MIN_FILL_MS,
     DUPLICATE_WINDOW_MS: DUPLICATE_WINDOW_MS,
     clean: clean,
@@ -380,6 +571,10 @@
     isValidEmail: isValidEmail,
     serviceLabel: serviceLabel,
     contactLabel: contactLabel,
+    windowLabel: windowLabel,
+    sanitizeAnswers: sanitizeAnswers,
+    requiredAnswerKeys: requiredAnswerKeys,
+    answerSummary: answerSummary,
     sanitize: sanitize,
     validate: validate,
     checkSpam: checkSpam,
