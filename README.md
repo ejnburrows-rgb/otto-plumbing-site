@@ -1,16 +1,20 @@
 # OTTO Plumbing Inc. website
 
-Current release candidate: `feat/final-site-facelift` / PR #32.
+Public website for OTTO Plumbing Inc., including bilingual English/Spanish content, responsive desktop/mobile layouts, direct call/text actions, WhatsApp handoff, and the customer service-request intake flow.
 
-## Final visual direction
+## Production
 
-The public website uses OTTO's own logo, copy, verified business details, bilingual behavior, and intake workflow with a clean national-service presentation inspired by leading U.S. plumbing brands: white navigation and content surfaces, confident medium-blue hero/CTA areas, strong contact actions, simple service cards, restrained borders/shadows, and mobile-first conversion hierarchy.
+- Authoritative branch: `main`
+- Vercel project: `otto-plumbing-site`
+- Production URL: https://otto-plumbing-site.vercel.app
+- Deploy workflow: pushes to `main` build a Vercel production deployment.
 
-The visual reference is structural only; no third-party plumbing brand logos, photos, wording, trademarks, or proprietary assets are copied into OTTO.
+## Customer intake
 
-## Release safeguards
+The service-request form posts to the existing Supabase Edge Function at `website-intake`. No paid AI service is used. The public configuration contains no secrets and falls back to the published OTTO contact paths if delivery is unavailable.
 
-- English / Spanish remains available on desktop and mobile.
-- Customer request delivery remains fail-safe until the verified client Formspree endpoint is configured.
-- Existing interaction shell behavior is preserved.
-- Production should only be updated after owner visual approval and final client-email delivery test.
+## Release state
+
+Current `main` contains the intended customer-facing site. English/Spanish, mobile layouts, call/text actions, WhatsApp configuration, and CRM-connected intake must remain working for release.
+
+Known deployment concern: the stable Vercel production domain must be verified after each production build to ensure it is serving the latest `main` deployment rather than an older cached/aliased build.
