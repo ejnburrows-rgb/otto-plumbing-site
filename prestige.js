@@ -7,12 +7,12 @@
 
   var COPY = {
     en: {
-      brandSub: 'South Florida plumbing · Established 1996',
+      brandSub: 'South Florida plumbing',
       navServices: 'Services',
       navBusiness: 'About',
       navContact: 'Request Service',
       callNow: 'Request Service',
-      experienceValue: 'EST. 1996',
+      experienceValue: 'OTTO PLUMBING',
       experienceLabel: 'South Florida',
       heroTitle: 'Plumbing service across South Florida.',
       heroLead: 'Residential and commercial plumbing from OTTO Plumbing Inc. Florida license CFC1429613. English / Español.',
@@ -39,16 +39,16 @@
       ctaTitle: 'Ready to request service?',
       ctaLead: 'Send the job details in a few short steps.',
       ctaCall: 'Request Service',
-      ctaText: 'Call OTTO',
+      ctaText: 'Text OTTO',
       footerRight: 'South Florida · Lic. #CFC1429613 · ' + PHONE
     },
     es: {
-      brandSub: 'Plomería en el sur de Florida · Desde 1996',
+      brandSub: 'Plomería en el sur de Florida',
       navServices: 'Servicios',
       navBusiness: 'Nosotros',
       navContact: 'Solicitar servicio',
       callNow: 'Solicitar servicio',
-      experienceValue: 'DESDE 1996',
+      experienceValue: 'OTTO PLUMBING',
       experienceLabel: 'Sur de Florida',
       heroTitle: 'Servicio de plomería en el sur de Florida.',
       heroLead: 'Plomería residencial y comercial de OTTO Plumbing Inc. Licencia de Florida CFC1429613. English / Español.',
@@ -75,19 +75,19 @@
       ctaTitle: '¿Listo para solicitar servicio?',
       ctaLead: 'Envíe los detalles del trabajo en unos pasos breves.',
       ctaCall: 'Solicitar servicio',
-      ctaText: 'Llamar a OTTO',
+      ctaText: 'Escribir a OTTO',
       footerRight: 'Sur de Florida · Lic. #CFC1429613 · ' + PHONE
     }
   };
 
   var TRUST = {
     en: [
-      ['Established', '1996'],
+      ['Service', 'Residential & Commercial'],
       ['Florida License', 'CFC1429613'],
       ['Service Area', 'South Florida']
     ],
     es: [
-      ['Desde', '1996'],
+      ['Servicio', 'Residencial y comercial'],
       ['Licencia de Florida', 'CFC1429613'],
       ['Área de servicio', 'Sur de Florida']
     ]
@@ -132,13 +132,11 @@
   var BUSINESS = {
     en: [
       ['Florida license', 'CFC1429613', 'Florida Certified Plumbing Contractor license.'],
-      ['Established', '1996', 'More than 30 years serving South Florida.'],
       ['Hours', 'Mon–Sat · 7 AM–7 PM', 'Published business hours.'],
       ['Service area', 'South Florida', 'Residential and commercial plumbing.']
     ],
     es: [
       ['Licencia de Florida', 'CFC1429613', 'Licencia de Contratista Certificado de Plomería de Florida.'],
-      ['Desde', '1996', 'Más de 30 años sirviendo al sur de Florida.'],
       ['Horario', 'Lun–sáb · 7 AM–7 PM', 'Horario publicado del negocio.'],
       ['Área de servicio', 'Sur de Florida', 'Plomería residencial y comercial.']
     ]
@@ -297,8 +295,8 @@
     var meta = document.querySelector('meta[name="description"]');
     if (meta) {
       meta.setAttribute('content', current === 'es'
-        ? 'OTTO Plumbing Inc. ofrece plomería residencial y comercial en el sur de Florida. Desde 1996. Lic. CFC1429613. Solicite servicio o llame al ' + PHONE + '.'
-        : 'OTTO Plumbing Inc. provides residential and commercial plumbing across South Florida. Established 1996. Lic. CFC1429613. Request service or call ' + PHONE + '.');
+        ? 'OTTO Plumbing Inc. ofrece plomería residencial y comercial en el sur de Florida. Lic. CFC1429613. Solicite servicio o llame al ' + PHONE + '.'
+        : 'OTTO Plumbing Inc. provides residential and commercial plumbing across South Florida. Lic. CFC1429613. Request service or call ' + PHONE + '.');
     }
 
     document.body.classList.add('otto-conversion-ready');

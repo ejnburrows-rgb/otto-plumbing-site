@@ -8,7 +8,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const source = readFileSync(join(here, '..', 'intake-core.js'), 'utf8');
 const load = new Function('globalThis', source + '\nreturn globalThis.OTTOIntakeCore;');
 const core = load({});
-const ENDPOINT = 'https://example.com/intake';
+const ENDPOINT = 'https://intake.test/submit';
 
 function goodRequest(overrides = {}) {
   return {

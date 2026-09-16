@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://otto-plumbing-site.vercel.app/sitemap.xml
+Sitemap: https://otto-plumbing-miami.vercel.app/sitemap.xml

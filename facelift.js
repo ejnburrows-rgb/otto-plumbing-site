@@ -106,7 +106,7 @@
 
   function fixActions() {
     var secondary = document.querySelector('[data-i18n="secondaryCta"]');
-    if (secondary) secondary.setAttribute('href', '#request');
+    if (secondary) secondary.setAttribute('href', 'tel:+17863442837');
     var textLinks = [
       document.querySelector('[data-i18n="contactButton2"]'),
       document.querySelector('[data-i18n="ctaText"]')
