@@ -8,10 +8,12 @@
   var SECONDARY_E164 = '+17869226330';
   var MAX_PDF_BYTES = 5 * 1024 * 1024;
   var state = { claimText: '', claimDraftUrl: '', file: null, fileError: '' };
+  var enhanceQueued = false;
 
   function lang() { return document.documentElement.lang === 'es' ? 'es' : 'en'; }
   function words(en, es) { return lang() === 'es' ? es : en; }
   function safeText(value) { return String(value == null ? '' : value); }
+  function setText(el, value) { if (el && el.textContent !== value) el.textContent = value; }
 
   function normalizeUrl(value) {
     var text = safeText(value).trim();
@@ -52,9 +54,12 @@
       if (first && first.nextSibling) contact.insertBefore(row, first.nextSibling); else contact.appendChild(row);
     }
 
-    document.querySelectorAll('[data-secondary-label]').forEach(function (el) { el.textContent = words('Secondary line', 'Línea secundaria'); });
-    document.querySelectorAll('[data-secondary-call]').forEach(function (el) { el.textContent = words('Call secondary', 'Llamar a secundaria'); });
-    document.querySelectorAll('[data-secondary-text]').forEach(function (el) { el.textContent = words('Text secondary', 'Escribir a secundaria'); });
+    var labelText = words('Secondary line', 'Línea secundaria');
+    var callText = words('Call secondary', 'Llamar a secundaria');
+    var smsText = words('Text secondary', 'Escribir a secundaria');
+    document.querySelectorAll('[data-secondary-label]').forEach(function (el) { setText(el, labelText); });
+    document.querySelectorAll('[data-secondary-call]').forEach(function (el) { setText(el, callText); });
+    document.querySelectorAll('[data-secondary-text]').forEach(function (el) { setText(el, smsText); });
 
     var foot = document.querySelector('.foot-box');
     if (foot && !foot.querySelector('[data-otto-secondary-footer]')) {
@@ -63,7 +68,7 @@
       foot.appendChild(extra);
     }
     var footer = foot && foot.querySelector('[data-otto-secondary-footer]');
-    if (footer) footer.textContent = words('Secondary: ', 'Secundario: ') + SECONDARY_DISPLAY;
+    setText(footer, words('Secondary: ', 'Secundario: ') + SECONDARY_DISPLAY);
   }
 
   function claimBoxHtml() {
@@ -119,7 +124,7 @@
     var note = document.querySelector('[data-otto-claim-file-note]');
     if (!note) return;
     note.classList.toggle('is-error', !!state.fileError);
-    note.textContent = state.fileError || (state.file ? state.file.name + ' · ' + Math.ceil(state.file.size / 1024) + ' KB' : words('PDF only · maximum 5 MB', 'Solo PDF · máximo 5 MB'));
+    setText(note, state.fileError || (state.file ? state.file.name + ' · ' + Math.ceil(state.file.size / 1024) + ' KB' : words('PDF only · maximum 5 MB', 'Solo PDF · máximo 5 MB')));
   }
 
   function ensureReviewClaim() {
@@ -188,9 +193,16 @@
     ensureReviewClaim();
   }
 
+  function queueEnhance() {
+    if (enhanceQueued) return;
+    enhanceQueued = true;
+    var run = function () { enhanceQueued = false; enhance(); };
+    if (window.queueMicrotask) queueMicrotask(run); else setTimeout(run, 0);
+  }
+
   function start() {
     enhance();
-    new MutationObserver(function () { window.queueMicrotask ? queueMicrotask(enhance) : setTimeout(enhance, 0); })
+    new MutationObserver(queueEnhance)
       .observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['lang'] });
   }
 
