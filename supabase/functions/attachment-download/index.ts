@@ -28,7 +28,7 @@ Deno.serve(async (req:Request) => {
     const record = rows[0] && rows[0].data;
     const fromWebsite = record && (record.requestSource === 'otto-plumbing-site' || record.source === 'otto-plumbing-site');
     const path = String(record && (record.attachmentPath || record.claimPdfPath) || '').trim();
-    const expected = String(record && record.fingerprint || '').trim();
+    const expected = String(record && record.downloadToken || '').trim();
     if (!record || !fromWebsite || !path.startsWith('website-requests/') || !expected || token !== expected) {
       return new Response('Not found', { status:404, headers:{'Cache-Control':'no-store'} });
     }

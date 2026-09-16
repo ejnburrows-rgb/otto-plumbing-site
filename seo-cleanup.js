@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  var canonicalUrl = 'https://otto-plumbing-site-ejns-projects-1b938dd2.vercel.app/';
+  var canonicalUrl = 'https://otto-plumbing-miami.vercel.app/';
   var canonical = document.querySelector('link[rel="canonical"]');
   if (canonical) canonical.setAttribute('href', canonicalUrl);
 
