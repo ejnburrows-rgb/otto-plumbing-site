@@ -34,6 +34,7 @@ jobs:
 
       - name: Check JavaScript syntax
         run: |
+          node --check claim-intake.js
           node --check facelift.js
           node --check intake-config.js
           node --check intake-core.js
@@ -65,6 +66,7 @@ jobs:
               'href="stages-theme.css"',
           ]
           required_bootstrap = [
+              "script('claim-intake.js'",
               "script('prestige.js'",
               "script('facelift.js'",
               "script('whatsapp.js'",
