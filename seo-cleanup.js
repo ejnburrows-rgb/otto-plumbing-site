@@ -2,9 +2,6 @@
 (function () {
   'use strict';
 
-  /* Use the Vercel project production alias that is actually serving current
-   * main. The shorter vanity alias can replace this once Vercel routes it to
-   * the same deployment. */
   var canonicalUrl = 'https://otto-plumbing-site-ejns-projects-1b938dd2.vercel.app/';
   var canonical = document.querySelector('link[rel="canonical"]');
   if (canonical) canonical.setAttribute('href', canonicalUrl);
@@ -19,7 +16,6 @@
       url: canonicalUrl,
       areaServed: 'South Florida',
       openingHours: 'Mo-Sa 07:00-19:00',
-      foundingDate: '1996',
       identifier: {
         '@type': 'PropertyValue',
         propertyID: 'Florida Certified Plumbing Contractor License',
@@ -33,7 +29,7 @@
   var ogUrl = document.querySelector('meta[property="og:url"]');
   var ogImage = document.querySelector('meta[property="og:image"]');
   if (ogTitle) ogTitle.setAttribute('content', 'OTTO Plumbing Inc. — Residential & Commercial Plumbing in South Florida');
-  if (ogDescription) ogDescription.setAttribute('content', 'Residential and commercial plumbing across South Florida. Established 1996. Lic. CFC1429613.');
+  if (ogDescription) ogDescription.setAttribute('content', 'Residential and commercial plumbing across South Florida. Lic. CFC1429613.');
   if (ogUrl) ogUrl.setAttribute('content', canonicalUrl);
   if (ogImage) ogImage.setAttribute('content', canonicalUrl + 'icon-512.png');
 
