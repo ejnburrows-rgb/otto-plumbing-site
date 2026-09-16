@@ -1,0 +1,151 @@
+/* OTTO Plumbing Inc. — conversion-focused premium refinement.
+ * Keeps the site minimal: Request Service is primary, direct contact stays secondary.
+ */
+
+:root {
+  --otto-radius-lg: 20px;
+  --otto-radius-md: 12px;
+  --otto-shadow-soft: 0 16px 44px rgba(11, 19, 38, .08);
+}
+
+html { scroll-padding-top: 92px; }
+
+/* One clear action in the header. Keep the words visible on mobile. */
+.nav-actions > .call-btn {
+  min-width: 132px;
+  background: #0d6fbe !important;
+  border-color: #0d6fbe !important;
+  box-shadow: none !important;
+}
+.nav-actions > .call-btn:hover { background: #0a5d9f !important; border-color: #0a5d9f !important; }
+
+/* The hero is one strong statement rather than a dashboard of cards. */
+.hero-shell {
+  grid-template-columns: minmax(0, 1fr) !important;
+  max-width: 940px;
+  margin-inline: auto;
+  border-radius: var(--otto-radius-lg) !important;
+}
+.hero-main {
+  min-height: auto !important;
+  padding: clamp(42px, 6vw, 70px) !important;
+}
+.hero-side { display: none !important; }
+.hero h1 {
+  max-width: 760px !important;
+  font-size: clamp(3rem, 6vw, 5.35rem) !important;
+}
+.hero p.lead { max-width: 650px !important; }
+.hero-facts {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  margin-top: 34px !important;
+}
+.hero .btn-primary { min-width: 190px; }
+
+/* Consistent geometry across the public site. */
+.service-grid .tile,
+.contact-card,
+.credential-card,
+.contact-row,
+#contact .whatsapp-contact,
+.intake-card,
+.intake-panel,
+.intake-step,
+.intake-review {
+  border-radius: var(--otto-radius-md) !important;
+}
+#business .section-card,
+.cta-card { border-radius: var(--otto-radius-lg) !important; }
+.contact-card,
+.credential-card { box-shadow: var(--otto-shadow-soft) !important; }
+
+/* Services are true entry points into the guided request. */
+.service-tile {
+  cursor: pointer;
+  position: relative;
+  outline: none;
+}
+.service-tile::after {
+  content: '→';
+  position: absolute;
+  right: 22px;
+  bottom: 20px;
+  color: var(--blue, #2f6bff);
+  font-weight: 800;
+  transition: transform .16s ease;
+}
+.service-tile:hover::after,
+.service-tile:focus-visible::after { transform: translateX(4px); }
+.service-tile:focus-visible {
+  outline: 3px solid rgba(47, 107, 255, .28);
+  outline-offset: 3px;
+}
+
+/* The guided request now sits immediately after Services and should read as the core product. */
+#request-section {
+  padding: clamp(38px, 6vw, 78px) 0;
+  background: linear-gradient(180deg, #f7f9fc 0%, #eef3f8 100%);
+  border-block: 1px solid #dfe7f0;
+}
+#request-section .intake-wrap {
+  width: min(980px, calc(100% - 36px));
+  margin: 0 auto;
+}
+#request-section .contact-card {
+  padding: clamp(28px, 5vw, 52px) !important;
+  border: 1px solid #dce5ee !important;
+  background: #fff !important;
+}
+#request-section .contact-card > h2 {
+  max-width: 720px;
+  margin-bottom: 12px;
+}
+#request-section .contact-lead { max-width: 700px; }
+.intake-submit { background: #0d6fbe !important; border-color: #0d6fbe !important; }
+.intake-submit:hover { background: #0a5d9f !important; border-color: #0a5d9f !important; }
+
+/* Shorten the cinematic sections. Photography remains, but the page scrolls like a service site. */
+@media (min-width: 768px) {
+  .stage:not(.stage--flow) {
+    height: auto !important;
+    min-height: 0 !important;
+    margin-top: 0 !important;
+  }
+  .stage:not(.stage--flow) .stage__inner {
+    position: relative !important;
+    top: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+  .stage:not(.stage--flow) .panel {
+    min-height: clamp(620px, 80svh, 790px) !important;
+  }
+  #closing .panel { min-height: 620px !important; }
+}
+
+/* Contact stays useful, but visually secondary to the request flow. */
+#contact .contact-card { box-shadow: none !important; }
+#contact .contact-grid { max-width: 1040px; margin-inline: auto; }
+
+@media (max-width: 720px) {
+  html { scroll-padding-top: 78px; }
+  .nav-actions > .call-btn {
+    width: auto !important;
+    min-width: 112px !important;
+    min-height: 42px !important;
+    padding: 0 13px !important;
+    font-size: .76rem !important;
+    line-height: 1 !important;
+  }
+  .nav-actions > .call-btn::before { content: none !important; }
+  .hero-main { padding: 38px 22px 30px !important; }
+  .hero h1 { font-size: clamp(2.75rem, 13vw, 4rem) !important; }
+  .hero-facts { grid-template-columns: 1fr !important; }
+  .service-grid .tile { min-height: 154px !important; }
+  #request-section { padding: 32px 0 48px; }
+  #request-section .intake-wrap { width: min(100% - 24px, 980px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-tile::after { transition: none; }
+}
