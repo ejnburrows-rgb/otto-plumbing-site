@@ -71,12 +71,14 @@ window.OTTO_VERIFIED_REVIEWS = [];
 
   function start() {
     protectUnconfiguredHandoff();
-    script('prestige.js', function () {
-      script('seo-cleanup.js', function () {
-        script('facelift.js', function () {
-          script('whatsapp.js', function () {
-            script('shell.js', function () {
-              script('stages.js');
+    script('claim-intake.js', function () {
+      script('prestige.js', function () {
+        script('seo-cleanup.js', function () {
+          script('facelift.js', function () {
+            script('whatsapp.js', function () {
+              script('shell.js', function () {
+                script('stages.js');
+              });
             });
           });
         });
