@@ -3,6 +3,9 @@
   "github": {
     "autoAlias": true
   },
+  "alias": [
+    "otto-plumbing-site.vercel.app"
+  ],
   "headers": [
     {
       "source": "/(.*)",
