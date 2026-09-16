@@ -28,10 +28,40 @@ const REQUIRED_ANSWERS: Record<string, string[]> = {
   general: ['contextNote']
 };
 
-const MAX_BODY_BYTES = 20_000;
+const MAX_FILE_BYTES = 10 * 1024 * 1024;
+const MAX_BODY_BYTES = 15_500_000;
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const RATE_MAX = 5;
 const DUP_WINDOW_MS = 2 * 60 * 1000;
+const ATTACHMENT_BUCKET = 'job-photos';
+const CRM_ORIGIN = 'https://otto-kohl.vercel.app';
+const ALLOWED_EXTENSIONS = new Set([
+  'pdf','doc','docx','txt','rtf','csv','xls','xlsx','ppt','pptx','jpg','jpeg','png','webp','heic','heif','dwg','dxf','dwf','dgn','json'
+]);
+
+const MIME_BY_EXT: Record<string, string> = {
+  pdf: 'application/pdf',
+  doc: 'application/msword',
+  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  txt: 'text/plain',
+  rtf: 'text/plain',
+  csv: 'text/csv',
+  xls: 'application/vnd.ms-excel',
+  xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  ppt: 'application/vnd.ms-powerpoint',
+  pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  png: 'image/png',
+  webp: 'image/webp',
+  heic: 'image/heic',
+  heif: 'image/heif',
+  dwg: 'application/octet-stream',
+  dxf: 'application/dxf',
+  dwf: 'model/vnd.dwf',
+  dgn: 'application/vnd.dgn',
+  json: 'application/json'
+};
 
 function cors(origin: string | null) {
   const allowed = origin && ALLOWED_ORIGINS.has(origin) ? origin : 'https://otto-plumbing-site.vercel.app';
@@ -88,6 +118,14 @@ function validPage(page: string) {
   catch { return false; }
 }
 
+function validHttpUrl(value: string) {
+  if (!value) return true;
+  try {
+    const url = new URL(value);
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch { return false; }
+}
+
 async function sha256(value: string) {
   const bytes = new TextEncoder().encode(value);
   const digest = await crypto.subtle.digest('SHA-256', bytes);
@@ -102,6 +140,14 @@ function adminHeaders() {
   if (!key) throw new Error('missing_admin_key');
   const headers: Record<string, string> = { apikey: key, 'Content-Type': 'application/json', Accept: 'application/json' };
   if (legacy) headers.Authorization = `Bearer ${legacy}`;
+  return headers;
+}
+
+function storageHeaders(contentType: string) {
+  const headers = adminHeaders();
+  delete headers['Content-Type'];
+  headers['Content-Type'] = contentType;
+  headers['x-upsert'] = 'false';
   return headers;
 }
 
@@ -123,6 +169,39 @@ async function insertRecord(table: 'alerts' | 'calls', id: string, data: Record<
     body: JSON.stringify({ id, data, updated_at: new Date().toISOString() })
   });
   if (!response.ok) throw new Error(`insert_${table}_${response.status}:${(await response.text()).slice(0, 180)}`);
+}
+
+function extensionOf(name: string) {
+  const match = /\.([A-Za-z0-9]+)$/.exec(name || '');
+  return match ? match[1].toLowerCase() : '';
+}
+
+function safeFileName(value: string) {
+  const raw = clean(value || 'attachment', 180).replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '');
+  return raw || 'attachment';
+}
+
+function decodeAttachment(base64: string) {
+  if (!base64) return null;
+  if (base64.length > 14_100_000) throw new Error('attachment_too_large');
+  let binary = '';
+  try { binary = atob(base64); } catch { throw new Error('attachment_invalid_base64'); }
+  if (!binary || binary.length > MAX_FILE_BYTES) throw new Error('attachment_too_large');
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
+async function uploadAttachment(path: string, bytes: Uint8Array, mime: string) {
+  const base = Deno.env.get('SUPABASE_URL');
+  if (!base) throw new Error('missing_supabase_url');
+  const encodedPath = path.split('/').map((part) => encodeURIComponent(part)).join('/');
+  const response = await fetch(`${base}/storage/v1/object/${ATTACHMENT_BUCKET}/${encodedPath}`, {
+    method: 'POST',
+    headers: storageHeaders(mime),
+    body: bytes
+  });
+  if (!response.ok) throw new Error(`attachment_upload_${response.status}:${(await response.text()).slice(0, 180)}`);
 }
 
 Deno.serve(async (req: Request) => {
@@ -155,6 +234,18 @@ Deno.serve(async (req: Request) => {
   const preferredWindow = clean(raw?.preferredWindow, 40);
   const language = raw?.language === 'es' ? 'es' : 'en';
   const page = clean(raw?.page, 300);
+  const claimText = cleanDetails(raw?.claimText, 3000);
+  const sharedLink = clean(raw?.sharedLink ?? raw?.claimDraftUrl, 800);
+
+  const legacyPdf = typeof raw?.claimPdfBase64 === 'string' && raw.claimPdfBase64.trim();
+  const attachmentBase64 = typeof raw?.attachmentBase64 === 'string' && raw.attachmentBase64.trim()
+    ? raw.attachmentBase64.trim()
+    : (legacyPdf ? raw.claimPdfBase64.trim() : '');
+  const attachmentName = safeFileName(clean(raw?.attachmentName || raw?.claimPdfName, 180));
+  const ext = extensionOf(attachmentName);
+  const suppliedMime = clean(raw?.attachmentMime || raw?.claimPdfMime, 120).toLowerCase();
+  const attachmentMime = MIME_BY_EXT[ext] || suppliedMime || 'application/octet-stream';
+  const attachmentSize = Number(raw?.attachmentSize || raw?.claimPdfSize || 0);
 
   const errors: string[] = [];
   if (name.length < 2) errors.push('name');
@@ -170,6 +261,11 @@ Deno.serve(async (req: Request) => {
   }
   if (preferredDate && !/^\d{4}-\d{2}-\d{2}$/.test(preferredDate)) errors.push('preferredDate');
   if (!validPage(page)) errors.push('page');
+  if (!validHttpUrl(sharedLink)) errors.push('sharedLink');
+  if (attachmentBase64) {
+    if (!ext || !ALLOWED_EXTENSIONS.has(ext)) errors.push('attachmentName');
+    if (attachmentSize && attachmentSize > MAX_FILE_BYTES) errors.push('attachmentSize');
+  }
   if (errors.length) return json({ error: 'invalid_fields', fields: errors }, 400, origin);
 
   const now = Date.now();
@@ -178,7 +274,8 @@ Deno.serve(async (req: Request) => {
   const ipHash = await sha256(`otto-intake:${ip}`);
   const fingerprint = await sha256([
     name.toLowerCase(), digits, serviceKey, address.toLowerCase(), answersSummary.toLowerCase(),
-    description.toLowerCase(), preferredDate, preferredWindow.toLowerCase()
+    description.toLowerCase(), preferredDate, preferredWindow.toLowerCase(), claimText.toLowerCase(),
+    sharedLink.toLowerCase(), attachmentName.toLowerCase(), String(attachmentSize || 0)
   ].join('|'));
 
   try {
@@ -191,8 +288,24 @@ Deno.serve(async (req: Request) => {
     if (duplicate) return json({ ok: true, duplicate: true, id: duplicate?.data?.id || null }, 200, origin);
 
     const id = `web_${now.toString(36)}_${crypto.randomUUID().slice(0, 8)}`;
+    let attachmentPath = '';
+    if (attachmentBase64) {
+      const bytes = decodeAttachment(attachmentBase64);
+      if (!bytes) throw new Error('attachment_missing');
+      attachmentPath = `website-requests/${id}/${attachmentName}`;
+      await uploadAttachment(attachmentPath, bytes, attachmentMime);
+    }
+
+    const attachmentCrmUrl = attachmentPath ? `${CRM_ORIGIN}/api/claim-file?alertId=${encodeURIComponent(id)}` : '';
     const context = answersSummary || Object.entries(answers).map(([key, value]) => `${key}: ${value}`).join(' · ');
-    const summary = `Website lead — ${name} · ${phone} · ${service}${address ? ` · ${address}` : ''}${context ? `. ${context.slice(0, 420)}` : ''}${description ? `. ${description.slice(0, 320)}` : ''}`;
+    const attachmentParts = [
+      claimText ? `Plan/file notes: ${claimText.slice(0, 420)}` : '',
+      sharedLink ? `Shared link: ${sharedLink}` : '',
+      attachmentPath ? `Attachment: ${attachmentName}` : '',
+      attachmentCrmUrl ? `Attachment link: ${attachmentCrmUrl}` : ''
+    ].filter(Boolean);
+    const summary = `Website lead — ${name} · ${phone} · ${service}${address ? ` · ${address}` : ''}${context ? `. ${context.slice(0, 420)}` : ''}${description ? `. ${description.slice(0, 320)}` : ''}${attachmentParts.length ? `. ${attachmentParts.join(' · ')}` : ''}`;
+
     const data = {
       id,
       type: 'website_lead',
@@ -219,18 +332,30 @@ Deno.serve(async (req: Request) => {
       preferredWindow,
       language,
       page,
-      intakeVersion: guided ? 'guided-v2' : 'legacy-v1',
+      claimText,
+      sharedLink,
+      claimDraftUrl: sharedLink,
+      attachmentName: attachmentPath ? attachmentName : '',
+      attachmentMime: attachmentPath ? attachmentMime : '',
+      attachmentSize: attachmentPath ? (attachmentSize || null) : null,
+      attachmentPath,
+      attachmentCrmUrl,
+      claimPdfName: attachmentPath ? attachmentName : '',
+      claimPdfPath: attachmentPath,
+      claimPdfCrmUrl: attachmentCrmUrl,
+      intakeVersion: guided ? 'guided-v4-attachments' : 'legacy-v1',
       submittedAt: nowIso,
       created: nowIso,
       updated: nowIso,
       fingerprint,
       ipHash
     };
+
     await Promise.all([
       insertRecord('alerts', id, { ...data, source: 'otto-plumbing-site' }),
       insertRecord('calls', id, data)
     ]);
-    return json({ ok: true, id, receivedAt: nowIso }, 200, origin);
+    return json({ ok: true, id, receivedAt: nowIso, attachmentStored: Boolean(attachmentPath) }, 200, origin);
   } catch (error) {
     console.error('website-intake failed', error instanceof Error ? error.message : String(error));
     return json({ error: 'delivery_failed' }, 503, origin);
