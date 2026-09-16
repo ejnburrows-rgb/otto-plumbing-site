@@ -1,363 +1,55 @@
 const ALLOWED_ORIGINS = new Set([
   'https://otto-plumbing-site.vercel.app',
   'https://otto-plumbing-site-ejns-projects-1b938dd2.vercel.app',
-  'https://otto-plumbing-site-git-main-ejns-projects-1b938dd2.vercel.app'
+  'https://otto-plumbing-site-git-main-ejns-projects-1b938dd2.vercel.app',
+  'https://huaehartegjbihyygqgb.supabase.co',
+  'https://raw.githack.com'
 ]);
 
 const SERVICES: Record<string, string> = {
-  leak: 'Leak repair',
-  drain: 'Drain / clog',
-  fixtures: 'Toilet / faucet / fixture',
-  heater: 'Water heater',
-  installation: 'Plumbing installation',
-  remodel: 'Remodel / construction',
-  commercial: 'Commercial service',
-  other: 'Other plumbing work',
-  general: 'General plumbing'
+  leak: 'Leak repair', drain: 'Drain / clog', fixtures: 'Toilet / faucet / fixture', heater: 'Water heater',
+  installation: 'Plumbing installation', remodel: 'Remodel / construction', commercial: 'Commercial service',
+  other: 'Other plumbing work', general: 'General plumbing'
 };
-
 const REQUIRED_ANSWERS: Record<string, string[]> = {
-  leak: ['leakActive', 'leakWhere', 'leakShutoff'],
-  drain: ['drainScope', 'drainFlow'],
-  fixtures: ['fixtureType', 'fixtureNeed'],
-  heater: ['heaterIssue', 'heaterType'],
-  installation: ['installationType', 'propertyType'],
-  remodel: ['remodelArea', 'remodelStage'],
-  commercial: ['commercialNeed', 'commercialActive'],
-  other: ['contextNote'],
-  general: ['contextNote']
+  leak: ['leakActive', 'leakWhere', 'leakShutoff'], drain: ['drainScope', 'drainFlow'],
+  fixtures: ['fixtureType', 'fixtureNeed'], heater: ['heaterIssue', 'heaterType'],
+  installation: ['installationType', 'propertyType'], remodel: ['remodelArea', 'remodelStage'],
+  commercial: ['commercialNeed', 'commercialActive'], other: ['contextNote'], general: ['contextNote']
 };
-
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
 const MAX_BODY_BYTES = 15_500_000;
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const RATE_MAX = 5;
 const DUP_WINDOW_MS = 2 * 60 * 1000;
 const ATTACHMENT_BUCKET = 'job-photos';
-const CRM_ORIGIN = 'https://otto-kohl.vercel.app';
-const ALLOWED_EXTENSIONS = new Set([
-  'pdf','doc','docx','txt','rtf','csv','xls','xlsx','ppt','pptx','jpg','jpeg','png','webp','heic','heif','dwg','dxf','dwf','dgn','json'
-]);
-
+const ATTACHMENT_DOWNLOAD_URL = 'https://huaehartegjbihyygqgb.supabase.co/functions/v1/attachment-download';
+const ALLOWED_EXTENSIONS = new Set(['pdf','doc','docx','txt','rtf','csv','xls','xlsx','ppt','pptx','jpg','jpeg','png','webp','heic','heif','dwg','dxf','dwf','dgn','json']);
 const MIME_BY_EXT: Record<string, string> = {
-  pdf: 'application/pdf',
-  doc: 'application/msword',
-  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  txt: 'text/plain',
-  rtf: 'text/plain',
-  csv: 'text/csv',
-  xls: 'application/vnd.ms-excel',
-  xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  ppt: 'application/vnd.ms-powerpoint',
-  pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-  jpg: 'image/jpeg',
-  jpeg: 'image/jpeg',
-  png: 'image/png',
-  webp: 'image/webp',
-  heic: 'image/heic',
-  heif: 'image/heif',
-  dwg: 'application/octet-stream',
-  dxf: 'application/dxf',
-  dwf: 'model/vnd.dwf',
-  dgn: 'application/vnd.dgn',
-  json: 'application/json'
+  pdf:'application/pdf', doc:'application/msword', docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  txt:'text/plain', rtf:'text/plain', csv:'text/csv', xls:'application/vnd.ms-excel',
+  xlsx:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', ppt:'application/vnd.ms-powerpoint',
+  pptx:'application/vnd.openxmlformats-officedocument.presentationml.presentation', jpg:'image/jpeg', jpeg:'image/jpeg',
+  png:'image/png', webp:'image/webp', heic:'image/heic', heif:'image/heif', dwg:'application/octet-stream',
+  dxf:'application/dxf', dwf:'model/vnd.dwf', dgn:'application/vnd.dgn', json:'application/json'
 };
-
-function cors(origin: string | null) {
-  const allowed = origin && ALLOWED_ORIGINS.has(origin) ? origin : 'https://otto-plumbing-site.vercel.app';
-  return {
-    'Access-Control-Allow-Origin': allowed,
-    'Access-Control-Allow-Headers': 'content-type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    Vary: 'Origin',
-    'Content-Type': 'application/json; charset=utf-8',
-    'Cache-Control': 'no-store'
-  };
-}
-
-function json(body: unknown, status: number, origin: string | null) {
-  return new Response(JSON.stringify(body), { status, headers: cors(origin) });
-}
-
-function clean(value: unknown, max: number) {
-  return String(value ?? '').replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s{2,}/g, ' ').trim().slice(0, max);
-}
-
-function cleanDetails(value: unknown, max: number) {
-  return String(value ?? '').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, ' ').replace(/\r\n?/g, '\n').replace(/[ \t]{2,}/g, ' ').replace(/\n{3,}/g, '\n\n').trim().slice(0, max);
-}
-
-function cleanAnswers(value: unknown) {
-  const raw = value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {};
-  const result: Record<string, string> = {};
-  Object.keys(raw).slice(0, 20).forEach((key) => {
-    if (!/^[A-Za-z][A-Za-z0-9]{0,39}$/.test(key)) return;
-    const answer = clean(raw[key], 220);
-    if (answer) result[key] = answer;
-  });
-  return result;
-}
-
-function phoneDigits(value: unknown) {
-  let d = String(value ?? '').replace(/\D/g, '');
-  if (d.length === 11 && d.startsWith('1')) d = d.slice(1);
-  return d;
-}
-
-function validPhone(d: string) {
-  return /^\d{10}$/.test(d) && !/^(\d)\1{9}$/.test(d) && !/^[01]/.test(d);
-}
-
-function validEmail(email: string) {
-  return !email || (/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(email) && !email.includes('..'));
-}
-
-function validPage(page: string) {
-  if (!page) return true;
-  try { return ALLOWED_ORIGINS.has(new URL(page).origin); }
-  catch { return false; }
-}
-
-function validHttpUrl(value: string) {
-  if (!value) return true;
-  try {
-    const url = new URL(value);
-    return url.protocol === 'http:' || url.protocol === 'https:';
-  } catch { return false; }
-}
-
-async function sha256(value: string) {
-  const bytes = new TextEncoder().encode(value);
-  const digest = await crypto.subtle.digest('SHA-256', bytes);
-  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('');
-}
-
-function adminHeaders() {
-  const legacy = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
-  let modern = '';
-  try { modern = JSON.parse(Deno.env.get('SUPABASE_SECRET_KEYS') || '{}').default || ''; } catch (_) {}
-  const key = modern || legacy;
-  if (!key) throw new Error('missing_admin_key');
-  const headers: Record<string, string> = { apikey: key, 'Content-Type': 'application/json', Accept: 'application/json' };
-  if (legacy) headers.Authorization = `Bearer ${legacy}`;
-  return headers;
-}
-
-function storageHeaders(contentType: string) {
-  const headers = adminHeaders();
-  delete headers['Content-Type'];
-  headers['Content-Type'] = contentType;
-  headers['x-upsert'] = 'false';
-  return headers;
-}
-
-async function recentWebsiteAlerts(sinceIso: string) {
-  const base = Deno.env.get('SUPABASE_URL');
-  if (!base) throw new Error('missing_supabase_url');
-  const url = `${base}/rest/v1/alerts?select=data,created_at&created_at=gte.${encodeURIComponent(sinceIso)}&order=created_at.desc&limit=100`;
-  const response = await fetch(url, { headers: adminHeaders() });
-  if (!response.ok) throw new Error(`recent_alerts_${response.status}`);
-  return await response.json();
-}
-
-async function insertRecord(table: 'alerts' | 'calls', id: string, data: Record<string, unknown>) {
-  const base = Deno.env.get('SUPABASE_URL');
-  if (!base) throw new Error('missing_supabase_url');
-  const response = await fetch(`${base}/rest/v1/${table}`, {
-    method: 'POST',
-    headers: { ...adminHeaders(), Prefer: 'resolution=merge-duplicates,return=minimal' },
-    body: JSON.stringify({ id, data, updated_at: new Date().toISOString() })
-  });
-  if (!response.ok) throw new Error(`insert_${table}_${response.status}:${(await response.text()).slice(0, 180)}`);
-}
-
-function extensionOf(name: string) {
-  const match = /\.([A-Za-z0-9]+)$/.exec(name || '');
-  return match ? match[1].toLowerCase() : '';
-}
-
-function safeFileName(value: string) {
-  const raw = clean(value || 'attachment', 180).replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '');
-  return raw || 'attachment';
-}
-
-function decodeAttachment(base64: string) {
-  if (!base64) return null;
-  if (base64.length > 14_100_000) throw new Error('attachment_too_large');
-  let binary = '';
-  try { binary = atob(base64); } catch { throw new Error('attachment_invalid_base64'); }
-  if (!binary || binary.length > MAX_FILE_BYTES) throw new Error('attachment_too_large');
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
-  return bytes;
-}
-
-async function uploadAttachment(path: string, bytes: Uint8Array, mime: string) {
-  const base = Deno.env.get('SUPABASE_URL');
-  if (!base) throw new Error('missing_supabase_url');
-  const encodedPath = path.split('/').map((part) => encodeURIComponent(part)).join('/');
-  const response = await fetch(`${base}/storage/v1/object/${ATTACHMENT_BUCKET}/${encodedPath}`, {
-    method: 'POST',
-    headers: storageHeaders(mime),
-    body: bytes
-  });
-  if (!response.ok) throw new Error(`attachment_upload_${response.status}:${(await response.text()).slice(0, 180)}`);
-}
-
-Deno.serve(async (req: Request) => {
-  const origin = req.headers.get('origin');
-  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(origin) });
-  if (req.method !== 'POST') return json({ error: 'method_not_allowed' }, 405, origin);
-  if (origin && !ALLOWED_ORIGINS.has(origin)) return json({ error: 'origin_not_allowed' }, 403, origin);
-
-  const length = Number(req.headers.get('content-length') || '0');
-  if (length > MAX_BODY_BYTES) return json({ error: 'payload_too_large' }, 413, origin);
-
-  let raw: any;
-  try { raw = await req.json(); }
-  catch { return json({ error: 'invalid_json' }, 400, origin); }
-
-  const name = clean(raw?.name, 80);
-  const digits = phoneDigits(raw?.phoneDigits || raw?.phone);
-  const phone = clean(raw?.phone, 32) || digits;
-  const email = clean(raw?.email, 120).toLowerCase();
-  const explicitCategory = clean(raw?.category, 40).toLowerCase();
-  const serviceKey = explicitCategory || clean(raw?.serviceKey, 40).toLowerCase();
-  const guided = Boolean(explicitCategory);
-  const service = SERVICES[serviceKey] || '';
-  const address = clean(raw?.address || raw?.location, 180);
-  const contactPreference = clean(raw?.contactPreference, 40);
-  const answers = cleanAnswers(raw?.answers);
-  const answersSummary = clean(raw?.answersSummary, 1600);
-  const description = cleanDetails(raw?.description ?? raw?.details, 1200);
-  const preferredDate = clean(raw?.preferredDate, 16);
-  const preferredWindow = clean(raw?.preferredWindow, 40);
-  const language = raw?.language === 'es' ? 'es' : 'en';
-  const page = clean(raw?.page, 300);
-  const claimText = cleanDetails(raw?.claimText, 3000);
-  const sharedLink = clean(raw?.sharedLink ?? raw?.claimDraftUrl, 800);
-
-  const legacyPdf = typeof raw?.claimPdfBase64 === 'string' && raw.claimPdfBase64.trim();
-  const attachmentBase64 = typeof raw?.attachmentBase64 === 'string' && raw.attachmentBase64.trim()
-    ? raw.attachmentBase64.trim()
-    : (legacyPdf ? raw.claimPdfBase64.trim() : '');
-  const attachmentName = safeFileName(clean(raw?.attachmentName || raw?.claimPdfName, 180));
-  const ext = extensionOf(attachmentName);
-  const suppliedMime = clean(raw?.attachmentMime || raw?.claimPdfMime, 120).toLowerCase();
-  const attachmentMime = MIME_BY_EXT[ext] || suppliedMime || 'application/octet-stream';
-  const attachmentSize = Number(raw?.attachmentSize || raw?.claimPdfSize || 0);
-
-  const errors: string[] = [];
-  if (name.length < 2) errors.push('name');
-  if (!validPhone(digits)) errors.push('phone');
-  if (!validEmail(email)) errors.push('email');
-  if (!service) errors.push('service');
-  if (guided) {
-    if (address.length < 3) errors.push('address');
-    const required = REQUIRED_ANSWERS[serviceKey] || [];
-    if (required.some((key) => !answers[key])) errors.push('answers');
-  } else if (description.length < 10) {
-    errors.push('details');
-  }
-  if (preferredDate && !/^\d{4}-\d{2}-\d{2}$/.test(preferredDate)) errors.push('preferredDate');
-  if (!validPage(page)) errors.push('page');
-  if (!validHttpUrl(sharedLink)) errors.push('sharedLink');
-  if (attachmentBase64) {
-    if (!ext || !ALLOWED_EXTENSIONS.has(ext)) errors.push('attachmentName');
-    if (attachmentSize && attachmentSize > MAX_FILE_BYTES) errors.push('attachmentSize');
-  }
-  if (errors.length) return json({ error: 'invalid_fields', fields: errors }, 400, origin);
-
-  const now = Date.now();
-  const nowIso = new Date(now).toISOString();
-  const ip = (req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown').split(',')[0].trim();
-  const ipHash = await sha256(`otto-intake:${ip}`);
-  const fingerprint = await sha256([
-    name.toLowerCase(), digits, serviceKey, address.toLowerCase(), answersSummary.toLowerCase(),
-    description.toLowerCase(), preferredDate, preferredWindow.toLowerCase(), claimText.toLowerCase(),
-    sharedLink.toLowerCase(), attachmentName.toLowerCase(), String(attachmentSize || 0)
-  ].join('|'));
-
-  try {
-    const recent = await recentWebsiteAlerts(new Date(now - RATE_WINDOW_MS).toISOString());
-    const website = Array.isArray(recent) ? recent.filter((row: any) => row?.data?.source === 'otto-plumbing-site' || row?.data?.requestSource === 'otto-plumbing-site') : [];
-    const fromIp = website.filter((row: any) => row?.data?.ipHash === ipHash);
-    if (fromIp.length >= RATE_MAX) return json({ error: 'rate_limited' }, 429, origin);
-
-    const duplicate = website.find((row: any) => row?.data?.fingerprint === fingerprint && (now - Date.parse(row.created_at || row?.data?.created || 0)) < DUP_WINDOW_MS);
-    if (duplicate) return json({ ok: true, duplicate: true, id: duplicate?.data?.id || null }, 200, origin);
-
-    const id = `web_${now.toString(36)}_${crypto.randomUUID().slice(0, 8)}`;
-    let attachmentPath = '';
-    if (attachmentBase64) {
-      const bytes = decodeAttachment(attachmentBase64);
-      if (!bytes) throw new Error('attachment_missing');
-      attachmentPath = `website-requests/${id}/${attachmentName}`;
-      await uploadAttachment(attachmentPath, bytes, attachmentMime);
-    }
-
-    const attachmentCrmUrl = attachmentPath ? `${CRM_ORIGIN}/api/claim-file?alertId=${encodeURIComponent(id)}` : '';
-    const context = answersSummary || Object.entries(answers).map(([key, value]) => `${key}: ${value}`).join(' · ');
-    const attachmentParts = [
-      claimText ? `Plan/file notes: ${claimText.slice(0, 420)}` : '',
-      sharedLink ? `Shared link: ${sharedLink}` : '',
-      attachmentPath ? `Attachment: ${attachmentName}` : '',
-      attachmentCrmUrl ? `Attachment link: ${attachmentCrmUrl}` : ''
-    ].filter(Boolean);
-    const summary = `Website lead — ${name} · ${phone} · ${service}${address ? ` · ${address}` : ''}${context ? `. ${context.slice(0, 420)}` : ''}${description ? `. ${description.slice(0, 320)}` : ''}${attachmentParts.length ? `. ${attachmentParts.join(' · ')}` : ''}`;
-
-    const data = {
-      id,
-      type: 'website_lead',
-      status: 'open',
-      title: `Website service request · ${name}`,
-      msg: summary,
-      source: 'website',
-      requestSource: 'otto-plumbing-site',
-      name,
-      phone,
-      phoneDigits: digits,
-      email,
-      service,
-      serviceKey,
-      category: serviceKey,
-      location: address,
-      address,
-      contactPreference,
-      answers,
-      answersSummary: context,
-      details: description,
-      description,
-      preferredDate,
-      preferredWindow,
-      language,
-      page,
-      claimText,
-      sharedLink,
-      claimDraftUrl: sharedLink,
-      attachmentName: attachmentPath ? attachmentName : '',
-      attachmentMime: attachmentPath ? attachmentMime : '',
-      attachmentSize: attachmentPath ? (attachmentSize || null) : null,
-      attachmentPath,
-      attachmentCrmUrl,
-      claimPdfName: attachmentPath ? attachmentName : '',
-      claimPdfPath: attachmentPath,
-      claimPdfCrmUrl: attachmentCrmUrl,
-      intakeVersion: guided ? 'guided-v4-attachments' : 'legacy-v1',
-      submittedAt: nowIso,
-      created: nowIso,
-      updated: nowIso,
-      fingerprint,
-      ipHash
-    };
-
-    await Promise.all([
-      insertRecord('alerts', id, { ...data, source: 'otto-plumbing-site' }),
-      insertRecord('calls', id, data)
-    ]);
-    return json({ ok: true, id, receivedAt: nowIso, attachmentStored: Boolean(attachmentPath) }, 200, origin);
-  } catch (error) {
-    console.error('website-intake failed', error instanceof Error ? error.message : String(error));
-    return json({ error: 'delivery_failed' }, 503, origin);
-  }
-});
+function cors(origin:string|null){const allowed=origin&&ALLOWED_ORIGINS.has(origin)?origin:'https://otto-plumbing-site.vercel.app';return{'Access-Control-Allow-Origin':allowed,'Access-Control-Allow-Headers':'content-type','Access-Control-Allow-Methods':'POST, OPTIONS',Vary:'Origin','Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'};}
+function json(body:unknown,status:number,origin:string|null){return new Response(JSON.stringify(body),{status,headers:cors(origin)});}
+function clean(value:unknown,max:number){return String(value??'').replace(/[\u0000-\u001f\u007f]/g,' ').replace(/\s{2,}/g,' ').trim().slice(0,max);}
+function cleanDetails(value:unknown,max:number){return String(value??'').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g,' ').replace(/\r\n?/g,'\n').replace(/[ \t]{2,}/g,' ').replace(/\n{3,}/g,'\n\n').trim().slice(0,max);}
+function cleanAnswers(value:unknown){const raw=value&&typeof value==='object'&&!Array.isArray(value)?value as Record<string,unknown>:{};const result:Record<string,string>={};Object.keys(raw).slice(0,20).forEach((key)=>{if(!/^[A-Za-z][A-Za-z0-9]{0,39}$/.test(key))return;const answer=clean(raw[key],220);if(answer)result[key]=answer;});return result;}
+function phoneDigits(value:unknown){let d=String(value??'').replace(/\D/g,'');if(d.length===11&&d.startsWith('1'))d=d.slice(1);return d;}
+function validPhone(d:string){return /^\d{10}$/.test(d)&&!/^(\d)\1{9}$/.test(d)&&!/^[01]/.test(d);}
+function validEmail(email:string){return !email||(/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(email)&&!email.includes('..'));}
+function validPage(page:string){if(!page)return true;try{return ALLOWED_ORIGINS.has(new URL(page).origin);}catch{return false;}}
+function validHttpUrl(value:string){if(!value)return true;try{const url=new URL(value);return url.protocol==='http:'||url.protocol==='https:';}catch{return false;}}
+async function sha256(value:string){const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value));return Array.from(new Uint8Array(digest)).map((b)=>b.toString(16).padStart(2,'0')).join('');}
+function adminHeaders(){const legacy=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')||'';let modern='';try{modern=JSON.parse(Deno.env.get('SUPABASE_SECRET_KEYS')||'{}').default||'';}catch(_){}const key=modern||legacy;if(!key)throw new Error('missing_admin_key');const headers:Record<string,string>={apikey:key,'Content-Type':'application/json',Accept:'application/json'};if(legacy)headers.Authorization=`Bearer ${legacy}`;return headers;}
+function storageHeaders(contentType:string){const headers=adminHeaders();delete headers['Content-Type'];headers['Content-Type']=contentType;headers['x-upsert']='false';return headers;}
+async function recentWebsiteAlerts(sinceIso:string){const base=Deno.env.get('SUPABASE_URL');if(!base)throw new Error('missing_supabase_url');const url=`${base}/rest/v1/alerts?select=data,created_at&created_at=gte.${encodeURIComponent(sinceIso)}&order=created_at.desc&limit=100`;const response=await fetch(url,{headers:adminHeaders()});if(!response.ok)throw new Error(`recent_alerts_${response.status}`);return await response.json();}
+async function insertRecord(table:'alerts'|'calls',id:string,data:Record<string,unknown>){const base=Deno.env.get('SUPABASE_URL');if(!base)throw new Error('missing_supabase_url');const response=await fetch(`${base}/rest/v1/${table}`,{method:'POST',headers:{...adminHeaders(),Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({id,data,updated_at:new Date().toISOString()})});if(!response.ok)throw new Error(`insert_${table}_${response.status}:${(await response.text()).slice(0,180)}`);}
+function extensionOf(name:string){const match=/\.([A-Za-z0-9]+)$/.exec(name||'');return match?match[1].toLowerCase():'';}
+function safeFileName(value:string){const raw=clean(value||'attachment',180).replace(/[^A-Za-z0-9._-]+/g,'-').replace(/^-+|-+$/g,'');return raw||'attachment';}
+function decodeAttachment(base64:string){if(!base64)return null;if(base64.length>14_100_000)throw new Error('attachment_too_large');let binary='';try{binary=atob(base64);}catch{throw new Error('attachment_invalid_base64');}if(!binary||binary.length>MAX_FILE_BYTES)throw new Error('attachment_too_large');const bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i+=1)bytes[i]=binary.charCodeAt(i);return bytes;}
+async function uploadAttachment(path:string,bytes:Uint8Array,mime:string){const base=Deno.env.get('SUPABASE_URL');if(!base)throw new Error('missing_supabase_url');const encodedPath=path.split('/').map((part)=>encodeURIComponent(part)).join('/');const response=await fetch(`${base}/storage/v1/object/${ATTACHMENT_BUCKET}/${encodedPath}`,{method:'POST',headers:storageHeaders(mime),body:bytes});if(!response.ok)throw new Error(`attachment_upload_${response.status}:${(await response.text()).slice(0,180)}`);}
+Deno.serve(async(req:Request)=>{const origin=req.headers.get('origin');if(req.method==='OPTIONS')return new Response(null,{status:204,headers:cors(origin)});if(req.method!=='POST')return json({error:'method_not_allowed'},405,origin);if(origin&&!ALLOWED_ORIGINS.has(origin))return json({error:'origin_not_allowed'},403,origin);const length=Number(req.headers.get('content-length')||'0');if(length>MAX_BODY_BYTES)return json({error:'payload_too_large'},413,origin);let raw:any;try{raw=await req.json();}catch{return json({error:'invalid_json'},400,origin);}const name=clean(raw?.name,80);const digits=phoneDigits(raw?.phoneDigits||raw?.phone);const phone=clean(raw?.phone,32)||digits;const email=clean(raw?.email,120).toLowerCase();const explicitCategory=clean(raw?.category,40).toLowerCase();const serviceKey=explicitCategory||clean(raw?.serviceKey,40).toLowerCase();const guided=Boolean(explicitCategory);const service=SERVICES[serviceKey]||'';const address=clean(raw?.address||raw?.location,180);const contactPreference=clean(raw?.contactPreference,40);const answers=cleanAnswers(raw?.answers);const answersSummary=clean(raw?.answersSummary,1600);const description=cleanDetails(raw?.description??raw?.details,1200);const preferredDate=clean(raw?.preferredDate,16);const preferredWindow=clean(raw?.preferredWindow,40);const language=raw?.language==='es'?'es':'en';const page=clean(raw?.page,300);const claimText=cleanDetails(raw?.claimText,3000);const sharedLink=clean(raw?.sharedLink??raw?.claimDraftUrl,800);const legacyPdf=typeof raw?.claimPdfBase64==='string'&&raw.claimPdfBase64.trim();const attachmentBase64=typeof raw?.attachmentBase64==='string'&&raw.attachmentBase64.trim()?raw.attachmentBase64.trim():(legacyPdf?raw.claimPdfBase64.trim():'');const attachmentName=safeFileName(clean(raw?.attachmentName||raw?.claimPdfName,180));const ext=extensionOf(attachmentName);const suppliedMime=clean(raw?.attachmentMime||raw?.claimPdfMime,120).toLowerCase();const attachmentMime=MIME_BY_EXT[ext]||suppliedMime||'application/octet-stream';const attachmentSize=Number(raw?.attachmentSize||raw?.claimPdfSize||0);const errors:string[]=[];if(name.length<2)errors.push('name');if(!validPhone(digits))errors.push('phone');if(!validEmail(email))errors.push('email');if(!service)errors.push('service');if(guided){if(address.length<3)errors.push('address');const required=REQUIRED_ANSWERS[serviceKey]||[];if(required.some((key)=>!answers[key]))errors.push('answers');}else if(description.length<10){errors.push('details');}if(preferredDate&&!/^\d{4}-\d{2}-\d{2}$/.test(preferredDate))errors.push('preferredDate');if(!validPage(page))errors.push('page');if(!validHttpUrl(sharedLink))errors.push('sharedLink');if(attachmentBase64){if(!ext||!ALLOWED_EXTENSIONS.has(ext))errors.push('attachmentName');if(attachmentSize&&attachmentSize>MAX_FILE_BYTES)errors.push('attachmentSize');}if(errors.length)return json({error:'invalid_fields',fields:errors},400,origin);const now=Date.now();const nowIso=new Date(now).toISOString();const ip=(req.headers.get('x-forwarded-for')||req.headers.get('cf-connecting-ip')||'unknown').split(',')[0].trim();const ipHash=await sha256(`otto-intake:${ip}`);const fingerprint=await sha256([name.toLowerCase(),digits,serviceKey,address.toLowerCase(),answersSummary.toLowerCase(),description.toLowerCase(),preferredDate,preferredWindow.toLowerCase(),claimText.toLowerCase(),sharedLink.toLowerCase(),attachmentName.toLowerCase(),String(attachmentSize||0)].join('|'));try{const recent=await recentWebsiteAlerts(new Date(now-RATE_WINDOW_MS).toISOString());const website=Array.isArray(recent)?recent.filter((row:any)=>row?.data?.source==='otto-plumbing-site'||row?.data?.requestSource==='otto-plumbing-site'):[];const fromIp=website.filter((row:any)=>row?.data?.ipHash===ipHash);if(fromIp.length>=RATE_MAX)return json({error:'rate_limited'},429,origin);const duplicate=website.find((row:any)=>row?.data?.fingerprint===fingerprint&&(now-Date.parse(row.created_at||row?.data?.created||0))<DUP_WINDOW_MS);if(duplicate)return json({ok:true,duplicate:true,id:duplicate?.data?.id||null},200,origin);const id=`web_${now.toString(36)}_${crypto.randomUUID().slice(0,8)}`;let attachmentPath='';if(attachmentBase64){const bytes=decodeAttachment(attachmentBase64);if(!bytes)throw new Error('attachment_missing');attachmentPath=`website-requests/${id}/${attachmentName}`;await uploadAttachment(attachmentPath,bytes,attachmentMime);}const attachmentCrmUrl=attachmentPath?`${ATTACHMENT_DOWNLOAD_URL}?id=${encodeURIComponent(id)}&token=${fingerprint}`:'';const context=answersSummary||Object.entries(answers).map(([key,value])=>`${key}: ${value}`).join(' · ');const attachmentParts=[claimText?`Plan/file notes: ${claimText.slice(0,420)}`:'',sharedLink?`Shared link: ${sharedLink}`:'',attachmentPath?`Attachment: ${attachmentName}`:'',attachmentCrmUrl?`Attachment link: ${attachmentCrmUrl}`:''].filter(Boolean);const summary=`Website lead — ${name} · ${phone} · ${service}${address?` · ${address}`:''}${context?`. ${context.slice(0,420)}`:''}${description?`. ${description.slice(0,320)}`:''}${attachmentParts.length?`. ${attachmentParts.join(' · ')}`:''}`;const data={id,type:'website_lead',status:'open',title:`Website service request · ${name}`,msg:summary,source:'website',requestSource:'otto-plumbing-site',name,phone,phoneDigits:digits,email,service,serviceKey,category:serviceKey,location:address,address,contactPreference,answers,answersSummary:context,details:description,description,preferredDate,preferredWindow,language,page,claimText,sharedLink,claimDraftUrl:sharedLink,attachmentName:attachmentPath?attachmentName:'',attachmentMime:attachmentPath?attachmentMime:'',attachmentSize:attachmentPath?(attachmentSize||null):null,attachmentPath,attachmentCrmUrl,claimPdfName:attachmentPath?attachmentName:'',claimPdfPath:attachmentPath,claimPdfCrmUrl:attachmentCrmUrl,intakeVersion:guided?'guided-v5-secure-attachments':'legacy-v1',submittedAt:nowIso,created:nowIso,updated:nowIso,fingerprint,ipHash};await Promise.all([insertRecord('alerts',id,{...data,source:'otto-plumbing-site'}),insertRecord('calls',id,data)]);return json({ok:true,id,receivedAt:nowIso,attachmentStored:Boolean(attachmentPath)},200,origin);}catch(error){console.error('website-intake failed',error instanceof Error?error.message:String(error));return json({error:'delivery_failed'},503,origin);}});
