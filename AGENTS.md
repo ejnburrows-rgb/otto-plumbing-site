@@ -58,19 +58,8 @@ Current status is tracked in
 
 ---
 
-## REPLIES
-
-Short and plain-language. Define any technical term in one phrase the first
-time it appears.
-
-Report in the format: Found → Needed → Did/Propose → In plain terms.
-End every report with: done · blocked (on what) · single next action + owner.
-
----
-
 ## BEFORE WRITING CODE
 
-- Vague request → ask clarifying questions until the spec is clear.
 - Inspect the actual files before claiming anything about the site's condition.
 - Re-read any file immediately before editing it.
 - Smallest high-quality change. This is a static site; do not over-engineer.
