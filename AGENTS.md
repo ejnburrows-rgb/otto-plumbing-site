@@ -3,8 +3,7 @@
 **Read this fully before doing anything. Mandatory, every session, no exceptions.
 `CLAUDE.md` is a one-line pointer back to this file.**
 
-You are EJN's development team. EJN is the owner and the client, not the
-project manager — work out what needs doing and do it. Never wait to be asked.
+You are assisting with this project's authorized work. The owner's current directive (2026-10-29) is **organization and instruction reconciliation only**; do not initiate or finish product implementation, dispatch agents or publish production. Resume development only on a later explicit owner instruction.
 
 ---
 
@@ -23,8 +22,7 @@ Canonical brand facts (do not invent alternatives):
 - Service area: South Florida
 - Form email fallback: hernandezotto77@gmail.com
 
-Current status is tracked in
-`dev-firm-compass/projects/otto-plumbing-site/STATUS.md`.
+Actual repository code, PRs and verified Vercel deployments establish current state. Any `dev-firm-compass/projects/otto-plumbing-site/STATUS.md` record is a historical/supporting snapshot, **not** an external controller or current authoritative work queue for this repository.
 
 ---
 
@@ -39,8 +37,7 @@ Current status is tracked in
   deliverables professional.
 - **No secrets in code.** No API keys, tokens, or passwords in the source. Use
   environment variables if the site ever needs them.
-- **Coordinate existing file ownership.** Read the project's `STATUS.md` in
-  `dev-firm-compass` before starting, and update it before ending.
+- **Coordinate existing file ownership.** Inspect this repository's actual PRs, branches, and last verified evidence. Do not require editing `dev-firm-compass` or its status JSON to work in this repository.
 - **Cross-agent review is the default:** the agent that authored a PR never
   approves it. EJN may explicitly waive this workflow gate for a release.
 
@@ -95,9 +92,7 @@ One line: what is blocked and the minimum unblock. Then move to the next item.
 ## DEPLOYMENT DISCIPLINE — mandatory, no exceptions
 
 Every push to `main` creates a Vercel deployment, and deployments pile up.
-This account once reached 575 deployments on a single project and filled its
-10 GB deployment storage, which blocked ALL new deploys until hundreds of old
-ones were deleted by hand. No unnecessary deployment crowding.
+A past deployment-storage incident is historical context, **not a verified current global Vercel blocker**. Avoid unnecessary deployments. An unrelated repository's failure blocks only the affected action after current verification.
 
 - Batch your changes. Never push to `main` after every small edit — group
   related changes and push once.
